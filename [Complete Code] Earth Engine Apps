@@ -1,0 +1,1852 @@
+var mojokerto= ee.FeatureCollection("users/nurilassajdah/pertanian_mojokerto");
+var mojokertokec= ee.FeatureCollection("users/nurilassajdah/kecamatan_mojokerto");
+var sampel= ee.FeatureCollection("users/nurilassajdah/titik_sampel");
+
+var img201307 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20130728').clip(mojokerto);
+var img201310 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20131016').clip(mojokerto);
+var img201409 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20140901').clip(mojokerto);
+var img201410 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20141003').clip(mojokerto);
+var img201508 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20150803').clip(mojokerto);
+var img201510 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20151022').clip(mojokerto);
+var img201608 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20160821').clip(mojokerto);
+var img201609 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20160906').clip(mojokerto);
+var img201708 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20170824').clip(mojokerto);
+var img201709 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20170909').clip(mojokerto);
+var img201808 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20180811').clip(mojokerto);
+var img201809 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20180928').clip(mojokerto);
+var img201908 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20190814').clip(mojokerto);
+var img201910 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20191001').clip(mojokerto);
+var img202008 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20200816').clip(mojokerto);
+var img202009 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20200917').clip(mojokerto);
+var img202108 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20210819').clip(mojokerto);
+var img202109 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20210904').clip(mojokerto);
+var img202208 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20220822').clip(mojokerto);
+var img202210 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20221009').clip(mojokerto);
+
+//NDVI
+var ndvi201307 = img201307.normalizedDifference(['B5', 'B4']).rename('ndvi1');
+var ndvi201310 = img201310.normalizedDifference(['B5', 'B4']).rename('ndvi2');
+var ndvi201409 = img201409.normalizedDifference(['B5', 'B4']).rename('ndvi3');
+var ndvi201410 = img201410.normalizedDifference(['B5', 'B4']).rename('ndvi4');
+var ndvi201508 = img201508.normalizedDifference(['B5', 'B4']).rename('ndvi5');
+var ndvi201510 = img201510.normalizedDifference(['B5', 'B4']).rename('ndvi6');
+var ndvi201608 = img201608.normalizedDifference(['B5', 'B4']).rename('ndvi7');
+var ndvi201609 = img201609.normalizedDifference(['B5', 'B4']).rename('ndvi8');
+var ndvi201708 = img201708.normalizedDifference(['B5', 'B4']).rename('ndvi9');
+var ndvi201709 = img201709.normalizedDifference(['B5', 'B4']).rename('ndvi10');
+var ndvi201808 = img201808.normalizedDifference(['B5', 'B4']).rename('ndvi11');
+var ndvi201809 = img201809.normalizedDifference(['B5', 'B4']).rename('ndvi12');
+var ndvi201908 = img201908.normalizedDifference(['B5', 'B4']).rename('ndvi13');
+var ndvi201910 = img201910.normalizedDifference(['B5', 'B4']).rename('ndvi14');
+var ndvi202008 = img202008.normalizedDifference(['B5', 'B4']).rename('ndvi15');
+var ndvi202009 = img202009.normalizedDifference(['B5', 'B4']).rename('ndvi16');
+var ndvi202108 = img202108.normalizedDifference(['B5', 'B4']).rename('ndvi17');
+var ndvi202109 = img202109.normalizedDifference(['B5', 'B4']).rename('ndvi18');
+var ndvi202208 = img202208.normalizedDifference(['B5', 'B4']).rename('ndvi19');
+var ndvi202210 = img202210.normalizedDifference(['B5', 'B4']).rename('ndvi20');
+
+//NDVI
+//NDVI
+{var minNDVI1 = ee.Number(ndvi201307.reduceRegion({
+reducer: ee.Reducer.min(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var maxNDVI1 = ee.Number(ndvi201307.reduceRegion({
+reducer: ee.Reducer.max(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var meanNDVI1 = ee.Number(ndvi201307.reduceRegion({
+reducer: ee.Reducer.mean(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+}
+
+{var minNDVI2 = ee.Number(ndvi201310.reduceRegion({
+reducer: ee.Reducer.min(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var maxNDVI2 = ee.Number(ndvi201310.reduceRegion({
+reducer: ee.Reducer.max(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var meanNDVI2 = ee.Number(ndvi201310.reduceRegion({
+reducer: ee.Reducer.mean(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+}
+
+{var minNDVI3 = ee.Number(ndvi201409.reduceRegion({
+reducer: ee.Reducer.min(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var maxNDVI3 = ee.Number(ndvi201409.reduceRegion({
+reducer: ee.Reducer.max(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var meanNDVI3 = ee.Number(ndvi201409.reduceRegion({
+reducer: ee.Reducer.mean(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+}
+
+{var minNDVI4 = ee.Number(ndvi201410.reduceRegion({
+reducer: ee.Reducer.min(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var maxNDVI4 = ee.Number(ndvi201410.reduceRegion({
+reducer: ee.Reducer.max(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var meanNDVI4 = ee.Number(ndvi201410.reduceRegion({
+reducer: ee.Reducer.mean(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+}
+
+{var minNDVI5 = ee.Number(ndvi201508.reduceRegion({
+reducer: ee.Reducer.min(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var maxNDVI5 = ee.Number(ndvi201508.reduceRegion({
+reducer: ee.Reducer.max(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var meanNDVI5 = ee.Number(ndvi201508.reduceRegion({
+reducer: ee.Reducer.mean(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+}
+
+{var minNDVI6 = ee.Number(ndvi201510.reduceRegion({
+reducer: ee.Reducer.min(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var maxNDVI6 = ee.Number(ndvi201510.reduceRegion({
+reducer: ee.Reducer.max(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var meanNDVI6 = ee.Number(ndvi201510.reduceRegion({
+reducer: ee.Reducer.mean(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+}
+
+{var minNDVI7 = ee.Number(ndvi201608.reduceRegion({
+reducer: ee.Reducer.min(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var maxNDVI7 = ee.Number(ndvi201608.reduceRegion({
+reducer: ee.Reducer.max(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var meanNDVI7 = ee.Number(ndvi201608.reduceRegion({
+reducer: ee.Reducer.mean(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+}
+
+{var minNDVI8 = ee.Number(ndvi201609.reduceRegion({
+reducer: ee.Reducer.min(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var maxNDVI8 = ee.Number(ndvi201609.reduceRegion({
+reducer: ee.Reducer.max(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var meanNDVI8 = ee.Number(ndvi201609.reduceRegion({
+reducer: ee.Reducer.mean(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+}
+
+{var minNDVI9 = ee.Number(ndvi201708.reduceRegion({
+reducer: ee.Reducer.min(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var maxNDVI9 = ee.Number(ndvi201708.reduceRegion({
+reducer: ee.Reducer.max(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var meanNDVI9 = ee.Number(ndvi201708.reduceRegion({
+reducer: ee.Reducer.mean(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+}
+
+{var minNDVI10 = ee.Number(ndvi201709.reduceRegion({
+reducer: ee.Reducer.min(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var maxNDVI10 = ee.Number(ndvi201709.reduceRegion({
+reducer: ee.Reducer.max(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var meanNDVI10 = ee.Number(ndvi201709.reduceRegion({
+reducer: ee.Reducer.mean(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+}
+
+{var minNDVI11 = ee.Number(ndvi201808.reduceRegion({
+reducer: ee.Reducer.min(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var maxNDVI11 = ee.Number(ndvi201808.reduceRegion({
+reducer: ee.Reducer.max(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var meanNDVI11 = ee.Number(ndvi201808.reduceRegion({
+reducer: ee.Reducer.mean(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+}
+
+{var minNDVI12 = ee.Number(ndvi201809.reduceRegion({
+reducer: ee.Reducer.min(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var maxNDVI12 = ee.Number(ndvi201809.reduceRegion({
+reducer: ee.Reducer.max(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var meanNDVI12 = ee.Number(ndvi201809.reduceRegion({
+reducer: ee.Reducer.mean(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+}
+
+{var minNDVI13 = ee.Number(ndvi201908.reduceRegion({
+reducer: ee.Reducer.min(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var maxNDVI13 = ee.Number(ndvi201908.reduceRegion({
+reducer: ee.Reducer.max(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var meanNDVI13 = ee.Number(ndvi201908.reduceRegion({
+reducer: ee.Reducer.mean(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+}
+
+{var minNDVI14 = ee.Number(ndvi201910.reduceRegion({
+reducer: ee.Reducer.min(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var maxNDVI14 = ee.Number(ndvi201910.reduceRegion({
+reducer: ee.Reducer.max(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var meanNDVI14 = ee.Number(ndvi201910.reduceRegion({
+reducer: ee.Reducer.mean(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+}
+
+{var minNDVI15 = ee.Number(ndvi202008.reduceRegion({
+reducer: ee.Reducer.min(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var maxNDVI15 = ee.Number(ndvi202008.reduceRegion({
+reducer: ee.Reducer.max(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var meanNDVI15 = ee.Number(ndvi202008.reduceRegion({
+reducer: ee.Reducer.mean(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+}
+
+{var minNDVI16 = ee.Number(ndvi202009.reduceRegion({
+reducer: ee.Reducer.min(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var maxNDVI16 = ee.Number(ndvi202009.reduceRegion({
+reducer: ee.Reducer.max(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var meanNDVI16 = ee.Number(ndvi202009.reduceRegion({
+reducer: ee.Reducer.mean(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+}
+
+{var minNDVI17 = ee.Number(ndvi202108.reduceRegion({
+reducer: ee.Reducer.min(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var maxNDVI17 = ee.Number(ndvi202108.reduceRegion({
+reducer: ee.Reducer.max(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var meanNDVI17 = ee.Number(ndvi202108.reduceRegion({
+reducer: ee.Reducer.mean(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+}
+
+{var minNDVI18 = ee.Number(ndvi202109.reduceRegion({
+reducer: ee.Reducer.min(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var maxNDVI18 = ee.Number(ndvi202109.reduceRegion({
+reducer: ee.Reducer.max(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var meanNDVI18 = ee.Number(ndvi202109.reduceRegion({
+reducer: ee.Reducer.mean(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+}
+
+{var minNDVI19 = ee.Number(ndvi202208.reduceRegion({
+reducer: ee.Reducer.min(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var maxNDVI19 = ee.Number(ndvi202208.reduceRegion({
+reducer: ee.Reducer.max(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var meanNDVI19 = ee.Number(ndvi202208.reduceRegion({
+reducer: ee.Reducer.mean(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+}
+
+{var minNDVI20 = ee.Number(ndvi202210.reduceRegion({
+reducer: ee.Reducer.min(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var maxNDVI20 = ee.Number(ndvi202210.reduceRegion({
+reducer: ee.Reducer.max(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+
+var meanNDVI20 = ee.Number(ndvi202210.reduceRegion({
+reducer: ee.Reducer.mean(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+}
+
+//fvc
+var fv1 =(ndvi201307.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv1');
+var fv2 =(ndvi201310.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv2');
+var fv3 =(ndvi201409.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv3');
+var fv4 =(ndvi201410.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv4');
+var fv5 =(ndvi201508.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv5');
+var fv6 =(ndvi201510.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv6');
+var fv7 =(ndvi201608.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv7');
+var fv8 =(ndvi201609.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv8');
+var fv9 =(ndvi201708.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv9');
+var fv10 =(ndvi201709.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv10');
+var fv11 =(ndvi201808.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv11');
+var fv12 =(ndvi201809.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv12');
+var fv13 =(ndvi201908.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv13');
+var fv14 =(ndvi201910.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv14');
+var fv15 =(ndvi202008.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv15');
+var fv16 =(ndvi202009.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv16');
+var fv17 =(ndvi202108.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv17');
+var fv18 =(ndvi202109.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv18');
+var fv19 =(ndvi202208.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv19');
+var fv20 =(ndvi202210.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv20');
+
+//termal 10
+var termal10_1= img201307.select('B10');
+var termal10_2= img201310.select('B10');
+var termal10_3= img201409.select('B10');
+var termal10_4= img201410.select('B10');
+var termal10_5= img201508.select('B10');
+var termal10_6= img201510.select('B10');
+var termal10_7= img201608.select('B10');
+var termal10_8= img201609.select('B10');
+var termal10_9= img201708.select('B10');
+var termal10_10 = img201709.select('B10');
+var termal10_11 = img201808.select('B10');
+var termal10_12 = img201809.select('B10');
+var termal10_13 = img201908.select('B10');
+var termal10_14 = img201910.select('B10');
+var termal10_15 = img202008.select('B10');
+var termal10_16 = img202009.select('B10');
+var termal10_17 = img202108.select('B10');
+var termal10_18 = img202109.select('B10');
+var termal10_19 = img202208.select('B10');
+var termal10_20 = img202210.select('B10');
+
+//LSE10
+var LSE10_1 = termal10_1.expression(
+    '(0.971*(1-fvc))+(0.987*(fvc))',{
+      'fvc': fv1.select('fv1'),}).rename('LSE10_1');
+var LSE10_2 = termal10_2.expression(
+    '(0.971*(1-fvc))+(0.987*(fvc))',{
+      'fvc': fv2.select('fv2'),}).rename('LSE10_2');
+var LSE10_3 = termal10_3.expression(
+    '(0.971*(1-fvc))+(0.987*(fvc))',{
+      'fvc': fv3.select('fv3'),}).rename('LSE10_3');
+var LSE10_4 = termal10_4.expression(
+    '(0.971*(1-fvc))+(0.987*(fvc))',{
+      'fvc': fv4.select('fv4'),}).rename('LSE10_4');
+var LSE10_5 = termal10_5.expression(
+    '(0.971*(1-fvc))+(0.987*(fvc))',{
+      'fvc': fv5.select('fv5'),}).rename('LSE10_5');
+var LSE10_6 = termal10_6.expression(
+    '(0.971*(1-fvc))+(0.987*(fvc))',{
+      'fvc': fv6.select('fv6'),}).rename('LSE10_6');
+var LSE10_7 = termal10_7.expression(
+    '(0.971*(1-fvc))+(0.987*(fvc))',{
+      'fvc': fv7.select('fv7'),}).rename('LSE10_7');
+var LSE10_8 = termal10_8.expression(
+    '(0.971*(1-fvc))+(0.987*(fvc))',{
+      'fvc': fv8.select('fv8'),}).rename('LSE10_8');
+var LSE10_9 = termal10_9.expression(
+    '(0.971*(1-fvc))+(0.987*(fvc))',{
+      'fvc': fv9.select('fv9'),}).rename('LSE10_9');
+var LSE10_10 = termal10_10.expression(
+    '(0.971*(1-fvc))+(0.987*(fvc))',{
+      'fvc': fv10.select('fv10'),}).rename('LSE10_10');
+var LSE10_11 = termal10_11.expression(
+    '(0.971*(1-fvc))+(0.987*(fvc))',{
+      'fvc': fv11.select('fv11'),}).rename('LSE10_11');
+var LSE10_12 = termal10_12.expression(
+    '(0.971*(1-fvc))+(0.987*(fvc))',{
+      'fvc': fv12.select('fv12'),}).rename('LSE10_12');
+var LSE10_13 = termal10_13.expression(
+    '(0.971*(1-fvc))+(0.987*(fvc))',{
+      'fvc': fv13.select('fv13'),}).rename('LSE10_13');
+var LSE10_14 = termal10_14.expression(
+    '(0.971*(1-fvc))+(0.987*(fvc))',{
+      'fvc': fv14.select('fv14'),}).rename('LSE10_14');
+var LSE10_15 = termal10_15.expression(
+    '(0.971*(1-fvc))+(0.987*(fvc))',{
+      'fvc': fv15.select('fv15'),}).rename('LSE10_15');
+var LSE10_16 = termal10_16.expression(
+    '(0.971*(1-fvc))+(0.987*(fvc))',{
+      'fvc': fv16.select('fv16'),}).rename('LSE10_16');
+var LSE10_17 = termal10_17.expression(
+    '(0.971*(1-fvc))+(0.987*(fvc))',{
+      'fvc': fv17.select('fv17'),}).rename('LSE10_17');
+var LSE10_18 = termal10_18.expression(
+    '(0.971*(1-fvc))+(0.987*(fvc))',{
+      'fvc': fv18.select('fv18'),}).rename('LSE10_18');
+var LSE10_19 = termal10_19.expression(
+    '(0.971*(1-fvc))+(0.987*(fvc))',{
+      'fvc': fv19.select('fv19'),}).rename('LSE10_19');
+var LSE10_20 = termal10_20.expression(
+    '(0.971*(1-fvc))+(0.987*(fvc))',{
+      'fvc': fv20.select('fv20'),}).rename('LSE10_20');
+
+//termal 11
+var termal11_1= img201307.select('B11');
+var termal11_2= img201310.select('B11');
+var termal11_3= img201409.select('B11');
+var termal11_4= img201410.select('B11');
+var termal11_5= img201508.select('B11');
+var termal11_6= img201510.select('B11');
+var termal11_7= img201608.select('B11');
+var termal11_8= img201609.select('B11');
+var termal11_9= img201708.select('B11');
+var termal11_10 = img201709.select('B11');
+var termal11_11 = img201808.select('B11');
+var termal11_12 = img201809.select('B11');
+var termal11_13 = img201908.select('B11');
+var termal11_14 = img201910.select('B11');
+var termal11_15 = img202008.select('B11');
+var termal11_16 = img202009.select('B11');
+var termal11_17 = img202108.select('B11');
+var termal11_18 = img202109.select('B11');
+var termal11_19 = img202208.select('B11');
+var termal11_20 = img202210.select('B11');
+
+//LSE 11
+var LSE11_1 = termal11_1.expression(
+    '(0.977*(1-fvc))+(0.989*(fvc))',{
+      'fvc': fv1.select('fv1'),}).rename('LSE11_1');
+var LSE11_2 = termal11_2.expression(
+    '(0.977*(1-fvc))+(0.989*(fvc))',{
+      'fvc': fv2.select('fv2'),}).rename('LSE11_2');
+var LSE11_3 = termal11_3.expression(
+    '(0.977*(1-fvc))+(0.989*(fvc))',{
+      'fvc': fv3.select('fv3'),}).rename('LSE11_3');
+var LSE11_4 = termal11_4.expression(
+    '(0.977*(1-fvc))+(0.989*(fvc))',{
+      'fvc': fv4.select('fv4'),}).rename('LSE11_4');
+var LSE11_5 = termal11_5.expression(
+    '(0.977*(1-fvc))+(0.989*(fvc))',{
+      'fvc': fv5.select('fv5'),}).rename('LSE11_5');
+var LSE11_6 = termal11_6.expression(
+    '(0.977*(1-fvc))+(0.989*(fvc))',{
+      'fvc': fv6.select('fv6'),}).rename('LSE11_6');
+var LSE11_7 = termal11_7.expression(
+    '(0.977*(1-fvc))+(0.989*(fvc))',{
+      'fvc': fv7.select('fv7'),}).rename('LSE11_7');
+var LSE11_8 = termal11_8.expression(
+    '(0.977*(1-fvc))+(0.989*(fvc))',{
+      'fvc': fv8.select('fv8'),}).rename('LSE11_8');
+var LSE11_9 = termal11_9.expression(
+    '(0.977*(1-fvc))+(0.989*(fvc))',{
+      'fvc': fv9.select('fv9'),}).rename('LSE11_9');
+var LSE11_10 = termal11_10.expression(
+    '(0.977*(1-fvc))+(0.989*(fvc))',{
+      'fvc': fv10.select('fv10'),}).rename('LSE11_10');
+var LSE11_11 = termal11_11.expression(
+    '(0.977*(1-fvc))+(0.989*(fvc))',{
+      'fvc': fv11.select('fv11'),}).rename('LSE11_11');
+var LSE11_12 = termal11_12.expression(
+    '(0.977*(1-fvc))+(0.989*(fvc))',{
+      'fvc': fv12.select('fv12'),}).rename('LSE11_12');
+var LSE11_13 = termal11_13.expression(
+    '(0.977*(1-fvc))+(0.989*(fvc))',{
+      'fvc': fv13.select('fv13'),}).rename('LSE11_13');
+var LSE11_14 = termal11_14.expression(
+    '(0.977*(1-fvc))+(0.989*(fvc))',{
+      'fvc': fv14.select('fv14'),}).rename('LSE11_14');
+var LSE11_15 = termal11_15.expression(
+    '(0.977*(1-fvc))+(0.989*(fvc))',{
+      'fvc': fv15.select('fv15'),}).rename('LSE11_15');
+var LSE11_16 = termal11_16.expression(
+    '(0.977*(1-fvc))+(0.989*(fvc))',{
+      'fvc': fv16.select('fv16'),}).rename('LSE11_16');
+var LSE11_17 = termal11_17.expression(
+    '(0.977*(1-fvc))+(0.989*(fvc))',{
+      'fvc': fv17.select('fv17'),}).rename('LSE11_17');
+var LSE11_18 = termal11_18.expression(
+    '(0.977*(1-fvc))+(0.989*(fvc))',{
+      'fvc': fv18.select('fv18'),}).rename('LSE11_18');
+var LSE11_19 = termal11_19.expression(
+    '(0.977*(1-fvc))+(0.989*(fvc))',{
+      'fvc': fv19.select('fv19'),}).rename('LSE11_19');
+var LSE11_20 = termal11_20.expression(
+    '(0.977*(1-fvc))+(0.989*(fvc))',{
+      'fvc': fv20.select('fv20'),}).rename('LSE11_20');
+      
+//m
+var m1 = LSE10_1.add(LSE11_1).divide(ee.Number(2)).rename('mLSE1');
+var m2 = LSE10_2.add(LSE11_2).divide(ee.Number(2)).rename('mLSE2');
+var m3 = LSE10_3.add(LSE11_3).divide(ee.Number(2)).rename('mLSE3');
+var m4 = LSE10_4.add(LSE11_4).divide(ee.Number(2)).rename('mLSE4');
+var m5 = LSE10_5.add(LSE11_5).divide(ee.Number(2)).rename('mLSE5');
+var m6 = LSE10_6.add(LSE11_6).divide(ee.Number(2)).rename('mLSE6');
+var m7 = LSE10_7.add(LSE11_7).divide(ee.Number(2)).rename('mLSE7');
+var m8 = LSE10_8.add(LSE11_8).divide(ee.Number(2)).rename('mLSE8');
+var m9 = LSE10_9.add(LSE11_9).divide(ee.Number(2)).rename('mLSE9');
+var m10 = LSE10_10.add(LSE11_10).divide(ee.Number(2)).rename('mLSE10');
+var m11 = LSE10_11.add(LSE11_11).divide(ee.Number(2)).rename('mLSE11');
+var m12 = LSE10_12.add(LSE11_12).divide(ee.Number(2)).rename('mLSE12');
+var m13 = LSE10_13.add(LSE11_13).divide(ee.Number(2)).rename('mLSE13');
+var m14 = LSE10_14.add(LSE11_14).divide(ee.Number(2)).rename('mLSE14');
+var m15 = LSE10_15.add(LSE11_15).divide(ee.Number(2)).rename('mLSE15');
+var m16 = LSE10_16.add(LSE11_16).divide(ee.Number(2)).rename('mLSE16');
+var m17 = LSE10_17.add(LSE11_17).divide(ee.Number(2)).rename('mLSE17');
+var m18 = LSE10_18.add(LSE11_18).divide(ee.Number(2)).rename('mLSE18');
+var m19 = LSE10_19.add(LSE11_19).divide(ee.Number(2)).rename('mLSE19');
+var m20 = LSE10_20.add(LSE11_20).divide(ee.Number(2)).rename('mLSE20');
+
+//delta m
+var deltam1 = LSE10_1.subtract(LSE11_1).rename('deltaLSE1');
+var deltam2 = LSE10_2.subtract(LSE11_2).rename('deltaLSE2');
+var deltam3 = LSE10_3.subtract(LSE11_3).rename('deltaLSE3');
+var deltam4 = LSE10_4.subtract(LSE11_4).rename('deltaLSE4');
+var deltam5 = LSE10_5.subtract(LSE11_5).rename('deltaLSE5');
+var deltam6 = LSE10_6.subtract(LSE11_6).rename('deltaLSE6');
+var deltam7 = LSE10_7.subtract(LSE11_7).rename('deltaLSE7');
+var deltam8 = LSE10_8.subtract(LSE11_8).rename('deltaLSE8');
+var deltam9 = LSE10_9.subtract(LSE11_9).rename('deltaLSE9');
+var deltam10 = LSE10_10.subtract(LSE11_10).rename('deltaLSE10');
+var deltam11 = LSE10_11.subtract(LSE11_11).rename('deltaLSE11');
+var deltam12 = LSE10_12.subtract(LSE11_12).rename('deltaLSE12');
+var deltam13 = LSE10_13.subtract(LSE11_13).rename('deltaLSE13');
+var deltam14 = LSE10_14.subtract(LSE11_14).rename('deltaLSE14');
+var deltam15 = LSE10_15.subtract(LSE11_15).rename('deltaLSE15');
+var deltam16 = LSE10_16.subtract(LSE11_16).rename('deltaLSE16');
+var deltam17 = LSE10_17.subtract(LSE11_17).rename('deltaLSE17');
+var deltam18 = LSE10_18.subtract(LSE11_18).rename('deltaLSE18');
+var deltam19 = LSE10_19.subtract(LSE11_19).rename('deltaLSE19');
+var deltam20 = LSE10_20.subtract(LSE11_20).rename('deltaLSE20');
+
+//LST
+var LST201307 = img201307.expression(
+    '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
+    {
+     'TB10' : img201307.select('B10'),
+     'TB11' : img201307.select('B11'),
+     'm' : m1.select('mLSE1'),
+     'deltam' : deltam1.select('deltaLSE1')
+    }
+  ).rename('LST1');
+
+
+var LST201310 = img201310.expression(
+    '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
+    {
+     'TB10' : img201310.select('B10'),
+     'TB11' : img201310.select('B11'),
+     'm' : m2.select('mLSE2'),
+     'deltam' : deltam2.select('deltaLSE2')
+    }
+  ).rename('LST2');
+
+var LST201409 = img201409.expression(
+    '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
+    {
+     'TB10' : img201409.select('B10'),
+     'TB11' : img201409.select('B11'),
+     'm' : m3.select('mLSE3'),
+     'deltam' : deltam3.select('deltaLSE3')
+    }
+  ).rename('LST3');
+
+
+var LST201410 = img201410.expression(
+    '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
+    {
+     'TB10' : img201410.select('B10'),
+     'TB11' : img201410.select('B11'),
+     'm' : m4.select('mLSE4'),
+     'deltam' : deltam4.select('deltaLSE4')
+    }
+  ).rename('LST4');
+
+var LST201508 = img201508.expression(
+    '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
+    {
+     'TB10' : img201508.select('B10'),
+     'TB11' : img201508.select('B11'),
+     'm' : m5.select('mLSE5'),
+     'deltam' : deltam5.select('deltaLSE5')
+    }
+  ).rename('LST5');
+
+var LST201510 = img201510.expression(
+    '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
+    {
+     'TB10' : img201510.select('B10'),
+     'TB11' : img201510.select('B11'),
+     'm' : m6.select('mLSE6'),
+     'deltam' : deltam6.select('deltaLSE6')
+    }
+  ).rename('LST6');
+
+var LST201608 = img201608.expression(
+    '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
+    {
+     'TB10' : img201608.select('B10'),
+     'TB11' : img201608.select('B11'),
+     'm' : m7.select('mLSE7'),
+     'deltam' : deltam7.select('deltaLSE7')
+    }
+  ).rename('LST7');
+
+var LST201609 = img201609.expression(
+    '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
+    {
+     'TB10' : img201609.select('B10'),
+     'TB11' : img201609.select('B11'),
+     'm' : m8.select('mLSE8'),
+     'deltam' : deltam8.select('deltaLSE8')
+    }
+  ).rename('LST8');
+
+var LST201708 = img201708.expression(
+    '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
+    {
+     'TB10' : img201708.select('B10'),
+     'TB11' : img201708.select('B11'),
+     'm' : m9.select('mLSE9'),
+     'deltam' : deltam9.select('deltaLSE9')
+    }
+  ).rename('LST9');
+
+var LST201709 = img201709.expression(
+    '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
+    {
+     'TB10' : img201709.select('B10'),
+     'TB11' : img201709.select('B11'),
+     'm' : m10.select('mLSE10'),
+     'deltam' : deltam10.select('deltaLSE10')
+    }
+  ).rename('LST10');
+
+var LST201808 = img201808.expression(
+    '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
+    {
+     'TB10' : img201808.select('B10'),
+     'TB11' : img201808.select('B11'),
+     'm' : m11.select('mLSE11'),
+     'deltam' : deltam11.select('deltaLSE11')
+    }
+  ).rename('LST11');
+
+var LST201809 = img201809.expression(
+    '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
+    {
+     'TB10' : img201809.select('B10'),
+     'TB11' : img201809.select('B11'),
+     'm' : m12.select('mLSE12'),
+     'deltam' : deltam12.select('deltaLSE12')
+    }
+  ).rename('LST12');
+
+var LST201908 = img201908.expression(
+    '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
+    {
+     'TB10' : img201908.select('B10'),
+     'TB11' : img201908.select('B11'),
+     'm' : m13.select('mLSE13'),
+     'deltam' : deltam13.select('deltaLSE13')
+    }
+  ).rename('LST13');
+
+var LST201910 = img201910.expression(
+    '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
+    {
+     'TB10' : img201910.select('B10'),
+     'TB11' : img201910.select('B11'),
+     'm' : m14.select('mLSE14'),
+     'deltam' : deltam14.select('deltaLSE14')
+    }
+  ).rename('LST14');
+
+var LST202008 = img202008.expression(
+    '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
+    {
+     'TB10' : img202008.select('B10'),
+     'TB11' : img202008.select('B11'),
+     'm' : m15.select('mLSE15'),
+     'deltam' : deltam15.select('deltaLSE15')
+    }
+  ).rename('LST15');
+
+var LST202009 = img202009.expression(
+    '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
+    {
+     'TB10' : img202009.select('B10'),
+     'TB11' : img202009.select('B11'),
+     'm' : m16.select('mLSE16'),
+     'deltam' : deltam16.select('deltaLSE16')
+    }
+  ).rename('LST16');
+
+var LST202108 = img202108.expression(
+    '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
+    {
+     'TB10' : img202108.select('B10'),
+     'TB11' : img202108.select('B11'),
+     'm' : m17.select('mLSE17'),
+     'deltam' : deltam17.select('deltaLSE17')
+    }
+  ).rename('LST17');
+
+var LST202109 = img202109.expression(
+    '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
+    {
+     'TB10' : img202109.select('B10'),
+     'TB11' : img202109.select('B11'),
+     'm' : m18.select('mLSE18'),
+     'deltam' : deltam18.select('deltaLSE18')
+    }
+  ).rename('LST18');
+
+var LST202208 = img202208.expression(
+    '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
+    {
+     'TB10' : img202208.select('B10'),
+     'TB11' : img202208.select('B11'),
+     'm' : m19.select('mLSE19'),
+     'deltam' : deltam19.select('deltaLSE19')
+    }
+  ).rename('LST19');
+
+  
+var LST202210 = img202210.expression(
+    '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
+    {
+     'TB10' : img202210.select('B10'),
+     'TB11' : img202210.select('B11'),
+     'm' : m20.select('mLSE20'),
+     'deltam' : deltam20.select('deltaLSE20')
+    }
+  ).rename('LST20');
+
+
+//-------------------------- TVDI --------------------
+
+//-------------------------- TVDI --------------------
+//MIN ALGORITMA
+var LSTmin1 = ndvi201307.expression(
+    '((4.6099 * ndvi) + 18.811)', {
+    'ndvi': ndvi201307.select('ndvi1')});
+
+var LSTmin2 = ndvi201310.expression(
+    '((4.237 * ndvi) + 27.843)', {
+    'ndvi': ndvi201310.select('ndvi2')});
+
+var LSTmin3 = ndvi201409.expression(
+    '((-2.5191 * ndvi) + 23.693)', {
+    'ndvi': ndvi201409.select('ndvi3')});
+
+var LSTmin4 = ndvi201410.expression(
+    '((15.178 * ndvi) + 23.156)', {
+    'ndvi': ndvi201410.select('ndvi4')});
+
+var LSTmin5 = ndvi201508.expression(
+    '((-4.5153 * ndvi) +  31.876)', {
+    'ndvi': ndvi201508.select('ndvi5')});
+
+var LSTmin6 = ndvi201510.expression(
+    '((-2.6454 * ndvi) + 32.566)', {
+    'ndvi': ndvi201510.select('ndvi6')});
+
+var LSTmin7 = ndvi201608.expression(
+    '((-5.1319 * ndvi) + 31.451)', {
+    'ndvi': ndvi201608.select('ndvi7')});
+
+var LSTmin8 = ndvi201609.expression(
+    '((10.713 * ndvi) + 22.395)', {
+    'ndvi': ndvi201609.select('ndvi8')});
+
+var LSTmin9 = ndvi201708.expression(
+    '((-3.75 * ndvi) + 32.619)', {
+    'ndvi': ndvi201708.select('ndvi9')});
+
+var LSTmin10 = ndvi201709.expression(
+    '((-4.6823 * ndvi) + 35.529)', {
+    'ndvi': ndvi201709.select('ndvi10')});
+   
+var LSTmin11 = ndvi201808.expression(
+    '((-3.718 * ndvi) + 31.511)', {
+    'ndvi': ndvi201808.select('ndvi11')});
+
+var LSTmin12 = ndvi201809.expression(
+    '((-3.1719 * ndvi) + 34.798)', {
+    'ndvi': ndvi201809.select('ndvi12')});
+
+var LSTmin13 = ndvi201908.expression(
+    '((-4.7176 * ndvi) + 33.102)', {
+    'ndvi': ndvi201908.select('ndvi13')});
+
+var LSTmin14 = ndvi201910.expression(
+    '((-3.8274 * ndvi) + 36.408)', {
+    'ndvi': ndvi201910.select('ndvi14')});
+
+var LSTmin15 = ndvi202008.expression(
+    '((12.662 * ndvi) + 20.829)', {
+    'ndvi': ndvi202008.select('ndvi15')});
+    
+var LSTmin16 = ndvi202009.expression(
+    '((-1.3133 * ndvi) + 32.369)', {
+    'ndvi': ndvi202009.select('ndvi16')});
+
+var LSTmin17 = ndvi202108.expression(
+    '((10.51 * ndvi) + 20.422)', {
+    'ndvi': ndvi202108.select('ndvi17')});
+
+var LSTmin18 = ndvi202109.expression(
+    '((-5.4719 * ndvi) + 34.284)', {
+    'ndvi': ndvi202109.select('ndvi18')});
+
+var LSTmin19 = ndvi202208.expression(
+    '((-8.5173 * ndvi) + 32.013)', {
+    'ndvi': ndvi202208.select('ndvi19')});
+
+var LSTmin20 = ndvi202210.expression(
+    '((5.308* ndvi) + 20.058)', {
+    'ndvi': ndvi202210.select('ndvi20')});
+
+//MAX ALGORITMA
+var LSTmax1 = ndvi201307.expression(
+    '((-2.8555 * ndvi) + 34.637)', {
+    'ndvi': ndvi201307.select('ndvi1')});
+
+var LSTmax2 = ndvi201310.expression(
+    '((-4.7559 * ndvi)  + 41.233)', {
+    'ndvi': ndvi201310.select('ndvi2')});
+ 
+var LSTmax3 = ndvi201409.expression(
+    '((-4.0345 * ndvi) + 32.297)', {
+    'ndvi': ndvi201409.select('ndvi3')});
+
+var LSTmax4 = ndvi201410.expression(
+    '((-8.4437 * ndvi)  + 44.784)', {
+    'ndvi': ndvi201410.select('ndvi4')});
+
+var LSTmax5 = ndvi201508.expression(
+    '((-6.8602 * ndvi) + 39.722)', {
+    'ndvi': ndvi201508.select('ndvi5')});
+ 
+var LSTmax6 = ndvi201510.expression(
+    '((-1.9693 * ndvi) + 41.734)', {
+    'ndvi': ndvi201510.select('ndvi6')});
+
+var LSTmax7 = ndvi201608.expression(
+    '((-1.9366 * ndvi) + 35.863)', {
+    'ndvi': ndvi201608.select('ndvi7')});
+
+var LSTmax8 = ndvi201609.expression(
+    '((-3.8956 * ndvi) + 38.17)', {
+    'ndvi': ndvi201609.select('ndvi8')});
+
+var LSTmax9 = ndvi201708.expression(
+    '((-5.2809* ndvi) + 38.455)', {
+    'ndvi': ndvi201708.select('ndvi9')});
+
+var LSTmax10 = ndvi201709.expression(
+    '((-4.3123 * ndvi) + 42.421)', {
+    'ndvi': ndvi201709.select('ndvi10')});
+
+var LSTmax11 = ndvi201808.expression(
+    '((-6.449 * ndvi) + 39.523)', {
+    'ndvi': ndvi201808.select('ndvi11')});
+
+var LSTmax12 = ndvi201809.expression(
+    '((-10.29 * ndvi) + 47.252)', {
+    'ndvi': ndvi201809.select('ndvi12')});
+
+var LSTmax13 = ndvi201908.expression(
+    '((-6.4009 * ndvi) + 39.085)', {
+    'ndvi': ndvi201908.select('ndvi13')});
+
+var LSTmax14 = ndvi201910.expression(
+    '((-11.811 * ndvi) + 47.499)', {
+    'ndvi': ndvi201910.select('ndvi14')});
+
+var LSTmax15 = ndvi202008.expression(
+    '((-2.013 * ndvi) + 35.669)', {
+    'ndvi': ndvi202008.select('ndvi15')});
+
+var LSTmax16 = ndvi202009.expression(
+    '((-8.4381 * ndvi) + 43.624)', {
+    'ndvi': ndvi202009.select('ndvi16')});
+ 
+var LSTmax17 = ndvi202108.expression(
+    '((-3.7928 * ndvi) + 32.617)', {
+    'ndvi': ndvi202108.select('ndvi17')});
+
+var LSTmax18 = ndvi202109.expression(
+    '((-6.8959 * ndvi) + 41.178)', {
+    'ndvi': ndvi202109.select('ndvi18')});
+
+var LSTmax19 = ndvi202208.expression(
+    '((-18.731 * ndvi) + 43.39)', {
+    'ndvi': ndvi202208.select('ndvi19')});
+
+var LSTmax20 = ndvi202210.expression(
+    '((-9.5715 * ndvi) + 38.404)', {
+    'ndvi': ndvi202210.select('ndvi20')});
+
+//TVDI
+var TVDI201307 =(LST201307.subtract(LSTmin1).divide(LSTmax1.subtract(LSTmin1)));
+var TVDI201310 =(LST201310.subtract(LSTmin2).divide(LSTmax2.subtract(LSTmin2)));
+var TVDI201409 =(LST201409.subtract(LSTmin3).divide(LSTmax3.subtract(LSTmin3)));
+var TVDI201410 =(LST201410.subtract(LSTmin4).divide(LSTmax4.subtract(LSTmin4)));
+var TVDI201508 =(LST201508.subtract(LSTmin5).divide(LSTmax5.subtract(LSTmin5)));
+var TVDI201510 =(LST201510.subtract(LSTmin6).divide(LSTmax6.subtract(LSTmin6)));
+var TVDI201608 =(LST201608.subtract(LSTmin7).divide(LSTmax7.subtract(LSTmin7)));
+var TVDI201609 =(LST201609.subtract(LSTmin8).divide(LSTmax8.subtract(LSTmin8)));
+var TVDI201708 =(LST201708.subtract(LSTmin9).divide(LSTmax9.subtract(LSTmin9)));
+var TVDI201709 =(LST201709.subtract(LSTmin10).divide(LSTmax10.subtract(LSTmin10)));
+var TVDI201808 =(LST201808.subtract(LSTmin11).divide(LSTmax11.subtract(LSTmin11)));
+var TVDI201809 =(LST201809.subtract(LSTmin12).divide(LSTmax12.subtract(LSTmin12)));
+var TVDI201908 =(LST201908.subtract(LSTmin13).divide(LSTmax13.subtract(LSTmin13)));
+var TVDI201910 =(LST201910.subtract(LSTmin14).divide(LSTmax14.subtract(LSTmin14)));
+var TVDI202008 =(LST202008.subtract(LSTmin15).divide(LSTmax15.subtract(LSTmin15)));
+var TVDI202009 =(LST202009.subtract(LSTmin16).divide(LSTmax16.subtract(LSTmin16)));
+var TVDI202108 =(LST202108.subtract(LSTmin17).divide(LSTmax17.subtract(LSTmin17)));
+var TVDI202109 =(LST202109.subtract(LSTmin18).divide(LSTmax18.subtract(LSTmin18)));
+var TVDI202208 =(LST202208.subtract(LSTmin19).divide(LSTmax19.subtract(LSTmin19)));
+var TVDI202210 =(LST202210.subtract(LSTmin20).divide(LSTmax20.subtract(LSTmin20)));
+
+var sld_intervals =
+  '<RasterSymbolizer>' +
+    '<ColorMap type="intervals" extended="false" >' +
+      '<ColorMapEntry color="#ffffff" quantity="-3" label="NA"/>' +
+      '<ColorMapEntry color="#7a8737" quantity="0.2" label="Basah (0 < TVDI ≤ 0.20)"/>' +
+      '<ColorMapEntry color="#0ae042" quantity="0.4" label="Agak Basah (0.21 < TVDI ≤ 0.40)" />' +
+      '<ColorMapEntry color="#fff70b" quantity="0.6" label="Normal (0.41 < TVDI ≤ 0.60)" />' +
+      '<ColorMapEntry color="#ffaf38" quantity="0.8" label="Agak Kering (0.61 < TVDI ≤ 0.80)" />' +
+      '<ColorMapEntry color="#ff641b" quantity="3" label="Kering (0.81 < TVDI ≤ 1)" />' +
+    '</ColorMap>' +
+  '</RasterSymbolizer>';
+
+//Menampilkan hasil tvdi
+Map.addLayer(TVDI201307.sldStyle(sld_intervals), {}, 'Jul 2013');
+Map.addLayer(TVDI201310.sldStyle(sld_intervals), {}, 'Okt 2013');
+Map.addLayer(TVDI201409.sldStyle(sld_intervals), {}, 'Sep 2014');
+Map.addLayer(TVDI201410.sldStyle(sld_intervals), {}, 'Okt 2014');
+Map.addLayer(TVDI201508.sldStyle(sld_intervals), {}, 'Agt 2015');
+Map.addLayer(TVDI201510.sldStyle(sld_intervals), {}, 'Okt 2015'); 
+Map.addLayer(TVDI201608.sldStyle(sld_intervals), {}, 'Agt 2016');
+Map.addLayer(TVDI201609.sldStyle(sld_intervals), {}, 'Sep 2016');
+Map.addLayer(TVDI201708.sldStyle(sld_intervals), {}, 'Agt 2017');
+Map.addLayer(TVDI201709.sldStyle(sld_intervals), {}, 'Sep 2017');
+Map.addLayer(TVDI201808.sldStyle(sld_intervals), {}, 'Agt 2018');
+Map.addLayer(TVDI201809.sldStyle(sld_intervals), {}, 'Sep 2018');
+Map.addLayer(TVDI201908.sldStyle(sld_intervals), {}, 'Agt 2019');
+Map.addLayer(TVDI201910.sldStyle(sld_intervals), {}, 'Okt 2019');
+Map.addLayer(TVDI202008.sldStyle(sld_intervals), {}, 'Agt 2020');
+Map.addLayer(TVDI202009.sldStyle(sld_intervals), {}, 'Sep 2020');
+Map.addLayer(TVDI202108.sldStyle(sld_intervals), {}, 'Agt 2021');
+Map.addLayer(TVDI202109.sldStyle(sld_intervals), {}, 'Sep 2021');
+Map.addLayer(TVDI202208.sldStyle(sld_intervals), {}, 'Agt 2022');
+Map.addLayer(TVDI202210.sldStyle(sld_intervals), {}, 'Okt 2022');
+
+// Pendeskripsian citra yang dimasukkan pada layer split panel
+var images = {
+      
+      'TVDI Oktober 2022': TVDI202210.sldStyle(sld_intervals),
+      'TVDI Agustus 2022': TVDI202208.sldStyle(sld_intervals),
+      'TVDI September 2021': TVDI202109.sldStyle(sld_intervals),
+      'TVDI Agustus 2021': TVDI202108.sldStyle(sld_intervals),
+      'TVDI September 2020': TVDI202009.sldStyle(sld_intervals),
+      'TVDI Agustus 2020': TVDI202008.sldStyle(sld_intervals),
+      'TVDI Oktober 2019': TVDI201910.sldStyle(sld_intervals),
+      'TVDI Agustus 2019': TVDI201908.sldStyle(sld_intervals),
+      'TVDI September 2018': TVDI201809.sldStyle(sld_intervals),
+      'TVDI Agustus 2018': TVDI201808.sldStyle(sld_intervals),
+      'TVDI September 2017': TVDI201709.sldStyle(sld_intervals),
+      'TVDI Agustus 2017': TVDI201708.sldStyle(sld_intervals),
+      'TVDI September 2016': TVDI201609.sldStyle(sld_intervals),
+      'TVDI Agustus 2016': TVDI201608.sldStyle(sld_intervals),
+      'TVDI Oktober 2015': TVDI201510.sldStyle(sld_intervals),
+      'TVDI Agustus 2015': TVDI201508.sldStyle(sld_intervals),
+      'TVDI Okober 2014': TVDI201410.sldStyle(sld_intervals),
+      'TVDI September 2014': TVDI201409.sldStyle(sld_intervals),
+      'TVDI Oktober 2013': TVDI201310.sldStyle(sld_intervals),
+      'TVDI Juli 2013': TVDI201307.sldStyle(sld_intervals),
+};
+// Pembuatan peta split sisi kiri 
+var leftMap = ui.Map(); 
+leftMap.setControlVisibility(false); 
+var leftSelector = addLayerSelector(leftMap, 2, 'top-left'); 
+// Pembuatan peta split sisi kanan 
+var rightMap = ui.Map(); 
+rightMap.setControlVisibility(false); 
+var rightSelector = addLayerSelector(rightMap, 1, 'top-right'); 
+// Pengaturan layer peta untuk memilih citra yang ingin ditampilkan
+function addLayerSelector(mapToChange, defaultValue, position)
+{ 
+    var label = ui.Label('Pilih Tahun');
+    function updateMap(selection)
+    {
+      mapToChange.layers().set(0, ui.Map.Layer(images[selection])); 
+    }
+    
+    // Konfigurasi layer terpilih, proses update pilihan
+      var select = ui.Select({items: Object.keys(images), onChange: updateMap});
+      select.setValue(Object.keys(images)[defaultValue], true); 
+      var controlPanel = ui.Panel({widgets: [label, select], style: {position: position}}); 
+      mapToChange.add(controlPanel); 
+} 
+/* 
+ * Mengikat semuanya pada split panel 
+ */ 
+// Pembuatan peta perbandingan dalam splitpanel
+var splitPanel = ui.SplitPanel({ 
+  firstPanel: leftMap, 
+  secondPanel: rightMap, 
+  wipe: true, 
+  style: {stretch: 'both'} 
+});
+// Menetapkan splitpanel yang berada di root UI
+ui.root.widgets().reset([splitPanel]); 
+var linker = ui.Map.Linker([leftMap, rightMap]); 
+leftMap.centerObject(mojokerto,10.3); 
+rightMap.centerObject(mojokerto,10.3); 
+
+// Paint all the polygon edges with the same number and width, display.
+var empty = ee.Image().byte();
+var outline = empty.paint({
+  featureCollection: mojokertokec,
+  color: 1,
+  width: 1});
+leftMap.addLayer(outline, {palette: '000000'}, 'Batas Kecamatan');
+rightMap.addLayer(outline, {palette: '000000'}, 'Batas Kecamatan');
+
+
+/*
+Create the panel
+*/
+
+// Generate main panel and add it to the map.
+var panel = ui.Panel({
+    layout: ui.Panel.Layout.flow(),
+    style: {
+        position: 'top-right',
+        stretch: 'horizontal',
+        height: '100%',
+        width: '29%',
+    }
+})
+ui.root.insert(0,panel);
+
+
+
+// Define title and description.
+var judul = ui.Label('Aplikasi Pemantauan Sebaran Kekeringan Pertanian Kabupaten Mojokerto, Provinsi jawa Timur Tahun 2013-2022',
+  { fontFamily: 'sans-serif',
+    fontWeight:'550',
+    fontSize:'20px',
+    padding:'6px',
+    textAlign: 'center'
+  }
+);
+var paragraf1 = ui.Label('Kabupaten Mojokerto merupakan salah satu kabupaten dengan tingkat kekeringan pertanian yang cukup parah di Jawa Timur. Dampak dari bencana kekeringan pertanian adalah tidak terpenuhinya kebutuhan air pada fase tertentu yang mengakibatkan pertumbuhan tanaman tidak optimal. Oleh karena itu, Earth Engine Apps ini dibuat dengan tujuan untuk memantau dan mengetahui pola persebaran kekeringan kekeringan pertanian di Kabupaten Mojokerto dari tahun 2013-2022. Harapannya, dengan dilakukannya identifikasi area terdampak kekeringan pertanian secara berkala dapat digunakan sebagai tindakan preventif kedepannya dalam mengatasi bencana kekeringan pertanian di Kabupaten Mojokerto.', 
+ {  fontFamily: 'sans-serif',
+    fontSize:'14px',
+    padding:'2px 0 4px 6px',
+    textAlign: 'justify'
+ }
+);
+panel.add(judul).add(paragraf1);
+
+//Disclaimer
+
+var disclaimer = ui.Panel(
+    [
+        ui.Label('Disclaimer:', {fontSize:'12px', fontWeight: 'bold', margin: '15px 0 0 15px'}),
+        ui.Label('● Informasi sebaran kekeringan pertanian diperoleh melalui analisis data citra Landsat 8 Collection 2 Tier 1 TOA Reflectance, serta didukung informasi validasi dari lapangan pada bulan Oktober 2022 yang menghasilkan nilai akurasi parameter Normalized Difference Vegetation Index (NDVI) sebesar 80% dan rata-rata ketelitian nilai parameter Land Surface Temperature (LST) sebesar 91.49%.', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
+        ui.Label('● Kedua parameter tersebut merupakan hasil pengolahan data citra Landsat 8 Collection 2 Tier 1 TOA Reflectance yang digunakan sebagai data masukan dalam menetukan informasi sebaran kekeringan pertanian menggunakan metode Temperature-Vegetation Dryness Index (TVDI)', {fontSize:'12px',  margin: '12px 15px 0 15px', textAlign: 'justify'}),
+        ui.Label(''),
+    ]
+);
+panel.add(disclaimer);
+
+
+
+
+//Buton Petunjuk Penggunakaan
+
+var petunjukButton = ui.Button({
+    label: 'Petunjuk Penggunaan Earth Engine Apps',
+    style: {stretch:'horizontal', color: 'black'}
+});
+var petunjukPanel = ui.Panel(null, null, {stretch:'horizontal', shown: false});
+
+petunjukButton.onClick(function(){
+    if(petunjukPanel.style().get('shown')){
+        petunjukButton.setLabel('Petunjuk Penggunaan Earth Engine Apps');
+        petunjukPanel.style().set('shown', false);
+    } 
+    else{
+        petunjukButton.setLabel('Petunjuk Penggunaan Earth Engine Apps');
+        petunjukPanel.style().set('shown', true);
+    }
+})
+panel.add(petunjukButton);
+panel.add(petunjukPanel);
+// Butoon Grafik
+
+var petunjukAplikasi = ui.Panel(
+    [
+        ui.Label('Petunjuk Penggunaan Earth Engine Apps:', {fontSize:'12px', fontWeight: 'bold', margin: '15px 0 0 15px'}),
+        ui.Label('[Klik Disini] Video Tutorial Penggunaan Earth Engine Apps', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://music.youtube.com/watch?v=TN5Ye9pQhlM&list=RDAOASm6zw3fwwNHHUAmqi82kg'),
+        ui.Label('1. Menggeser garis split panel ke bagian tengah peta untuk membandingkan informasi sebaran kekeringan pertanian.', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('2. Memilih tahun berbeda yang akan digunakan untuk memantau sebaran kekeringan pertanian dengan cara klik button pada menu “Pilih Tahun”.', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('3. Dapat mengatur zoom In/Out pada peta untuk menyamakan kedua panel. ', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('4. Proses menunggu loading peta tergantung pada kecepatan jaringan internet.', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label(''),
+    ]
+);
+petunjukPanel.add(petunjukAplikasi);
+
+
+//MENAMBAHKAN LEGENDA
+// Mengatur posisi panel
+var legend = ui.Panel({
+  style: {
+    position: 'bottom-left',
+    padding: '8px 10px'
+  }});
+// Membentuk judul legenda
+var legendTitle = ui.Label({
+  value: 'Tingkat Kekeringan',
+  style: {fontWeight: 'bold',
+    fontSize: '14px',
+    margin: '0 0 4px 0',
+    padding: '0'
+    }});
+// Menambahkan judul di panel
+legend.add(legendTitle);
+
+// Menentukan dan mengatur style untuk 1 baris legenda
+var makeRow = function(color, name) {
+      // Membuat label dengan kotak berwarna
+      var colorBox = ui.Label({
+        style: {
+          backgroundColor: '#' + color,
+          // Mengatur tinggi dan lebar kotak
+          padding: '8px',
+          margin: '0 0 4px 0'
+        }});
+      // Membuat label dengan isi teks deskripsi
+      var description = ui.Label({
+        value: name,
+        style: {margin: '0 0 4px 6px'}
+      });
+      // kembali mengatur panel
+      return ui.Panel({
+        widgets: [colorBox, description],
+        layout: ui.Panel.Layout.Flow('horizontal')
+      })};
+//  Membuat pallete dengan warna-warna berbeda
+var palette =['7a8737', '0ae042', 'fff70b', 'ffaf38', 'ff641b', 'ffffff'];
+// Keterangan dari legenda
+var names = ['Basah (0 < TVDI ≤ 0.20)','Agak Basah (0.21 < TVDI ≤ 0.40)','Normal (0.41 < TVDI ≤ 0.60)', 'Agak Kering (0.61 < TVDI ≤ 0.80)', 'Kering (0.81 < TVDI ≤ 1)', 'NA'];
+// Menambahkan warna dan nama
+for (var i = 0; i < 6; i++) {
+  legend.add(makeRow(palette[i], names[i]));
+  }  
+leftMap.add(legend);
+
+//Button Profil
+var profilButton = ui.Button({
+    label: 'Profil Wilayah Kajian Penelitian',
+    style: {stretch:'horizontal', color: 'black'}
+});
+var profilPanel = ui.Panel(null, null, {stretch:'horizontal', shown: false});
+
+profilButton.onClick(function(){
+    if(profilPanel.style().get('shown')){
+        profilButton.setLabel('Profil Wilayah Kajian Penelitian');
+        profilPanel.style().set('shown', false);
+    } 
+    else{
+        profilButton.setLabel('Profil Wilayah Kajian Penelitian');
+        profilPanel.style().set('shown', true);
+    }
+})
+panel.add(profilButton);
+panel.add(profilPanel);
+
+
+var profil = ui.Panel(
+    [
+        ui.Label('Profil Wilayah Kajian Penelitian', {fontSize:'12px', fontWeight: 'bold', margin: '15px 0 0 15px'}),
+        ui.Label('Kabupaten Mojokerto merupakan salah satu kabupaten di Provinsi Jawa Timur yang terdiri atas 18 Kecamatan, 299 Desa dan 5 Kelurahan. Topografi wilayah Kabupaten Mojokerto terdiri dari dataran rendah dan pegunungan yang dilalui aliran sungai Brantas (BPS Kabupaten Mojokerto, 2022). Pada wilayah utara Kabupaten Mojokerto didominasi oleh bentuklahan karst yang dipengaruhi oleh bukit-bukit berbatu kapur sehingga menyebabkan keadaan tanah yang kurang subur. Sedangkan, pada bagian selatan Kabupaten Mojokerto di dominasi oleh bentuklahan vulkanik yang dipengaruhi oleh Gunung Penanggungan serta kompleks pegunungan Arjuna-Welirang sehingga keadaan tanahnya yang subur dan cocok digunakan sebagai lahan pertanian. ', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
+        ui.Label('Berdasarkan jenis penggunaan lahannya, Kabupaten Mojokerto memiliki  penggunaan lahan berupa pemukiman, pertanian, hutan, rawa/waduk, perkebunan, lahan kritis, padang rumput, dan semak/alang-alang. Area penggunaan lahan dengan luas area terbesar didominasi oleh penggunaan lahan pertanian yaitu sebesar 45.138 hektar (BPS Kabupaten Mojokerto, 2022). Hal tersebut merupakan salah satu urgensi mengapa kajian tentang kekeringan pertanian ini penting dilakukan di Kabupaten Mojokerto.', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
+        ui.Label(''),
+        ui.Label('[Klik Disini] Peta Batas Administrasi Kabupaten Mojokerto', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://raw.githubusercontent.com/nurilhidayati/analisiskekeringanpertanian/main/Peta%20Batas%20Administrasi%20Kab.%20Mojokerto.png'),
+        ui.Label('[Klik Disini] Peta Lahan Pertanian Kabupaten Mojokerto', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://raw.githubusercontent.com/nurilhidayati/analisiskekeringanpertanian/main/Peta%20Lahan%20Pertanian%20Kab.%20Mojokerto.png'),
+        ui.Label(''),
+    ]
+);
+profilPanel.add(profil);
+
+
+//Buton Info pengolahan Data
+
+var infoButton = ui.Button({
+    label: 'Informasi Pengolahan Data',
+    style: {stretch:'horizontal', color: 'black'}
+});
+var infoPanel = ui.Panel(null, null, {stretch:'horizontal', shown: false});
+
+infoButton.onClick(function(){
+    if(infoPanel.style().get('shown')){
+        infoButton.setLabel('Informasi Pengolahan Data');
+        infoPanel.style().set('shown', false);
+    } 
+    else{
+        infoButton.setLabel('Informasi Pengolahan Data');
+        infoPanel.style().set('shown', true);
+    }
+})
+panel.add(infoButton);
+panel.add(infoPanel);
+// Butoon Grafik
+
+var pengolahanData = ui.Panel(
+    [
+        ui.Label('Data yang Digunakan:', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
+        ui.Label('1. Citra Landsat 8 Collection 2 Tier 1 TOA Reflectance Path/Row 118/65 dari Tahun 2013-2022', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('2 Data Shapefile Lahan Pertanian di Kabupaten Mojokerto', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('3 Data Shapefile Batas Administrasi Kecamatan di Kabupaten Mojokerto', {fontSize:'12px',  margin: '2px 15px 2px 15px'}),
+        ui.Label('4 Informasi Validasi Nilai NDVI dan LST dari Survei Lapangan pada Bulan Oktober 2022 ', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label(''),
+        ui.Label('Metode yang Digunakan::', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
+        ui.Label('1. Perhitungan nilai Normalized Difference Vegetation Index (NDVI) diperoleh dari saluran merah (Band 4) dan saluran inframerah dekat (Band 5) pada Citra Landsat 8 Collection 2 Tier 1 TOA Reflectance.', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('2. Perhitungan nilai Land Surface Temperature (LST) menggunakan metode Split Window Algorithm (SWA)', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('3. Ekstraksi nilai NDVI dan LST dilakukan dengan mengambil sampel random berdasarkan area kajian pada lahan pertanian Kabupaten Mojokerto. Penentuan titik sampel menggunakan metode acak menggunakan fungsi ee.FeatureCollection.randomPoints(). Selanjutnya, nilai hasil ekstrasi NDVI dan LST diekport dalam format CSV.', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('4. Regresi linear antara nilai NDVI dan nilai LST menggunakan scatter plot bertujuan untuk memperoleh persamaan nilai indeks kekeringan TVDI', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('5. Validasi nilai LST dilakukan dengan membandingkan hasil perhitungan nilai LST pada citra Landsat 8 perekaman bulan Oktober dengan data hasil pengukuran suhu permukaan tanah di lapangan menggunakan thermometer inframerah pada bulan Oktober 2022. Sedangkan, Pengolahan indeks vegetasi (NDVI) pada data citra Landsat 8 dilakukan validasi dengan mengamati kondisi pertanian eksisting dan rekonstruksi data dari Dinas Pertanian Kabupaten Mojokerto dengan didukung wawancara ke beberapa petani', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('6. Perhitungan nilai Temperature-Vegetation Dryness Index (TVDI) dilakukan dengan menggabungkan menggabungkan parameter indeks vegetasi (NDVI) dan suhu permukaan tanah (LST). Nilai TVDI menghasilkan nilai minimum: 0 dan maximum: 1', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('7. Visualisasi Peta TVDI mengacu pada Sandholt (2002) yang membagi nilai TVDI menjadi 5 kelas yaitu: kelas basah (hijau tua), kelas agak basah (hijau muda), kelas normal (kuning), kelas agak kering (oranye), dan kelas kering (merah)', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('8. Penyajian Peta TVDI menggunakan metode UI Split Panel untuk memudahkan dalam membandingkan sebaran kekeringan pertanian setiap tahunnya', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('9. Uji Usabilitas dilakukan dengan menyebarkan kuisioner melalui Google Form untuk mengetahui penilaian dan respon dari pengguna mengenai pengalamannya menggunakan Earth Engine Apps ini', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label(''),
+        ui.Label('Catatan:', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
+        ui.Label('Keseluruhan pengolahan hingga penyajian data dilakukan menggunakan platform Google Earth Engine dengan naskah pemrograman JavaScript terlampir dalam tautan berikut: ', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('github.com/nurilhidayati/analisiskekeringanpertanian', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://github.com/nurilhidayati/analisiskekeringanpertanian'),
+        ui.Label(''),
+    ]
+);
+infoPanel.add(pengolahanData);
+
+
+//Button Keterangan
+//Keterangan Gambaran
+//Button Profil
+var keteranganButton = ui.Button({
+    label: 'Keterangan Tingkat Kekeringan Pertanian',
+    style: {stretch:'horizontal', color: 'black'}
+});
+var keteranganPanel = ui.Panel(null, null, {stretch:'horizontal', shown: false});
+
+keteranganButton.onClick(function(){
+    if(keteranganPanel.style().get('shown')){
+        keteranganButton.setLabel('Keterangan Tingkat Kekeringan Pertanian');
+        keteranganPanel.style().set('shown', false);
+    } 
+    else{
+        keteranganButton.setLabel('Keterangan Tingkat Kekeringan Pertanian');
+        keteranganPanel.style().set('shown', true);
+    }
+})
+panel.add(keteranganButton);
+panel.add(keteranganPanel);
+
+
+var keteranganTVDI = ui.Panel(
+    [
+        ui.Label('Keterangan Tingkat Kekeringan Pertanian', {fontSize:'12px', fontWeight: 'bold', margin: '15px 0 0 15px'}),
+        ui.Label('Pengkelasan nilai TVDI mengacu pada Sandholt (2002) yang membagi nilai TVDI menjadi 5 kelas yaitu:', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
+        ui.Label('● Tingkat Kekeringan Kelas Basah (0 < TVDI ≤ 0.20) ', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
+        ui.Label('● Tingkat Kekeringan Kelas Agak Basah (0.21 < TVDI ≤ 0.40)', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
+        ui.Label('● Tingkat Kekeringan Kelas Normal (0.41 < TVDI ≤ 0.60)', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
+        ui.Label('● Tingkat Kekeringan Kelas Agak Kering (0.61 < TVDI ≤ 0.80)', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
+        ui.Label('● Tingkat Kekeringan Kelas Kering (0.81 < TVDI ≤ 1)', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
+        ui.Label(''),
+        ui.Label('[Klik Disini] Kondisi Lapangan Tingkat Kekeringan', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://raw.githubusercontent.com/nurilhidayati/analisiskekeringanpertanian/main/Peta%20Batas%20Administrasi%20Kab.%20Mojokerto.png'),
+        ui.Label(''),
+    ]
+);
+keteranganPanel.add(keteranganTVDI);
+
+//Grafik Luas Sebaran Kekeringan Pertanian
+var grafikButtonMean = ui.Button({
+    label: 'Grafik Nilai Rata-Rata Indeks Kekekringan Pertanian (TVDI)',
+    style: {stretch:'horizontal', color: 'black'}
+});
+
+grafikButtonMean.onClick(function(){
+    if(graphPanelMean.style().get('shown')){
+        grafikButtonMean.setLabel('Grafik Nilai Rata-Rata Indeks Kekekringan Pertanian (TVDI)');
+        graphPanelMean.style().set('shown', false);
+    } 
+    else{
+        grafikButtonMean.setLabel('Grafik Nilai Rata-Rata Indeks Kekekringan Pertanian (TVDI)');
+        graphPanelMean.style().set('shown', true);
+    }
+})
+var graphPanelMean = ui.Panel(null, null, {stretch:'horizontal', shown: false});
+panel.add(grafikButtonMean);
+panel.add(graphPanelMean);
+
+
+//GRAFIK TIME SERIES
+
+var grafikTVDI = ui.Panel(
+    [
+        ui.Label('Grafik Nilai Rata-Rata Indeks Kekekringan Pertanian (TVDI)', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
+        ui.Label('Berikut merupakan grafik nilai rata rata indeks kekeringan pertanian (TVDI) selama tahun 2013-2022 di Kabupaten Mojokerto yang diiperoleh melalui analisis data citra Landsat 8 Collection 2 Tier 1 TOA Reflectance menggunakan metode Temperature-Vegetation Dryness Index (TVDI)', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label(''),
+    ]
+);
+graphPanelMean.add(grafikTVDI);
+
+
+
+
+// Define a DataTable using a JavaScript literal.
+var dataTable = {
+  cols: [{id: 'Class', label: 'Classification', type: 'string'},
+         {id: 'Area', label: 'Area (ha)', type: 'number'}],
+  rows: [{c: [{v: '28 Juli 2013'},  {v: 0.681}]},
+         {c: [{v: '1 Oktober 2013'}, {v: 0.581}]},
+         {c: [{v: '1 September 2014'},     {v: 0.493}]},
+         {c: [{v: '3 Oktober 2014'},  {v: 0.578}]},
+         {c: [{v: '3 Agustus 2015'},  {v: 0.577}]},
+         {c: [{v: '22 Oktober 2015'}, {v: 0.573}]},
+         {c: [{v: '21 Agustus 2016'},     {v: 0.515}]},
+         {c: [{v: '6 September 2016'},  {v: 0.598}]},
+         {c: [{v: '24 Agustus 2017'},  {v: 0.523}]},
+         {c: [{v: '9 September 2017'},{v: 0.493}]},
+         {c: [{v: '11 Agustus 2018'},  {v:0.608}]},
+         {c: [{v: '28 September 2018'},{v: 0.541}]},
+         {c: [{v: '14 Agustus 2019'},  {v: 0.647}]},
+         {c: [{v: '1 Oktober 2019'}, {v: 0.641}]},
+         {c: [{v: '16 Agustus 2020'},{v: 0.435}]},
+         {c: [{v: '17 September 2020'},  {v: 0.623}]},
+         {c: [{v: '19 Agustus 2021'}, {v: 0.632}]},
+         {c: [{v: '4 September 2021'},     {v: 0.492}]},
+         {c: [{v: '5 Juli 2022'},  {v: 0.575}]},
+         {c: [{v: '22 Agustus 2022'}, {v: 0.732}]}]};
+// Define a dictionary of customization options.
+var options = {
+  title: 'Grafik Nilai Rata-Rata Indeks Kekeringan Pertanian (TVDI) di Kabupaten Mojokerto pada Tahun 2013-2022',
+   vAxis: {title: 'Nilai TVDI'},
+  legend: {position: 'none'},
+  hAxis: {title: '',logScale: true}};
+// Make a BarChart from the table and the options.
+var chart = new ui.Chart(dataTable, 'LineChart', options);
+graphPanelMean.add(chart);
+
+//Grafik Luas Sebaran Kekeringan Pertanian
+var grafikButton = ui.Button({
+    label: 'Grafik Perubahan Luasan Sebaran Kekeringan Pertanian',
+    style: {stretch:'horizontal', color: 'black'}
+});
+
+grafikButton.onClick(function(){
+    if(graphPanel.style().get('shown')){
+        grafikButton.setLabel('Grafik Perubahan Luasan Sebaran Kekeringan Pertanian');
+        graphPanel.style().set('shown', false);
+    } 
+    else{
+        grafikButton.setLabel('Grafik Perubahan Luasan Sebaran Kekeringan Pertanian');
+        graphPanel.style().set('shown', true);
+    }
+})
+var graphPanel = ui.Panel(null, null, {stretch:'horizontal', shown: false});
+panel.add(grafikButton);
+panel.add(graphPanel);
+
+
+//GRAFIK TIME SERIES
+
+var grafikLuas = ui.Panel(
+    [
+        ui.Label('Grafik Perubahan Luasan Sebaran Kekeringan Pertanian', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
+        ui.Label('Berikut merupakan grafik perubahan luasan sebaran kekeringan pertanian selama tahun 2013-2022 di Kabupaten Mojokerto yang diiperoleh melalui analisis data citra Landsat 8 Collection 2 Tier 1 TOA Reflectance menggunakan metode Temperature-Vegetation Dryness Index (TVDI)', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label(''),
+    ]
+);
+graphPanel.add(grafikLuas);
+
+
+//GRAFIK LAHAN KERING
+// Define a DataTable using a JavaScript literal.
+var dataTable = {
+  cols: [{id: 'Class', label: 'Classification', type: 'string'},
+         {id: 'Area', label: 'Area (ha)', type: 'number'}],
+  rows: [{c: [{v: '28 Juli 2013'},  {v: 31623.93}]},
+         {c: [{v: '1 Oktober 2013'}, {v: 24146.37}]},
+         {c: [{v: '1 September 2014'},     {v: 17227.71}]},
+         {c: [{v: '3 Oktober 2014'},  {v: 24198.75}]},
+         {c: [{v: '3 Agustus 2015'},  {v: 23944.95}]},
+         {c: [{v: '22 Oktober 2015'}, {v: 23999.49}]},
+         {c: [{v: '21 Agustus 2016'},     {v: 18605.52}]},
+         {c: [{v: '6 September 2016'},  {v: 26382.96}]},
+         {c: [{v: '24 Agustus 2017'},  {v: 20195.28}]},
+         {c: [{v: '9 September 2017'},{v: 18046.98}]},
+         {c: [{v: '11 Agustus 2018'},  {v:24823.89}]},
+         {c: [{v: '28 September 2018'},{v: 21234.78}]},
+         {c: [{v: '14 Agustus 2019'},  {v: 26709.75}]},
+         {c: [{v: '1 Oktober 2019'}, {v: 24915.24}]},
+         {c: [{v: '16 Agustus 2020'},{v: 18200.52}]},
+         {c: [{v: '17 September 2020'},  {v: 25792.38}]},
+         {c: [{v: '19 Agustus 2021'}, {v: 27014.58}]},
+         {c: [{v: '4 September 2021'},     {v: 19304.73}]},
+         {c: [{v: '5 Juli 2022'},  {v: 22433.04}]},
+         {c: [{v: '22 Agustus 2022'}, {v: 37115.37}]}]};
+// Define a dictionary of customization options.
+var options = {
+  title: 'Grafik Perubahan Luasan Sebaran Lahan Kelas Kering di Kabupaten Mojokerto pada Tahun 2013-2022',
+   vAxis: {title: 'Area (Ha)'},
+  legend: {position: 'none'},
+  hAxis: {title: '',logScale: true}};
+// Make a BarChart from the table and the options.
+var chart = new ui.Chart(dataTable, 'ColumnChart', options);
+graphPanel.add(chart);
+
+//GRAFIK LAHAN AGAK KERING
+// Define a DataTable using a JavaScript literal.
+var dataTable = {
+  cols: [{id: 'Class', label: 'Classification', type: 'string'},
+         {id: 'Area', label: 'Area (ha)', type: 'number'}],
+  rows: [{c: [{v: '28 Juli 2013'},  {v: 3927.87}]},
+         {c: [{v: '1 Oktober 2013'}, {v: 6862.41}]},
+         {c: [{v: '1 September 2014'},     {v: 9553.95}]},
+         {c: [{v: '3 Oktober 2014'},  {v: 7296.57}]},
+         {c: [{v: '3 Agustus 2015'},  {v: 6702.03}]},
+         {c: [{v: '22 Oktober 2015'}, {v: 6963.93}]},
+         {c: [{v: '21 Agustus 2016'},     {v: 10481.94}]},
+         {c: [{v: '6 September 2016'},  {v: 7169.31}]},
+         {c: [{v: '24 Agustus 2017'},  {v: 7853.4}]},
+         {c: [{v: '9 September 2017'},{v: 8166.78}]},
+         {c: [{v: '11 Agustus 2018'},  {v: 7337.7}]},
+         {c: [{v: '28 September 2018'},{v: 6617.61}]},
+         {c: [{v: '14 Agustus 2019'},  {v: 5185.53}]},
+         {c: [{v: '1 Oktober 2019'}, {v: 5977.08}]},
+         {c: [{v: '16 Agustus 2020'},{v: 6396.57}]},
+         {c: [{v: '17 September 2020'},  {v: 6485.85}]},
+         {c: [{v: '19 Agustus 2021'}, {v: 6483.42}]},
+         {c: [{v: '4 September 2021'},     {v: 6759.18}]},
+         {c: [{v: '5 Juli 2022'},  {v: 7586.73}]},
+         {c: [{v: '22 Agustus 2022'}, {v: 1716.48}]}]};
+// Define a dictionary of customization options.
+var options = {
+  title: 'Grafik Perubahan Luasan Sebaran Lahan Kelas Agak Kering di Kabupaten Mojokerto pada Tahun 2013-2022',
+  vAxis: {title: 'Area (Ha)'},
+  legend: {position: 'none'},
+  hAxis: {title: '',logScale: true}};
+// Make a BarChart from the table and the options.
+var chart = new ui.Chart(dataTable, 'ColumnChart', options);
+graphPanel.add(chart);
+
+//GRAFIK LAHAN NORMAL
+// Define a DataTable using a JavaScript literal.
+var dataTable = {
+  cols: [{id: 'Class', label: 'Classification', type: 'string'},
+         {id: 'Area', label: 'Area (ha)', type: 'number'}],
+  rows: [{c: [{v: '28 Juli 2013'},  {v: 3534.03}]},
+         {c: [{v: '1 Oktober 2013'}, {v: 5824.62}]},
+         {c: [{v: '1 September 2014'},     {v: 7935.48}]},
+         {c: [{v: '3 Oktober 2014'},  {v:5376.33}]},
+         {c: [{v: '3 Agustus 2015'},  {v: 4880.07}]},
+         {c: [{v: '22 Oktober 2015'}, {v: 4990.14}]},
+         {c: [{v: '21 Agustus 2016'},     {v: 7306.56}]},
+         {c: [{v: '6 September 2016'},  {v: 4041.27}]},
+         {c: [{v: '24 Agustus 2017'},  {v: 6349.14}]},
+         {c: [{v: '9 September 2017'},{v: 7860.69}]},
+         {c: [{v: '11 Agustus 2018'},  {v: 4756.41}]},
+         {c: [{v: '28 September 2018'},{v: 6470.64}]},
+         {c: [{v: '14 Agustus 2019'},  {v: 3963.6}]},
+         {c: [{v: '1 Oktober 2019'}, {v: 5292.99}]},
+         {c: [{v: '16 Agustus 2020'},{v: 5279.94}]},
+         {c: [{v: '17 September 2020'},  {v: 5410.3}]},
+         {c: [{v: '19 Agustus 2021'}, {v: 4346.91}]},
+         {c: [{v: '4 September 2021'},     {v: 6484.86}]},
+         {c: [{v: '5 Juli 2022'},  {v: 6184.08}]},
+         {c: [{v: '22 Agustus 2022'}, {v: 1032.48}]}]};
+// Define a dictionary of customization options.
+var options = {
+  title: 'Grafik Perubahan Luasan Sebaran Lahan Kelas Normal di Kabupaten Mojokerto pada Tahun 2013-2022',
+  vAxis: {title: 'Area (Ha)'},
+  legend: {position: 'none'},
+  hAxis: {title: '',logScale: true}};
+// Make a BarChart from the table and the options.
+var chart = new ui.Chart(dataTable, 'ColumnChart', options);
+graphPanel.add(chart);
+
+//GRAFIK LAHAN AGAK BASAH
+// Define a DataTable using a JavaScript literal.
+var dataTable = {
+  cols: [{id: 'Class', label: 'Classification', type: 'string'},
+         {id: 'Area', label: 'Area (ha)', type: 'number'}],
+  rows: [{c: [{v: '28 Juli 2013'},  {v: 3841.02}]},
+         {c: [{v: '1 Oktober 2013'}, {v: 4679.01}]},
+         {c: [{v: '1 September 2014'},     {v: 7146.54}]},
+         {c: [{v: '3 Oktober 2014'},  {v: 4428.63}]},
+         {c: [{v: '3 Agustus 2015'},  {v: 6378.66}]},
+         {c: [{v: '22 Oktober 2015'}, {v: 5613.66}]},
+         {c: [{v: '21 Agustus 2016'},     {v: 5723.82}]},
+         {c: [{v: '6 September 2016'},  {v:3831.03}]},
+         {c: [{v: '24 Agustus 2017'},  {v: 6437.7}]},
+         {c: [{v: '9 September 2017'},{v: 7764.57}]},
+         {c: [{v: '11 Agustus 2018'},  {v: 5613.75}]},
+         {c: [{v: '28 September 2018'},{v: 7243.56}]},
+         {c: [{v: '14 Agustus 2019'},  {v: 5013.36}]},
+         {c: [{v: '1 Oktober 2019'}, {v: 5393.7}]},
+         {c: [{v: '16 Agustus 2020'},{v: 7498.08}]},
+         {c: [{v: '17 September 2020'},  {v: 4518.63}]},
+         {c: [{v: '19 Agustus 2021'}, {v: 3866.85}]},
+         {c: [{v: '4 September 2021'},     {v: 6867.36}]},
+         {c: [{v: '5 Juli 2022'},  {v: 5758.83}]},
+         {c: [{v: '22 Agustus 2022'}, {v: 1248.84}]}]};
+// Define a dictionary of customization options.
+var options = {
+  title: 'Grafik Perubahan Luasan Sebaran Lahan Kelas Agak Basah di Kabupaten Mojokerto pada Tahun 2013-2022',
+  vAxis: {title: 'Area (Ha)'},
+  legend: {position: 'none'},
+  hAxis: {title: '',logScale: true}};
+// Make a BarChart from the table and the options.
+var chart = new ui.Chart(dataTable, 'ColumnChart', options);
+graphPanel.add(chart);
+
+//GRAFIK LAHAN BASAH
+// Define a DataTable using a JavaScript literal.
+var dataTable = {
+  cols: [{id: 'Class', label: 'Classification', type: 'string'},
+         {id: 'Area', label: 'Area (ha)', type: 'number'}],
+  rows: [{c: [{v: '28 Juli 2013'},  {v: 875.7}]},
+         {c: [{v: '1 Oktober 2013'}, {v: 2286.72}]},
+         {c: [{v: '1 September 2014'},     {v: 1967.67}]},
+         {c: [{v: '3 Oktober 2014'},  {v: 2508.39}]},
+         {c: [{v: '3 Agustus 2015'},  {v: 1906.2}]},
+         {c: [{v: '22 Oktober 2015'}, {v: 2242.08}]},
+         {c: [{v: '21 Agustus 2016'},     {v: 1704.87}]},
+         {c: [{v: '6 September 2016'},  {v: 2375.73}]},
+         {c: [{v: '24 Agustus 2017'},  {v: 2979.81}]},
+         {c: [{v: '9 September 2017'},{v: 1982.34}]},
+         {c: [{v: '11 Agustus 2018'},  {v: 1282.32}]},
+         {c: [{v: '28 September 2018'},{v: 2253.96}]},
+         {c: [{v: '14 Agustus 2019'},  {v: 2929.23}]},
+         {c: [{v: '1 Oktober 2019'}, {v: 2229.57}]},
+         {c: [{v: '16 Agustus 2020'},{v: 6450.21}]},
+         {c: [{v: '17 September 2020'},  {v: 2143.53}]},
+         {c: [{v: '19 Agustus 2021'}, {v:2093.76}]},
+         {c: [{v: '4 September 2021'},     {v: 4414.68}]},
+         {c: [{v: '5 Juli 2022'},  {v: 1859.76}]},
+         {c: [{v: '22 Agustus 2022'}, {v: 2677.05}]}]};
+// Define a dictionary of customization options.
+var options = {
+  title: 'Grafik Perubahan Luasan Sebaran Lahan Kelas Basah di Kabupaten Mojokerto pada Tahun 2013-2022',
+  vAxis: {title: 'Area (Ha)'},
+  legend: {position: 'none'},
+  hAxis: {title: '',logScale: true}};
+// Make a BarChart from the table and the options.
+var chart = new ui.Chart(dataTable, 'ColumnChart', options);
+graphPanel.add(chart);
+
+
+//Grafik Luas Sebaran Kekeringan Pertanian
+var tabelButtonMean = ui.Button({
+    label: 'Tabel Nilai Rata-Rata Indeks Kekekringan Pertanian (TVDI)',
+    style: {stretch:'horizontal', color: 'black'}
+});
+
+tabelButtonMean.onClick(function(){
+    if(tabelPanelMean.style().get('shown')){
+        tabelButtonMean.setLabel('Tabel Nilai Rata-Rata Indeks Kekekringan Pertanian (TVDI)');
+        tabelPanelMean.style().set('shown', false);
+    } 
+    else{
+        tabelButtonMean.setLabel('Tabel Nilai Rata-Rata Indeks Kekekringan Pertanian (TVDI)');
+        tabelPanelMean.style().set('shown', true);
+    }
+})
+var tabelPanelMean = ui.Panel(null, null, {stretch:'horizontal', shown: false});
+panel.add(tabelButtonMean);
+panel.add(tabelPanelMean);
+
+
+//GRAFIK TIME SERIES
+
+var tabelTVDIMean = ui.Panel(
+    [
+        ui.Label('Tabel Nilai Rata-Rata Indeks Kekekringan Pertanian (TVDI)', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
+        ui.Label('Berikut merupakan tabel nilai rata rata indeks kekeringan pertanian (TVDI) selama tahun 2013-2022 di Kabupaten Mojokerto yang diiperoleh melalui analisis data citra Landsat 8 Collection 2 Tier 1 TOA Reflectance menggunakan metode Temperature-Vegetation Dryness Index (TVDI)', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('[Klik Disini] Tabel LNilai Rata-Rata TVDI', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://www.linkedin.com/in/nuril-hidayati/'),
+        ui.Label(''),
+    ]
+);
+tabelPanelMean.add(tabelTVDIMean);
+
+
+
+//Button Tabel
+var tabelButton = ui.Button({
+    label: 'Tabel Luas Sebaran Kekeringan Pertanian',
+    style: {stretch:'horizontal', color: 'black'}
+});
+var tabelPanel = ui.Panel(null, null, {stretch:'horizontal', shown: false});
+
+tabelButton.onClick(function(){
+    if(tabelPanel.style().get('shown')){
+        tabelButton.setLabel('Tabel Luas Sebaran Kekeringan Pertanian');
+        tabelPanel.style().set('shown', false);
+    } 
+    else{
+        tabelButton.setLabel('Tabel Luas Sebaran Kekeringan Pertanian');
+        tabelPanel.style().set('shown', true);
+    }
+})
+panel.add(tabelButton);
+panel.add(tabelPanel);
+
+
+var tabelLuas = ui.Panel(
+    [
+        ui.Label('Tabel Luas Sebaran Kekeringan Pertanian', {fontSize:'12px', fontWeight: 'bold', margin: '15px 0 0 15px'}),
+        ui.Label('Berikut merupakan tabel luas sebaran kekeringan pertanian selama tahun 2013-2022 di Kabupaten Mojokerto yang diiperoleh melalui analisis data citra Landsat 8 Collection 2 Tier 1 TOA Reflectance menggunakan metode Temperature-Vegetation Dryness Index (TVDI)', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
+        ui.Label('[Klik Disini] Tabel Luas Sebaran Kekeringan Pertanian', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://www.linkedin.com/in/nuril-hidayati/'),
+        ui.Label(''),
+    ]
+);
+tabelPanel.add(tabelLuas);
+
+
+//Membuat Credit
+var NOTE_STYLE = {
+    fontFamily: 'sans-serif',
+    fontSize: '12px',
+    margin: '4px 5px 5px 7px',
+    padding: '0 3px 0 5px',
+    textAlign: 'justify',
+}
+
+var credit = ui.Panel(
+    [
+        ui.Label('Credits:', {fontSize:'12px', fontWeight: 'bold', margin: '15px 0 0 12px'}),
+        ui.Label('● Aplikasi ini dibuat sebagai oleh Nuril Hidayati syarat Proyek Akhir (PA), serta dibimbing oleh Bapak Dwi Setyo Aji, S.Si., M.Sc..', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('● Apabila terdapat pertanyaan atau saran mengenai platform ini silakan menghubungi nurilhidayati@mail.ugm.ac.id atau ', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('linkedin.com/in/nuril-hidayati/', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://www.linkedin.com/in/nuril-hidayati/'),
+        ui.Label(''),
+        ui.Label('Program Studi Sarjana Terapan Sistem Informasi Geografis', {fontSize: '12px', fontWeight: 'bold', margin: '2px 0 2px 20px', textAlign: 'center'}),
+        ui.Label('Departemen Teknologi Kebumian', {fontSize: '12px', fontWeight: 'bold', margin: '2px 0 2px 90px', textAlign: 'center'}), 
+        ui.Label('Sekolah Vokasi', {fontSize: '12px', fontWeight: 'bold', margin: '2px 0 2px 130px', textAlign: 'center'}),
+        ui.Label('Universitas Gadjah Mada', {fontSize: '12px', fontWeight: 'bold', margin: '2px 0 2px 105px', textAlign: 'center'}),
+        ui.Label('2022', {fontSize: '12px', fontWeight: 'bold', margin: '2px 0 2px 155px', textAlign: 'center'}),
+        ui.Label('')
+    ]
+);
+panel.add(credit);
