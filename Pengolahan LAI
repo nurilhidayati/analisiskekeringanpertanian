@@ -1,462 +1,590 @@
+var mojokerto= ee.FeatureCollection("users/nurilassajdah/pertanian_mojokerto");
+var sampel= ee.FeatureCollection("users/nurilassajdah/titik_sampel");
+
+var img201307 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20130728').clip(mojokerto);
+var img201310 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20131016').clip(mojokerto);
+var img201409 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20140901').clip(mojokerto);
+var img201410 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20141003').clip(mojokerto);
+var img201508 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20150803').clip(mojokerto);
+var img201510 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20151022').clip(mojokerto);
+var img201608 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20160821').clip(mojokerto);
+var img201609 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20160906').clip(mojokerto);
+var img201708 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20170824').clip(mojokerto);
+var img201709 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20170909').clip(mojokerto);
+var img201808 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20180811').clip(mojokerto);
+var img201809 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20180928').clip(mojokerto);
+var img201908 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20190814').clip(mojokerto);
+var img201910 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20191001').clip(mojokerto);
+var img202008 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20200816').clip(mojokerto);
+var img202009 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20200917').clip(mojokerto);
+var img202108 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20210819').clip(mojokerto);
+var img202109 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20210904').clip(mojokerto);
+var img202208 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20220822').clip(mojokerto);
+var img202210 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20221009').clip(mojokerto);
+
 //NDVI
-//NDVI
-{var minNDVI1 = ee.Number(ndvi201307.reduceRegion({
+var ndvi201307 = img201307.normalizedDifference(['B5', 'B4']).rename('ndvi1');
+var ndvi201310 = img201310.normalizedDifference(['B5', 'B4']).rename('ndvi2');
+var ndvi201409 = img201409.normalizedDifference(['B5', 'B4']).rename('ndvi3');
+var ndvi201410 = img201410.normalizedDifference(['B5', 'B4']).rename('ndvi4');
+var ndvi201508 = img201508.normalizedDifference(['B5', 'B4']).rename('ndvi5');
+var ndvi201510 = img201510.normalizedDifference(['B5', 'B4']).rename('ndvi6');
+var ndvi201608 = img201608.normalizedDifference(['B5', 'B4']).rename('ndvi7');
+var ndvi201609 = img201609.normalizedDifference(['B5', 'B4']).rename('ndvi8');
+var ndvi201708 = img201708.normalizedDifference(['B5', 'B4']).rename('ndvi9');
+var ndvi201709 = img201709.normalizedDifference(['B5', 'B4']).rename('ndvi10');
+var ndvi201808 = img201808.normalizedDifference(['B5', 'B4']).rename('ndvi11');
+var ndvi201809 = img201809.normalizedDifference(['B5', 'B4']).rename('ndvi12');
+var ndvi201908 = img201908.normalizedDifference(['B5', 'B4']).rename('ndvi13');
+var ndvi201910 = img201910.normalizedDifference(['B5', 'B4']).rename('ndvi14');
+var ndvi202008 = img202008.normalizedDifference(['B5', 'B4']).rename('ndvi15');
+var ndvi202009 = img202009.normalizedDifference(['B5', 'B4']).rename('ndvi16');
+var ndvi202108 = img202108.normalizedDifference(['B5', 'B4']).rename('ndvi17');
+var ndvi202109 = img202109.normalizedDifference(['B5', 'B4']).rename('ndvi18');
+var ndvi202208 = img202208.normalizedDifference(['B5', 'B4']).rename('ndvi19');
+var ndvi202210 = img202210.normalizedDifference(['B5', 'B4']).rename('ndvi20');
+
+
+var LAI201307 = ndvi201307.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201307.select('ndvi1'),}).rename('lai1');
+
+var LAI201310 = ndvi201310.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201310.select('ndvi2'),}).rename('lai2');
+
+var LAI201409 = ndvi201409.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201409.select('ndvi3'),}).rename('lai3');
+
+var LAI201410 = ndvi201410.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201410.select('ndvi4'),}).rename('lai4');
+
+var LAI201508 = ndvi201508.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201508.select('ndvi5'),}).rename('lai5')
+
+var LAI201510 = ndvi201510.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201510.select('ndvi6'),}).rename('lai6');
+
+var LAI201608 = ndvi201608.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201608.select('ndvi7'),}).rename('lai7');
+
+var LAI201609 = ndvi201609.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201609.select('ndvi8'),}).rename('lai8');
+  
+var LAI201708 = ndvi201708.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201708.select('ndvi9'),}).rename('lai9');
+
+var LAI201709 = ndvi201709.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201709.select('ndvi10'),}).rename('lai10');
+  
+var LAI201808 = ndvi201808.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201808.select('ndvi11'),}).rename('lai11');
+
+var LAI201809 = ndvi201809.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201809.select('ndvi12'),}).rename('lai12');
+
+var LAI201908 = ndvi201908.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201908.select('ndvi13'),}).rename('lai13');
+
+var LAI201910 = ndvi201910.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201910.select('ndvi14'),}).rename('lai14');
+
+var LAI202008 = ndvi202008.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi202008.select('ndvi15'),}).rename('lai15');
+
+var LAI202009 = ndvi202009.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi202009.select('ndvi16'),}).rename('lai16');
+
+var LAI202108 = ndvi202108.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi202108.select('ndvi17'),}).rename('lai17');
+
+var LAI202109 = ndvi202109.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi202109.select('ndvi18'),}).rename('lai18');
+
+var LAI202208 = ndvi202208.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi202208.select('ndvi19'),}).rename('lai19');
+
+var LAI202210 = ndvi202210.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi202210.select('ndvi20'),}).rename('lai20');
+
+
+//LAI
+//LAI
+{var minLAI1 = ee.Number(LAI201307.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(minNDVI1, 'minNDVI Jul 2013');
-var maxNDVI1 = ee.Number(ndvi201307.reduceRegion({
+print(minLAI1, 'minLAI Jul 2013');
+var maxLAI1 = ee.Number(LAI201307.reduceRegion({
 reducer: ee.Reducer.max(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(maxNDVI1, 'maxNDVI Jul 2013')
-var meanNDVI1 = ee.Number(ndvi201307.reduceRegion({
+print(maxLAI1, 'maxLAI Jul 2013')
+var meanLAI1 = ee.Number(LAI201307.reduceRegion({
 reducer: ee.Reducer.mean(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(meanNDVI1, 'meanNDVI Jul 2013');
+print(meanLAI1, 'meanLAI Jul 2013');
 }
 
-{var minNDVI2 = ee.Number(ndvi201310.reduceRegion({
+{var minLAI2 = ee.Number(LAI201310.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(minNDVI2, 'minNDVI Okt 2013');
-var maxNDVI2 = ee.Number(ndvi201310.reduceRegion({
+print(minLAI2, 'minLAI Okt 2013');
+var maxLAI2 = ee.Number(LAI201310.reduceRegion({
 reducer: ee.Reducer.max(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(maxNDVI2, 'maxNDVI Okt 2013')
-var meanNDVI2 = ee.Number(ndvi201310.reduceRegion({
+print(maxLAI2, 'maxLAI Okt 2013')
+var meanLAI2 = ee.Number(LAI201310.reduceRegion({
 reducer: ee.Reducer.mean(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(meanNDVI2, 'meanNDVI Okt 2013');
+print(meanLAI2, 'meanLAI Okt 2013');
 }
 
-{var minNDVI3 = ee.Number(ndvi201409.reduceRegion({
+{var minLAI3 = ee.Number(LAI201409.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(minNDVI3, 'minNDVI Sep 2014');
-var maxNDVI3 = ee.Number(ndvi201409.reduceRegion({
+print(minLAI3, 'minLAI Sep 2014');
+var maxLAI3 = ee.Number(LAI201409.reduceRegion({
 reducer: ee.Reducer.max(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(maxNDVI3, 'maxNDVI Sep 2014')
-var meanNDVI3 = ee.Number(ndvi201409.reduceRegion({
+print(maxLAI3, 'maxLAI Sep 2014')
+var meanLAI3 = ee.Number(LAI201409.reduceRegion({
 reducer: ee.Reducer.mean(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(meanNDVI3, 'meanNDVI Sep 2014');
+print(meanLAI3, 'meanLAI Sep 2014');
 }
 
-{var minNDVI4 = ee.Number(ndvi201410.reduceRegion({
+{var minLAI4 = ee.Number(LAI201410.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(minNDVI4, 'minNDVI Okt 2014');
-var maxNDVI4 = ee.Number(ndvi201410.reduceRegion({
+print(minLAI4, 'minLAI Okt 2014');
+var maxLAI4 = ee.Number(LAI201410.reduceRegion({
 reducer: ee.Reducer.max(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(maxNDVI4, 'maxNDVI Okt 2014')
-var meanNDVI4 = ee.Number(ndvi201410.reduceRegion({
+print(maxLAI4, 'maxLAI Okt 2014')
+var meanLAI4 = ee.Number(LAI201410.reduceRegion({
 reducer: ee.Reducer.mean(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(meanNDVI4, 'meanNDVI Okt 2014');
+print(meanLAI4, 'meanLAI Okt 2014');
 }
 
-{var minNDVI5 = ee.Number(ndvi201508.reduceRegion({
+{var minLAI5 = ee.Number(LAI201508.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(minNDVI5, 'minNDVI Agt 2015');
-var maxNDVI5 = ee.Number(ndvi201508.reduceRegion({
+print(minLAI5, 'minLAI Agt 2015');
+var maxLAI5 = ee.Number(LAI201508.reduceRegion({
 reducer: ee.Reducer.max(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(maxNDVI5, 'maxNDVI Agt 2015')
-var meanNDVI5 = ee.Number(ndvi201508.reduceRegion({
+print(maxLAI5, 'maxLAI Agt 2015')
+var meanLAI5 = ee.Number(LAI201508.reduceRegion({
 reducer: ee.Reducer.mean(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(meanNDVI5, 'meanNDVI Agt 2015');
+print(meanLAI5, 'meanLAI Agt 2015');
 }
 
-{var minNDVI6 = ee.Number(ndvi201510.reduceRegion({
+{var minLAI6 = ee.Number(LAI201510.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(minNDVI6, 'minNDVI Okt 2015');
-var maxNDVI6 = ee.Number(ndvi201510.reduceRegion({
+print(minLAI6, 'minLAI Okt 2015');
+var maxLAI6 = ee.Number(LAI201510.reduceRegion({
 reducer: ee.Reducer.max(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(maxNDVI6, 'maxNDVI Okt 2015')
-var meanNDVI6 = ee.Number(ndvi201510.reduceRegion({
+print(maxLAI6, 'maxLAI Okt 2015')
+var meanLAI6 = ee.Number(LAI201510.reduceRegion({
 reducer: ee.Reducer.mean(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(meanNDVI6, 'meanNDVI Okt 2015');
+print(meanLAI6, 'meanLAI Okt 2015');
 }
 
-{var minNDVI7 = ee.Number(ndvi201608.reduceRegion({
+{var minLAI7 = ee.Number(LAI201608.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(minNDVI7, 'minNDVI Agt 2016');
-var maxNDVI7 = ee.Number(ndvi201608.reduceRegion({
+print(minLAI7, 'minLAI Agt 2016');
+var maxLAI7 = ee.Number(LAI201608.reduceRegion({
 reducer: ee.Reducer.max(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(maxNDVI7, 'maxNDVI Agt 2016')
-var meanNDVI7 = ee.Number(ndvi201608.reduceRegion({
+print(maxLAI7, 'maxLAI Agt 2016')
+var meanLAI7 = ee.Number(LAI201608.reduceRegion({
 reducer: ee.Reducer.mean(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(meanNDVI7, 'meanNDVI Agt 2016');
+print(meanLAI7, 'meanLAI Agt 2016');
 }
 
-{var minNDVI8 = ee.Number(ndvi201609.reduceRegion({
+{var minLAI8 = ee.Number(LAI201609.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(minNDVI8, 'minNDVI Sep 2016');
-var maxNDVI8 = ee.Number(ndvi201609.reduceRegion({
+print(minLAI8, 'minLAI Sep 2016');
+var maxLAI8 = ee.Number(LAI201609.reduceRegion({
 reducer: ee.Reducer.max(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(maxNDVI8, 'maxNDVI Sep 2016')
-var meanNDVI8 = ee.Number(ndvi201609.reduceRegion({
+print(maxLAI8, 'maxLAI Sep 2016')
+var meanLAI8 = ee.Number(LAI201609.reduceRegion({
 reducer: ee.Reducer.mean(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(meanNDVI8, 'meanNDVI Sep 2016');
+print(meanLAI8, 'meanLAI Sep 2016');
 }
 
-{var minNDVI9 = ee.Number(ndvi201708.reduceRegion({
+{var minLAI9 = ee.Number(LAI201708.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(minNDVI9, 'minNDVI Agt 2017');
-var maxNDVI9 = ee.Number(ndvi201708.reduceRegion({
+print(minLAI9, 'minLAI Agt 2017');
+var maxLAI9 = ee.Number(LAI201708.reduceRegion({
 reducer: ee.Reducer.max(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(maxNDVI9, 'maxNDVI Agt 2017')
-var meanNDVI9 = ee.Number(ndvi201708.reduceRegion({
+print(maxLAI9, 'maxLAI Agt 2017')
+var meanLAI9 = ee.Number(LAI201708.reduceRegion({
 reducer: ee.Reducer.mean(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(meanNDVI9, 'meanNDVI Agt 2017');
+print(meanLAI9, 'meanLAI Agt 2017');
 }
 
-{var minNDVI10 = ee.Number(ndvi201709.reduceRegion({
+{var minLAI10 = ee.Number(LAI201709.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(minNDVI10, 'minNDVI Sep 2017');
-var maxNDVI10 = ee.Number(ndvi201709.reduceRegion({
+print(minLAI10, 'minLAI Sep 2017');
+var maxLAI10 = ee.Number(LAI201709.reduceRegion({
 reducer: ee.Reducer.max(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(maxNDVI10, 'maxNDVI Sep 2017')
-var meanNDVI10 = ee.Number(ndvi201709.reduceRegion({
+print(maxLAI10, 'maxLAI Sep 2017')
+var meanLAI10 = ee.Number(LAI201709.reduceRegion({
 reducer: ee.Reducer.mean(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(meanNDVI10, 'meanNDVI Sep 2017');
+print(meanLAI10, 'meanLAI Sep 2017');
 }
 
-{var minNDVI11 = ee.Number(ndvi201808.reduceRegion({
+{var minLAI11 = ee.Number(LAI201808.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(minNDVI11, 'minNDVI Agt 2018');
-var maxNDVI11 = ee.Number(ndvi201808.reduceRegion({
+print(minLAI11, 'minLAI Agt 2018');
+var maxLAI11 = ee.Number(LAI201808.reduceRegion({
 reducer: ee.Reducer.max(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(maxNDVI11, 'maxNDVI Agt 2018')
-var meanNDVI11 = ee.Number(ndvi201808.reduceRegion({
+print(maxLAI11, 'maxLAI Agt 2018')
+var meanLAI11 = ee.Number(LAI201808.reduceRegion({
 reducer: ee.Reducer.mean(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(meanNDVI11, 'meanNDVI Agt 2018');
+print(meanLAI11, 'meanLAI Agt 2018');
 }
 
-{var minNDVI12 = ee.Number(ndvi201809.reduceRegion({
+{var minLAI12 = ee.Number(LAI201809.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(minNDVI12, 'minNDVI Sep 2018');
-var maxNDVI12 = ee.Number(ndvi201809.reduceRegion({
+print(minLAI12, 'minLAI Sep 2018');
+var maxLAI12 = ee.Number(LAI201809.reduceRegion({
 reducer: ee.Reducer.max(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(maxNDVI12, 'maxNDVI Sep 2018')
-var meanNDVI12 = ee.Number(ndvi201809.reduceRegion({
+print(maxLAI12, 'maxLAI Sep 2018')
+var meanLAI12 = ee.Number(LAI201809.reduceRegion({
 reducer: ee.Reducer.mean(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(meanNDVI12, 'meanNDVI Sep 2018');
+print(meanLAI12, 'meanLAI Sep 2018');
 }
 
-{var minNDVI13 = ee.Number(ndvi201908.reduceRegion({
+{var minLAI13 = ee.Number(LAI201908.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(minNDVI13, 'minNDVI Agt 2019');
-var maxNDVI13 = ee.Number(ndvi201908.reduceRegion({
+print(minLAI13, 'minLAI Agt 2019');
+var maxLAI13 = ee.Number(LAI201908.reduceRegion({
 reducer: ee.Reducer.max(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(maxNDVI13, 'maxNDVI Agt 2019')
-var meanNDVI13 = ee.Number(ndvi201908.reduceRegion({
+print(maxLAI13, 'maxLAI Agt 2019')
+var meanLAI13 = ee.Number(LAI201908.reduceRegion({
 reducer: ee.Reducer.mean(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(meanNDVI13, 'meanNDVI Agt 2019');
+print(meanLAI13, 'meanLAI Agt 2019');
 }
 
-{var minNDVI14 = ee.Number(ndvi201910.reduceRegion({
+{var minLAI14 = ee.Number(LAI201910.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(minNDVI14, 'minNDVI Okt 2019');
-var maxNDVI14 = ee.Number(ndvi201910.reduceRegion({
+print(minLAI14, 'minLAI Okt 2019');
+var maxLAI14 = ee.Number(LAI201910.reduceRegion({
 reducer: ee.Reducer.max(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(maxNDVI14, 'maxNDVI Okt 2019')
-var meanNDVI14 = ee.Number(ndvi201910.reduceRegion({
+print(maxLAI14, 'maxLAI Okt 2019')
+var meanLAI14 = ee.Number(LAI201910.reduceRegion({
 reducer: ee.Reducer.mean(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(meanNDVI14, 'meanNDVI Okt 2019');
+print(meanLAI14, 'meanLAI Okt 2019');
 }
 
-{var minNDVI15 = ee.Number(ndvi202008.reduceRegion({
+{var minLAI15 = ee.Number(LAI202008.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(minNDVI15, 'minNDVI Agt 2020');
-var maxNDVI15 = ee.Number(ndvi202008.reduceRegion({
+print(minLAI15, 'minLAI Agt 2020');
+var maxLAI15 = ee.Number(LAI202008.reduceRegion({
 reducer: ee.Reducer.max(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(maxNDVI15, 'maxNDVI Agt 2020')
-var meanNDVI15 = ee.Number(ndvi202008.reduceRegion({
+print(maxLAI15, 'maxLAI Agt 2020')
+var meanLAI15 = ee.Number(LAI202008.reduceRegion({
 reducer: ee.Reducer.mean(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(meanNDVI15, 'meanNDVI Agt 2020');
+print(meanLAI15, 'meanLAI Agt 2020');
 }
 
-{var minNDVI16 = ee.Number(ndvi202009.reduceRegion({
+{var minLAI16 = ee.Number(LAI202009.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(minNDVI16, 'minNDVI Sep 2020');
-var maxNDVI16 = ee.Number(ndvi202009.reduceRegion({
+print(minLAI16, 'minLAI Sep 2020');
+var maxLAI16 = ee.Number(LAI202009.reduceRegion({
 reducer: ee.Reducer.max(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(maxNDVI16, 'maxNDVI Sep 2020')
-var meanNDVI16 = ee.Number(ndvi202009.reduceRegion({
+print(maxLAI16, 'maxLAI Sep 2020')
+var meanLAI16 = ee.Number(LAI202009.reduceRegion({
 reducer: ee.Reducer.mean(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(meanNDVI16, 'meanNDVI Sep 2020');
+print(meanLAI16, 'meanLAI Sep 2020');
 }
 
-{var minNDVI17 = ee.Number(ndvi202108.reduceRegion({
+{var minLAI17 = ee.Number(LAI202108.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(minNDVI17, 'minNDVI Agt 2021');
-var maxNDVI17 = ee.Number(ndvi202108.reduceRegion({
+print(minLAI17, 'minLAI Agt 2021');
+var maxLAI17 = ee.Number(LAI202108.reduceRegion({
 reducer: ee.Reducer.max(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(maxNDVI17, 'maxNDVI Agt 2021')
-var meanNDVI17 = ee.Number(ndvi202108.reduceRegion({
+print(maxLAI17, 'maxLAI Agt 2021')
+var meanLAI17 = ee.Number(LAI202108.reduceRegion({
 reducer: ee.Reducer.mean(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(meanNDVI17, 'meanNDVI Agt 2021');
+print(meanLAI17, 'meanLAI Agt 2021');
 }
 
-{var minNDVI18 = ee.Number(ndvi202109.reduceRegion({
+{var minLAI18 = ee.Number(LAI202109.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(minNDVI18, 'minNDVI Sep 2021');
-var maxNDVI18 = ee.Number(ndvi202109.reduceRegion({
+print(minLAI18, 'minLAI Sep 2021');
+var maxLAI18 = ee.Number(LAI202109.reduceRegion({
 reducer: ee.Reducer.max(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(maxNDVI18, 'maxNDVI Sep 2021')
-var meanNDVI18 = ee.Number(ndvi202109.reduceRegion({
+print(maxLAI18, 'maxLAI Sep 2021')
+var meanLAI18 = ee.Number(LAI202109.reduceRegion({
 reducer: ee.Reducer.mean(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(meanNDVI18, 'meanNDVI Sep 2021');
+print(meanLAI18, 'meanLAI Sep 2021');
 }
 
-{var minNDVI19 = ee.Number(ndvi202208.reduceRegion({
+{var minLAI19 = ee.Number(LAI202208.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(minNDVI19, 'minNDVI Agt 2022');
-var maxNDVI19 = ee.Number(ndvi202208.reduceRegion({
+print(minLAI19, 'minLAI Agt 2022');
+var maxLAI19 = ee.Number(LAI202208.reduceRegion({
 reducer: ee.Reducer.max(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(maxNDVI19, 'maxNDVI Agt 2022')
-var meanNDVI19 = ee.Number(ndvi202208.reduceRegion({
+print(maxLAI19, 'maxLAI Agt 2022')
+var meanLAI19 = ee.Number(LAI202208.reduceRegion({
 reducer: ee.Reducer.mean(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(meanNDVI19, 'meanNDVI Agt 2022');
+print(meanLAI19, 'meanLAI Agt 2022');
 }
 
-{var minNDVI20 = ee.Number(ndvi202210.reduceRegion({
+{var minLAI20 = ee.Number(LAI202210.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(minNDVI20, 'minNDVI Okt 2022');
-var maxNDVI20 = ee.Number(ndvi202210.reduceRegion({
+print(minLAI20, 'minLAI Okt 2022');
+var maxLAI20 = ee.Number(LAI202210.reduceRegion({
 reducer: ee.Reducer.max(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(maxNDVI20, 'maxNDVI Okt 2022')
-var meanNDVI20 = ee.Number(ndvi202210.reduceRegion({
+print(maxLAI20, 'maxLAI Okt 2022')
+var meanLAI20 = ee.Number(LAI202210.reduceRegion({
 reducer: ee.Reducer.mean(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
-print(meanNDVI20, 'meanNDVI Okt 2022');
+print(meanLAI20, 'meanLAI Okt 2022');
 }
 
