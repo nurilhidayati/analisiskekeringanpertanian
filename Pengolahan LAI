@@ -588,3 +588,24 @@ maxPixels: 1e9
 print(meanLAI20, 'meanLAI Okt 2022');
 }
 
+
+Map.addLayer(LAI201307, {min:0,max:5,palette:["caa849","f4e87b","a7cc38","529d3b","248232","145b0b"]}, 'lai1');
+Map.addLayer(LAI201310, {min:0,max:5,palette:["caa849","f4e87b","a7cc38","529d3b","248232","145b0b"]}, 'lai2');
+Map.addLayer(LAI201409, {min:0,max:5,palette:["caa849","f4e87b","a7cc38","529d3b","248232","145b0b"]}, 'lai3');
+Map.addLayer(LAI201410, {min:0,max:5,palette:["caa849","f4e87b","a7cc38","529d3b","248232","145b0b"]}, 'lai4');
+Map.addLayer(LAI201508, {min:0,max:5,palette:["caa849","f4e87b","a7cc38","529d3b","248232","145b0b"]}, 'lai5');
+Map.addLayer(LAI201510, {min:0,max:5,palette:["caa849","f4e87b","a7cc38","529d3b","248232","145b0b"]}, 'lai6');
+Map.addLayer(LAI201608, {min:0,max:5,palette:["caa849","f4e87b","a7cc38","529d3b","248232","145b0b"]}, 'lai7');
+Map.addLayer(LAI201609, {min:0,max:5,palette:["caa849","f4e87b","a7cc38","529d3b","248232","145b0b"]}, 'lai8');
+Map.addLayer(LAI201708, {min:0,max:5,palette:["caa849","f4e87b","a7cc38","529d3b","248232","145b0b"]}, 'lai9');
+Map.addLayer(LAI201709, {min:0,max:5,palette:["caa849","f4e87b","a7cc38","529d3b","248232","145b0b"]}, 'lai10');
+Map.addLayer(LAI201808, {min:0,max:5,palette:["caa849","f4e87b","a7cc38","529d3b","248232","145b0b"]}, 'lai11');
+Map.addLayer(LAI201809, {min:0,max:5,palette:["caa849","f4e87b","a7cc38","529d3b","248232","145b0b"]}, 'lai12');
+Map.addLayer(LAI201908, {min:0,max:5,palette:["caa849","f4e87b","a7cc38","529d3b","248232","145b0b"]}, 'lai13');
+Map.addLayer(LAI201910, {min:0,max:5,palette:["caa849","f4e87b","a7cc38","529d3b","248232","145b0b"]}, 'lai14');
+Map.addLayer(LAI202008, {min:0,max:5,palette:["caa849","f4e87b","a7cc38","529d3b","248232","145b0b"]}, 'lai15');
+Map.addLayer(LAI202009, {min:0,max:5,palette:["caa849","f4e87b","a7cc38","529d3b","248232","145b0b"]}, 'lai16');
+Map.addLayer(LAI202108, {min:0,max:5,palette:["caa849","f4e87b","a7cc38","529d3b","248232","145b0b"]}, 'lai17');
+Map.addLayer(LAI202109, {min:0,max:5,palette:["caa849","f4e87b","a7cc38","529d3b","248232","145b0b"]}, 'lai18');
+Map.addLayer(LAI202208, {min:0,max:5,palette:["caa849","f4e87b","a7cc38","529d3b","248232","145b0b"]}, 'lai19');
+Map.addLayer(LAI202210, {min:0,max:5,palette:["caa849","f4e87b","a7cc38","529d3b","248232","145b0b"]}, 'lai20');
