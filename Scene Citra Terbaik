@@ -1,0 +1,45 @@
+var mojokertokec= ee.FeatureCollection("users/nurilassajdah/kecamatan_mojokerto");
+var mojokerto= ee.FeatureCollection("users/nurilassajdah/pertanian_mojokerto");
+
+var citra = ee.ImageCollection("LANDSAT/LC08/C02/T1_TOA")
+  .filterBounds(mojokerto)
+print('Citra Landsat8 sesuai lokasi', citra);
+
+print('Menentukan waktu perekaman data yang diinginkan');
+var filterwaktu = citra.filterDate('2022-10-01','2022-10-20');
+print('Citra Landsat8 sesuai waktu perekaman', filterwaktu);
+
+print('Mengurutkan data sesuai prosentasi penutupan awan');
+var sorted = filterwaktu.sort('CLOUD_COVER');
+print('Urutan Citra Landsat8 sesuai prosentasi tutupan awan', sorted);
+
+print('Memilih data yang terbersih awannya');
+var scene = sorted.first();
+var tutupanAwan = scene.get('CLOUD_COVER');
+print('Scene yang TERBAIK', scene);
+print('Tutupan Awan: ', tutupanAwan);
+
+// Menempatkan TITIK TENGAH pada scene yang terpilih
+
+// Menampilkan HASIL
+Map.addLayer(scene, {bands: ['B7', 'B5', 'B3'], max: [0.3, 0.4, 0.3]}, 'Citra Landsat8');
+
+// Memilih Band yang akan diunduh
+scene = scene.select(['B7', 'B5', 'B3']);
+var clip_scene = scene.clip(mojokerto);
+
+
+var tutupanAwan2 = clip_scene.get('CLOUD_COVER');
+print('Scene yang TERBAIK', clip_scene);
+print('Tutupan Awan: ', tutupanAwan2);
+
+//Layer
+Map.addLayer(clip_scene, {bands: ['B7', 'B5', 'B3'], max: [0.3, 0.4, 0.3]},  'Landsat 8 - Clip');
+//Zoom ke ROI
+Map.centerObject(mojokerto, 9);
+var empty = ee.Image().byte();
+var outline = empty.paint({
+  featureCollection: mojokertokec,
+  color: 1,
+  width: 1});
+Map.addLayer(outline, {palette: '000000'}, 'Batas Kecamatan');
