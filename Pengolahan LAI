@@ -1,5 +1,4 @@
 var mojokerto= ee.FeatureCollection("users/nurilassajdah/pertanian_mojokerto");
-var sampel= ee.FeatureCollection("users/nurilassajdah/titik_sampel");
 
 var img201307 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20130728').clip(mojokerto);
 var img201310 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20131016').clip(mojokerto);
