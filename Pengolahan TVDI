@@ -16,8 +16,8 @@ var img201808 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20180811').clip(mo
 var img201809 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20180928').clip(mojokerto);
 var img201908 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20190814').clip(mojokerto);
 var img201910 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20191001').clip(mojokerto);
-var img202008 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20200816').clip(mojokerto);
 var img202009 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20200917').clip(mojokerto);
+var img202010 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20201003').clip(mojokerto);
 var img202108 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20210819').clip(mojokerto);
 var img202109 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20210904').clip(mojokerto);
 var img202208 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20220822').clip(mojokerto);
@@ -38,8 +38,8 @@ var ndvi201808 = img201808.normalizedDifference(['B5', 'B4']).rename('ndvi11');
 var ndvi201809 = img201809.normalizedDifference(['B5', 'B4']).rename('ndvi12');
 var ndvi201908 = img201908.normalizedDifference(['B5', 'B4']).rename('ndvi13');
 var ndvi201910 = img201910.normalizedDifference(['B5', 'B4']).rename('ndvi14');
-var ndvi202008 = img202008.normalizedDifference(['B5', 'B4']).rename('ndvi15');
-var ndvi202009 = img202009.normalizedDifference(['B5', 'B4']).rename('ndvi16');
+var ndvi202009 = img202009.normalizedDifference(['B5', 'B4']).rename('ndvi15');
+var ndvi202010 = img202010.normalizedDifference(['B5', 'B4']).rename('ndvi16');
 var ndvi202108 = img202108.normalizedDifference(['B5', 'B4']).rename('ndvi17');
 var ndvi202109 = img202109.normalizedDifference(['B5', 'B4']).rename('ndvi18');
 var ndvi202208 = img202208.normalizedDifference(['B5', 'B4']).rename('ndvi19');
@@ -356,21 +356,21 @@ maxPixels: 1e9
 }).values().get(0));
 }
 
-{var minNDVI15 = ee.Number(ndvi202008.reduceRegion({
+{var minNDVI15 = ee.Number(ndvi202009.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
 
-var maxNDVI15 = ee.Number(ndvi202008.reduceRegion({
+var maxNDVI15 = ee.Number(ndvi202009.reduceRegion({
 reducer: ee.Reducer.max(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
 
-var meanNDVI15 = ee.Number(ndvi202008.reduceRegion({
+var meanNDVI15 = ee.Number(ndvi202009.reduceRegion({
 reducer: ee.Reducer.mean(),
 geometry: mojokerto,
 scale: 30,
@@ -378,21 +378,21 @@ maxPixels: 1e9
 }).values().get(0));
 }
 
-{var minNDVI16 = ee.Number(ndvi202009.reduceRegion({
+{var minNDVI16 = ee.Number(ndvi202010.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
 
-var maxNDVI16 = ee.Number(ndvi202009.reduceRegion({
+var maxNDVI16 = ee.Number(ndvi202010.reduceRegion({
 reducer: ee.Reducer.max(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
 
-var meanNDVI16 = ee.Number(ndvi202009.reduceRegion({
+var meanNDVI16 = ee.Number(ndvi202010.reduceRegion({
 reducer: ee.Reducer.mean(),
 geometry: mojokerto,
 scale: 30,
@@ -503,8 +503,8 @@ var fv11 =(ndvi201808.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).po
 var fv12 =(ndvi201809.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv12');
 var fv13 =(ndvi201908.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv13');
 var fv14 =(ndvi201910.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv14');
-var fv15 =(ndvi202008.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv15');
-var fv16 =(ndvi202009.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv16');
+var fv15 =(ndvi202009.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv15');
+var fv16 =(ndvi202010.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv16');
 var fv17 =(ndvi202108.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv17');
 var fv18 =(ndvi202109.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv18');
 var fv19 =(ndvi202208.subtract(minNDVI1).divide(maxNDVI1.subtract(minNDVI1))).pow(ee.Number(2)).rename('fv19');
@@ -525,8 +525,8 @@ var termal10_11 = img201808.select('B10');
 var termal10_12 = img201809.select('B10');
 var termal10_13 = img201908.select('B10');
 var termal10_14 = img201910.select('B10');
-var termal10_15 = img202008.select('B10');
-var termal10_16 = img202009.select('B10');
+var termal10_15 = img202009.select('B10');
+var termal10_16 = img202010.select('B10');
 var termal10_17 = img202108.select('B10');
 var termal10_18 = img202109.select('B10');
 var termal10_19 = img202208.select('B10');
@@ -609,8 +609,8 @@ var termal11_11 = img201808.select('B11');
 var termal11_12 = img201809.select('B11');
 var termal11_13 = img201908.select('B11');
 var termal11_14 = img201910.select('B11');
-var termal11_15 = img202008.select('B11');
-var termal11_16 = img202009.select('B11');
+var termal11_15 = img202009.select('B11');
+var termal11_16 = img202010.select('B11');
 var termal11_17 = img202108.select('B11');
 var termal11_18 = img202109.select('B11');
 var termal11_19 = img202208.select('B11');
@@ -865,21 +865,21 @@ var LST201910 = img201910.expression(
     }
   ).rename('LST14');
 
-var LST202008 = img202008.expression(
-    '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
-    {
-     'TB10' : img202008.select('B10'),
-     'TB11' : img202008.select('B11'),
-     'm' : m15.select('mLSE15'),
-     'deltam' : deltam15.select('deltaLSE15')
-    }
-  ).rename('LST15');
-
 var LST202009 = img202009.expression(
     '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
     {
      'TB10' : img202009.select('B10'),
      'TB11' : img202009.select('B11'),
+     'm' : m15.select('mLSE15'),
+     'deltam' : deltam15.select('deltaLSE15')
+    }
+  ).rename('LST15');
+
+var LST202010 = img202010.expression(
+    '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
+    {
+     'TB10' : img202010.select('B10'),
+     'TB11' : img202010.select('B11'),
      'm' : m16.select('mLSE16'),
      'deltam' : deltam16.select('deltaLSE16')
     }
@@ -987,13 +987,13 @@ var LSTmin14 = ndvi201910.expression(
     '((-3.8274 * ndvi) + 36.408)', {
     'ndvi': ndvi201910.select('ndvi14')});
 
-var LSTmin15 = ndvi202008.expression(
-    '((12.662 * ndvi) + 20.829)', {
-    'ndvi': ndvi202008.select('ndvi15')});
-    
-var LSTmin16 = ndvi202009.expression(
+var LSTmin15 = ndvi202009.expression(
     '((-1.3133 * ndvi) + 32.369)', {
-    'ndvi': ndvi202009.select('ndvi16')});
+    'ndvi': ndvi202009.select('ndvi15')});
+    
+var LSTmin16 = ndvi202010.expression(
+    '((-1.3133 * ndvi) + 32.369)', {
+    'ndvi': ndvi202010.select('ndvi16')});
 
 var LSTmin17 = ndvi202108.expression(
     '((10.51 * ndvi) + 20.422)', {
@@ -1010,7 +1010,7 @@ var LSTmin19 = ndvi202208.expression(
 var LSTmin20 = ndvi202210.expression(
     '((2.9269* ndvi) + 24.036)', {
     'ndvi': ndvi202210.select('ndvi20')});
- 
+ 
 //MAX ALGORITMA
 var LSTmax1 = ndvi201307.expression(
     '((-1.9271 * ndvi) + 34.797)', {
@@ -1068,13 +1068,13 @@ var LSTmax14 = ndvi201910.expression(
     '((-11.811 * ndvi) + 47.499)', {
     'ndvi': ndvi201910.select('ndvi14')});
 
-var LSTmax15 = ndvi202008.expression(
-    '((-2.013 * ndvi) + 35.669)', {
-    'ndvi': ndvi202008.select('ndvi15')});
-
-var LSTmax16 = ndvi202009.expression(
+var LSTmax15 = ndvi202009.expression(
     '((-8.4381 * ndvi) + 43.624)', {
-    'ndvi': ndvi202009.select('ndvi16')});
+    'ndvi': ndvi202009.select('ndvi15')});
+
+var LSTmax16 = ndvi202010.expression(
+    '((-8.4381 * ndvi) + 43.624)', {
+    'ndvi': ndvi202010.select('ndvi16')});
  
 var LSTmax17 = ndvi202108.expression(
     '((-3.7928 * ndvi) + 32.617)', {
@@ -1107,8 +1107,8 @@ var TVDI201808 =(LST201808.subtract(LSTmin11).divide(LSTmax11.subtract(LSTmin11)
 var TVDI201809 =(LST201809.subtract(LSTmin12).divide(LSTmax12.subtract(LSTmin12)));
 var TVDI201908 =(LST201908.subtract(LSTmin13).divide(LSTmax13.subtract(LSTmin13)));
 var TVDI201910 =(LST201910.subtract(LSTmin14).divide(LSTmax14.subtract(LSTmin14)));
-var TVDI202008 =(LST202008.subtract(LSTmin15).divide(LSTmax15.subtract(LSTmin15)));
-var TVDI202009 =(LST202009.subtract(LSTmin16).divide(LSTmax16.subtract(LSTmin16)));
+var TVDI202009 =(LST202009.subtract(LSTmin15).divide(LSTmax15.subtract(LSTmin15)));
+var TVDI202010 =(LST202010.subtract(LSTmin16).divide(LSTmax16.subtract(LSTmin16)));
 var TVDI202108 =(LST202108.subtract(LSTmin17).divide(LSTmax17.subtract(LSTmin17)));
 var TVDI202109 =(LST202109.subtract(LSTmin18).divide(LSTmax18.subtract(LSTmin18)));
 var TVDI202208 =(LST202208.subtract(LSTmin19).divide(LSTmax19.subtract(LSTmin19)));
@@ -1436,50 +1436,50 @@ var TVDI202210 =(LST202210.subtract(LSTmin20).divide(LSTmax20.subtract(LSTmin20)
   print(meanTVDI14, 'meanTVDI Okt 2019');
   }
   
-  {var minTVDI15 = ee.Number(TVDI202008.reduceRegion({
+  {var minTVDI15 = ee.Number(TVDI202009.reduceRegion({
   reducer: ee.Reducer.min(),
   geometry: mojokerto,
   scale: 30,
   maxPixels: 1e9
   }).values().get(0));
-  print(minTVDI15, 'minTVDI Agt 2020');
-  var maxTVDI15 = ee.Number(TVDI202008.reduceRegion({
+  print(minTVDI15, 'minTVDI Sep 2020');
+  var maxTVDI15 = ee.Number(TVDI202009.reduceRegion({
   reducer: ee.Reducer.max(),
   geometry: mojokerto,
   scale: 30,
   maxPixels: 1e9
   }).values().get(0));
-  print(maxTVDI15, 'maxTVDI Agt 2020')
-  var meanTVDI15 = ee.Number(TVDI202008.reduceRegion({
+  print(maxTVDI15, 'maxTVDI Sep 2020')
+  var meanTVDI15 = ee.Number(TVDI202009.reduceRegion({
   reducer: ee.Reducer.mean(),
   geometry: mojokerto,
   scale: 30,
   maxPixels: 1e9
   }).values().get(0));
-  print(meanTVDI15, 'meanTVDI Agt 2020');
+  print(meanTVDI15, 'meanTVDI Sep 2020');
   }
   
-  {var minTVDI16 = ee.Number(TVDI202009.reduceRegion({
+  {var minTVDI16 = ee.Number(TVDI202010.reduceRegion({
   reducer: ee.Reducer.min(),
   geometry: mojokerto,
   scale: 30,
   maxPixels: 1e9
   }).values().get(0));
-  print(minTVDI16, 'minTVDI Sep 2020');
-  var maxTVDI16 = ee.Number(TVDI202009.reduceRegion({
+  print(minTVDI16, 'minTVDI Okt 2020');
+  var maxTVDI16 = ee.Number(TVDI202010.reduceRegion({
   reducer: ee.Reducer.max(),
   geometry: mojokerto,
   scale: 30,
   maxPixels: 1e9
   }).values().get(0));
-  print(maxTVDI16, 'maxTVDI Sep 2020')
-  var meanTVDI16 = ee.Number(TVDI202009.reduceRegion({
+  print(maxTVDI16, 'maxTVDI Okt 2020')
+  var meanTVDI16 = ee.Number(TVDI202010.reduceRegion({
   reducer: ee.Reducer.mean(),
   geometry: mojokerto,
   scale: 30,
   maxPixels: 1e9
   }).values().get(0));
-  print(meanTVDI16, 'meanTVDI Sep 2020');
+  print(meanTVDI16, 'meanTVDI Okt 2020');
   }
   
   {var minTVDI17 = ee.Number(TVDI202108.reduceRegion({
@@ -1604,8 +1604,8 @@ var classified11 = TVDI201808.lt(thresholds).reduce('sum').toInt();
 var classified12 = TVDI201809.lt(thresholds).reduce('sum').toInt();
 var classified13 = TVDI201908.lt(thresholds).reduce('sum').toInt();
 var classified14 = TVDI201910.lt(thresholds).reduce('sum').toInt();
-var classified15 = TVDI202008.lt(thresholds).reduce('sum').toInt();
-var classified16 = TVDI202009.lt(thresholds).reduce('sum').toInt();
+var classified15 = TVDI202009.lt(thresholds).reduce('sum').toInt();
+var classified16 = TVDI202010.lt(thresholds).reduce('sum').toInt();
 var classified17 = TVDI202108.lt(thresholds).reduce('sum').toInt();
 var classified18 = TVDI202109.lt(thresholds).reduce('sum').toInt();
 var classified19 = TVDI202208.lt(thresholds).reduce('sum').toInt();
@@ -1867,8 +1867,8 @@ print('Agt 2018', arealist11);
 print('Sep 2018', arealist12);
 print('Agt 2019', arealist13);
 print('Okt 2019', arealist14);
-print('Agt 2020', arealist15);
-print('Sep 2020', arealist16);
+print('Sep 2020', arealist15);
+print('Okt 2020', arealist16);
 print('Agt 2021', arealist17);
 print('Sep 2021', arealist18);
 print('Agt 2022', arealist19);
