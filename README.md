@@ -27,3 +27,4 @@ Departemen Teknologi Kebumian
 Sekolah Vokasi
 Universitas Gadjah Mada
 2022
+
