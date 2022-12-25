@@ -22,9 +22,4 @@ PERITANI merupakan dashboard yang manyajikan peta interaktif sebaran kekeringan 
 ## Credits
 Earth Engine Apps ini dibuat sebagai oleh Nuril Hidayati syarat Proyek Akhir (PA), serta dibimbing oleh Bapak Dwi Setyo Aji, S.Si., M.Sc..
 
-Program Studi Sarjana Terapan Sistem Informasi Geografis
-Departemen Teknologi Kebumian
-Sekolah Vokasi
-Universitas Gadjah Mada
-2022
 
