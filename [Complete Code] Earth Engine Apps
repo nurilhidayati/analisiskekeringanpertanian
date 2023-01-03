@@ -6,7 +6,7 @@ var sampel= ee.FeatureCollection.randomPoints(mojokerto);
 
 var img201307 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20130728').clip(mojokerto);
 var img201310 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20131016').clip(mojokerto);
-var img201409 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20140901').clip(mojokerto);
+var img201409 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20140917').clip(mojokerto);
 var img201410 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20141003').clip(mojokerto);
 var img201508 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20150803').clip(mojokerto);
 var img201510 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20151022').clip(mojokerto);
@@ -963,7 +963,7 @@ var LSTmin2 = ndvi201310.expression(
     'ndvi': ndvi201310.select('ndvi2')});
 
 var LSTmin3 = ndvi201409.expression(
-    '((-2.8535 * ndvi) +23.936)', {
+    '((-3.0148 * ndvi) +32.597)', {
     'ndvi': ndvi201409.select('ndvi3')});
 
 var LSTmin4 = ndvi201410.expression(
@@ -1044,8 +1044,9 @@ var LSTmax2 = ndvi201310.expression(
     'ndvi': ndvi201310.select('ndvi2')});
 
 var LSTmax3 = ndvi201409.expression(
-    '((-2.8071 * ndvi) + 32.584)', {
+    '((-7.3833 * ndvi) + 42.667)', {
     'ndvi': ndvi201409.select('ndvi3')});
+
 
 var LSTmax4 = ndvi201410.expression(
     '((-11.583 * ndvi)  + 45.803)', {
@@ -1288,7 +1289,7 @@ ui.root.insert(0,panel);
 
 
 // Define title and description.
-var judul = ui.Label('Aplikasi Pemantauan Sebaran Kekeringan Pertanian Kabupaten Mojokerto, Provinsi jawa Timur Tahun 2013-2022',
+var judul = ui.Label('Dashboard Pemantauan Sebaran Kekeringan Pertanian Kabupaten Mojokerto, Provinsi jawa Timur Tahun 2013-2022',
   { fontFamily: 'sans-serif',
     fontWeight:'550',
     fontSize:'20px',
@@ -1296,7 +1297,7 @@ var judul = ui.Label('Aplikasi Pemantauan Sebaran Kekeringan Pertanian Kabupaten
     textAlign: 'center'
   }
 );
-var paragraf1 = ui.Label('Kabupaten Mojokerto merupakan salah satu kabupaten dengan tingkat kekeringan pertanian yang cukup parah di Jawa Timur. Dampak dari bencana kekeringan pertanian adalah tidak terpenuhinya kebutuhan air pada fase tertentu yang mengakibatkan pertumbuhan tanaman tidak optimal. Oleh karena itu, Earth Engine Apps ini dibuat dengan tujuan untuk memantau dan mengetahui pola persebaran kekeringan kekeringan pertanian di Kabupaten Mojokerto dari tahun 2013-2022. Harapannya, dengan dilakukannya identifikasi area terdampak kekeringan pertanian secara berkala dapat digunakan sebagai tindakan preventif kedepannya dalam mengatasi bencana kekeringan pertanian di Kabupaten Mojokerto.', 
+var paragraf1 = ui.Label('PERITANI merupakan dashboard yang manyajikan peta interaktif sebaran kekeringan pertanian di Kabupaten Mojokerto pada tahun 2013-2022. Informasi sebaran kekeringan pertanian diperoleh dari data citra Landsat 8 Collection 2 Tier 1 TOA Reflectance dengan interval perekaman dari perwakilan data tahun 2013 hingga 2022 saat musim kemarau. Metode yang digunakan untuk memetakkan sebaran kekeringan adalah Temperature Vegetation Dryness Index (TVDI) yang memanfaatkan dua data masukan yaitu Normalized Difference Vegetation Index (NDVI) dan Land Surface Temperature (LST).', 
  {  fontFamily: 'sans-serif',
     fontSize:'14px',
     padding:'2px 0 4px 6px',
@@ -1309,8 +1310,8 @@ panel.add(judul).add(paragraf1);
 
 var disclaimer = ui.Panel(
     [
-        ui.Label('Disclaimer:', {fontSize:'12px', fontWeight: 'bold', margin: '15px 0 0 15px'}),
-        ui.Label('● Informasi sebaran kekeringan pertanian diperoleh melalui analisis data citra Landsat 8 Collection 2 Tier 1 TOA Reflectance menggunakan metode Temperature-Vegetation Dryness Index (TVDI), serta didukung informasi validasi dari lapangan pada bulan Oktober 2022 yang menghasilkan nilai akurasi ekstraksi metode TVDI sebesar 86,67% dan rata-rata ketelitian nilai parameter Land Surface Temperature (LST) sebesar 91.49%.', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
+        ui.Label('Disclaimer!!!', {fontSize:'12px', fontWeight: 'bold', margin: '15px 0 0 15px'}),
+        ui.Label('Hasil pengolahan data sudah dilakukan uji akurasi pada dua data masukan yang digunakan, karena akurasi yang baik dari data masukan diperlukan agar nilai TVDI yang dihasilkan juga dapat akurat. Survei lapangan dilakukan dengan jumlah sampel sebanyak 30 titik sampel yang ditentukan berdasarkan metode stratified random sampling, dimana menghasilkan nilai akurasi NDVI sebesar 83,33% dan rata-rata ketelitian nilai LST sebesar 91.49%.', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
         ui.Label(''),
     ]
 );
@@ -1343,13 +1344,14 @@ panel.add(petunjukPanel);
 
 var petunjukAplikasi = ui.Panel(
     [
-        ui.Label('Petunjuk Penggunaan Earth Engine Apps:', {fontSize:'12px', fontWeight: 'bold', margin: '15px 0 0 15px'}),
-        ui.Label('[Klik Disini] Video Tutorial Penggunaan Earth Engine Apps', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://music.youtube.com/watch?v=TN5Ye9pQhlM&list=RDAOASm6zw3fwwNHHUAmqi82kg'),
+        ui.Label('Petunjuk Penggunaan Earth Engine Apps:', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
         ui.Label('1. Menggeser garis split panel ke bagian tengah peta untuk membandingkan informasi sebaran kekeringan pertanian.', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label('2. Memilih tahun berbeda yang akan digunakan untuk memantau sebaran kekeringan pertanian dengan cara klik button pada menu “Pilih Tahun”.', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label('3. Dapat mengatur zoom In/Out pada peta untuk menyamakan kedua panel. ', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label('4. Proses menunggu loading peta tergantung pada kecepatan jaringan internet.', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label(''),
+        ui.Label('Untuk lebih rinci, anda bisa mengunjungi video tutorial dibawah ini untuk mengeksplor dashboard ini', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('[Klik Disini] Video Tutorial Penggunaan Earth Engine Apps', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://youtu.be/bEJ4tFi3wl8'),
     ]
 );
 petunjukPanel.add(petunjukAplikasi);
@@ -1426,16 +1428,61 @@ panel.add(profilPanel);
 
 var profil = ui.Panel(
     [
-        ui.Label('Profil Wilayah Kajian Penelitian', {fontSize:'12px', fontWeight: 'bold', margin: '15px 0 0 15px'}),
-        ui.Label('Kabupaten Mojokerto merupakan salah satu kabupaten di Provinsi Jawa Timur yang terdiri atas 18 Kecamatan, 299 Desa dan 5 Kelurahan. Topografi wilayah Kabupaten Mojokerto terdiri dari dataran rendah dan pegunungan yang dilalui aliran sungai Brantas (BPS Kabupaten Mojokerto, 2022). Pada wilayah utara Kabupaten Mojokerto didominasi oleh bentuklahan karst yang dipengaruhi oleh bukit-bukit berbatu kapur sehingga menyebabkan keadaan tanah yang kurang subur. Sedangkan, pada bagian selatan Kabupaten Mojokerto di dominasi oleh bentuklahan vulkanik yang dipengaruhi oleh Gunung Penanggungan serta kompleks pegunungan Arjuna-Welirang sehingga keadaan tanahnya yang subur dan cocok digunakan sebagai lahan pertanian. ', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
-        ui.Label('Berdasarkan jenis penggunaan lahannya, Kabupaten Mojokerto memiliki  penggunaan lahan berupa pemukiman, pertanian, hutan, rawa/waduk, perkebunan, lahan kritis, padang rumput, dan semak/alang-alang. Area penggunaan lahan dengan luas area terbesar didominasi oleh penggunaan lahan pertanian yaitu sebesar 45.138 hektar (BPS Kabupaten Mojokerto, 2022). Hal tersebut merupakan salah satu urgensi mengapa kajian tentang kekeringan pertanian ini penting dilakukan di Kabupaten Mojokerto.', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
+        ui.Label('Profil Wilayah Kajian Penelitian', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
+        ui.Label('Kabupaten Mojokerto merupakan salah satu kabupaten di Provinsi Jawa Timur yang terdiri atas 18 Kecamatan, 299 Desa dan 5 Kelurahan. Topografi wilayah Kabupaten Mojokerto terdiri dari dataran rendah dan pegunungan yang dilalui aliran sungai Brantas (BPS Kabupaten Mojokerto, 2022). Pada wilayah utara Kabupaten Mojokerto didominasi oleh bentuklahan karst yang dipengaruhi oleh bukit-bukit berbatu kapur sehingga menyebabkan keadaan tanah yang kurang subur. Sedangkan, pada bagian selatan Kabupaten Mojokerto di dominasi oleh bentuklahan vulkanik yang dipengaruhi oleh Gunung Penanggungan serta kompleks pegunungan Arjuna-Welirang sehingga keadaan tanahnya yang subur dan cocok digunakan sebagai lahan pertanian. ', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label(''),
+        ui.Label('Berdasarkan jenis penggunaan lahannya, Kabupaten Mojokerto memiliki  penggunaan lahan berupa pemukiman, pertanian, hutan, rawa/waduk, perkebunan, lahan kritis, padang rumput, dan semak/alang-alang. Area penggunaan lahan dengan luas area terbesar didominasi oleh penggunaan lahan pertanian yaitu sebesar 45.122 hektar (BPS Kabupaten Mojokerto, 2022). Hal tersebut merupakan salah satu urgensi mengapa kajian tentang kekeringan pertanian ini penting dilakukan di Kabupaten Mojokerto.', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label(''),
+        ui.Label('Batas area kajian yang digunakan adalah area lahan pertanian di Kabupaten Mojokerto, karena untuk membatasi kajian terhadap citra sehingga lebih terfokuskan pada lahan pertanian di Kabupaten Mojokerto. Hal ini sejalan dengan tujuan Earth Engine Apps ini untuk memantau dan memetakkan sebaran kekeringan pertanian di Kabupaten Mojokertp.', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label(''),
         ui.Label('[Klik Disini] Peta Batas Administrasi Kabupaten Mojokerto', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://raw.githubusercontent.com/nurilhidayati/analisiskekeringanpertanian/main/Peta%20Batas%20Administrasi%20Kab.%20Mojokerto.png'),
-        ui.Label('[Klik Disini] Peta Lahan Pertanian Kabupaten Mojokerto', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://raw.githubusercontent.com/nurilhidayati/analisiskekeringanpertanian/main/Peta%20Lahan%20Pertanian%20Kab.%20Mojokerto.png'),
+        ui.Label('[Klik Disini] Peta Lahan Pertanian Kabupaten Mojokerto', {fontSize:'12px',margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://raw.githubusercontent.com/nurilhidayati/analisiskekeringanpertanian/main/Peta%20Lahan%20Pertanian%20Kab.%20Mojokerto.png'),
+        ui.Label('[Klik Disini] Tabel Luas Lahan Pertanian Kabupaten Mojokerto', {fontSize:'12px',margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://raw.githubusercontent.com/nurilhidayati/analisiskekeringanpertanian/main/Luas%20Lahan%20Pertanian%20Kabupaten%20Mojokerto.png'),
         ui.Label(''),
     ]
 );
 profilPanel.add(profil);
+
+
+//Button Keterangan
+//Keterangan Gambaran
+//Button Profil
+var keteranganButton = ui.Button({
+    label: 'Definisi Kekeringan Pertanian',
+    style: {stretch:'horizontal', color: 'black'}
+});
+var keteranganPanel = ui.Panel(null, null, {stretch:'horizontal', shown: false});
+
+keteranganButton.onClick(function(){
+    if(keteranganPanel.style().get('shown')){
+        keteranganButton.setLabel('Definisi Kekeringan Pertanian');
+        keteranganPanel.style().set('shown', false);
+    } 
+    else{
+        keteranganButton.setLabel('Definisi Kekeringan Pertanian');
+        keteranganPanel.style().set('shown', true);
+    }
+})
+panel.add(keteranganButton);
+panel.add(keteranganPanel);
+
+
+var keteranganTVDI = ui.Panel(
+    [
+        ui.Label('Definisi Kekeringan Pertanian', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
+        ui.Label('Kekeringan dikategorikan dalam bencana alam berdasarkan Undang-Undang Nomor 24 Tahun 2007 tentang Penanggulangan Bencana. Berdasarkan undang-undang tersebut kekeringan didefinisikan sebagai ketersediaan air yang jauh di bawah kebutuhan air untuk kebutuhan hidup, pertanian, kegiatan ekonomi dan lingkungan. Menurut Badan Koordinasi Nasional Penanganan Bencana (BAKORNAS PB) tahun 2007, kekeringan pertanian merupakan kekeringan yang berhubungan dengan berkurangnya kandungan air dalam tanah (lengas tanah) sehingga tak mampu lagi memenuhi kebutuhan air bagi tanaman pada suatu priode tertentu. Kekeringan ini biasanya terjadi setelah terjadinya gejala kekeringan meteorologis. Dampak kekeringan di sektor pertanian merupakan dampak kekeringan paling parah karena mengakibatkan penurunan produksi atau kegagalan panen tanaman pangan terutama padi dan palawija di sebagian besar lahan pertanian Indonesia (Badan Penelitian dan Pengembangan Pertanian 2014). Kondisi tersebut memiliki implikasi yang sangat besar terhadap segi kehidupan terutama bagi ketahanan pangan nasional.', {fontSize:'12px', textAlign: 'justify',  margin: '2px 15px 2px 15px'}),
+        ui.Label(''),
+        ui.Label('Klasifikasi Tingkat Kekeringan Pertanian', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
+        ui.Label('Kelas Kelasifikasi Tingkat Kekeringan Metode TVDI mengacu pada Sandholt (2002) yang membagi nilai TVDI menjadi 5 kelas yaitu:', {fontSize:'12px', textAlign: 'justify', margin: '2px 15px 2px 15px'}),
+        ui.Label('● Tingkat Kekeringan Kelas Basah (0 < TVDI ≤ 0.20) ', {fontSize:'12px',  margin: '2px 15px 2px 15px'}),
+        ui.Label('● Tingkat Kekeringan Kelas Agak Basah (0.21 < TVDI ≤ 0.40)', {fontSize:'12px',  margin: '2px 15px 2px 15px'}),
+        ui.Label('● Tingkat Kekeringan Kelas Normal (0.41 < TVDI ≤ 0.60)', {fontSize:'12px',  margin: '2px 15px 2px 15px'}),
+        ui.Label('● Tingkat Kekeringan Kelas Agak Kering (0.61 < TVDI ≤ 0.80)', {fontSize:'12px',  margin: '2px 15px 2px 15px'}),
+        ui.Label('● Tingkat Kekeringan Kelas Kering (0.81 < TVDI ≤ 1)', {fontSize:'12px',  margin: '2px 15px 2px 15px'}),
+        ui.Label(''),
+    ]
+);
+keteranganPanel.add(keteranganTVDI);
 
 
 //Buton Info pengolahan Data
@@ -1463,7 +1510,7 @@ panel.add(infoPanel);
 var pengolahanData = ui.Panel(
     [
         ui.Label('Data yang Digunakan:', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
-        ui.Label('1. Citra Landsat 8 Collection 2 Tier 1 TOA Reflectance Path/Row 118/65 dari Tahun 2013-2022', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('1. Citra Landsat 8 Collection 2 Tier 1 TOA Reflectance Path/Row 118/65 dengan interval perekaman dari perwakilan data tahun 2013 hingga 2022 saat musim kemarau', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label('2 Data Shapefile Lahan Pertanian di Kabupaten Mojokerto', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label('3 Data Shapefile Batas Administrasi Kecamatan di Kabupaten Mojokerto', {fontSize:'12px',  margin: '2px 15px 2px 15px'}),
         ui.Label('4 Informasi Validasi Nilai NDVI dan LST dari Survei Lapangan pada Bulan Oktober 2022 ', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
@@ -1473,11 +1520,10 @@ var pengolahanData = ui.Panel(
         ui.Label('2. Perhitungan nilai Land Surface Temperature (LST) menggunakan metode Split Window Algorithm (SWA)', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label('3. Ekstraksi nilai NDVI dan LST dilakukan dengan mengambil sampel random berdasarkan area kajian pada lahan pertanian Kabupaten Mojokerto. Penentuan titik sampel menggunakan metode acak menggunakan fungsi ee.FeatureCollection.randomPoints(). Selanjutnya, nilai hasil ekstrasi NDVI dan LST diekport dalam format CSV.', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label('4. Regresi linear antara nilai NDVI dan nilai LST menggunakan scatter plot bertujuan untuk memperoleh persamaan nilai indeks kekeringan TVDI', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
-        ui.Label('5. Validasi nilai LST dilakukan dengan membandingkan hasil perhitungan nilai LST pada citra Landsat 8 perekaman bulan Oktober dengan data hasil pengukuran suhu permukaan tanah di lapangan menggunakan thermometer inframerah pada bulan Oktober 2022. Sedangkan, Pengolahan indeks vegetasi (NDVI) pada data citra Landsat 8 dilakukan validasi dengan mengamati kondisi pertanian eksisting dan rekonstruksi data dari Dinas Pertanian Kabupaten Mojokerto dengan didukung wawancara ke beberapa petani', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
-        ui.Label('6. Perhitungan nilai Temperature-Vegetation Dryness Index (TVDI) dilakukan dengan menggabungkan menggabungkan parameter indeks vegetasi (NDVI) dan suhu permukaan tanah (LST). Nilai TVDI menghasilkan nilai minimum: 0 dan maximum: 1', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
-        ui.Label('7. Visualisasi Peta TVDI mengacu pada Sandholt (2002) yang membagi nilai TVDI menjadi 5 kelas yaitu: kelas basah (hijau tua), kelas agak basah (hijau muda), kelas normal (kuning), kelas agak kering (oranye), dan kelas kering (merah)', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
-        ui.Label('8. Penyajian Peta TVDI menggunakan metode UI Split Panel untuk memudahkan dalam membandingkan sebaran kekeringan pertanian setiap tahunnya', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
-        ui.Label('9. Uji Usabilitas dilakukan dengan menyebarkan kuisioner melalui Google Form untuk mengetahui penilaian dan respon dari pengguna mengenai pengalamannya menggunakan Earth Engine Apps ini', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('5. Perhitungan nilai Temperature-Vegetation Dryness Index (TVDI). Nilai TVDI menghasilkan nilai minimum: 0 dan maximum: 1', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('6. Visualisasi Peta TVDI mengacu pada Sandholt (2002) yang membagi nilai TVDI menjadi 5 kelas yaitu: kelas basah (hijau tua), kelas agak basah (hijau muda), kelas normal (kuning), kelas agak kering (oranye), dan kelas kering (merah)', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('7. Penyajian Peta TVDI menggunakan tampilan antarmuka Split Panel untuk memudahkan dalam membandingkan sebaran kekeringan pertanian setiap tahun perekamannya.', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('8. Uji Usabilitas dilakukan dengan menyebarkan kuisioner melalui Google Form untuk mengetahui penilaian dan respon dari pengguna mengenai pengalamannya menggunakan Earth Engine Apps ini', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label(''),
         ui.Label('Catatan:', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
         ui.Label('Keseluruhan pengolahan hingga penyajian data dilakukan menggunakan platform Google Earth Engine dengan naskah pemrograman JavaScript terlampir dalam tautan berikut: ', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
@@ -1488,44 +1534,6 @@ var pengolahanData = ui.Panel(
 infoPanel.add(pengolahanData);
 
 
-//Button Keterangan
-//Keterangan Gambaran
-//Button Profil
-var keteranganButton = ui.Button({
-    label: 'Keterangan Tingkat Kekeringan Pertanian',
-    style: {stretch:'horizontal', color: 'black'}
-});
-var keteranganPanel = ui.Panel(null, null, {stretch:'horizontal', shown: false});
-
-keteranganButton.onClick(function(){
-    if(keteranganPanel.style().get('shown')){
-        keteranganButton.setLabel('Keterangan Tingkat Kekeringan Pertanian');
-        keteranganPanel.style().set('shown', false);
-    } 
-    else{
-        keteranganButton.setLabel('Keterangan Tingkat Kekeringan Pertanian');
-        keteranganPanel.style().set('shown', true);
-    }
-})
-panel.add(keteranganButton);
-panel.add(keteranganPanel);
-
-
-var keteranganTVDI = ui.Panel(
-    [
-        ui.Label('Keterangan Tingkat Kekeringan Pertanian', {fontSize:'12px', fontWeight: 'bold', margin: '15px 0 0 15px'}),
-        ui.Label('Pengkelasan nilai TVDI mengacu pada Sandholt (2002) yang membagi nilai TVDI menjadi 5 kelas yaitu:', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
-        ui.Label('● Tingkat Kekeringan Kelas Basah (0 < TVDI ≤ 0.20) ', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
-        ui.Label('● Tingkat Kekeringan Kelas Agak Basah (0.21 < TVDI ≤ 0.40)', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
-        ui.Label('● Tingkat Kekeringan Kelas Normal (0.41 < TVDI ≤ 0.60)', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
-        ui.Label('● Tingkat Kekeringan Kelas Agak Kering (0.61 < TVDI ≤ 0.80)', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
-        ui.Label('● Tingkat Kekeringan Kelas Kering (0.81 < TVDI ≤ 1)', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
-        ui.Label(''),
-        ui.Label('[Klik Disini] Kondisi Lapangan Tingkat Kekeringan', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://raw.githubusercontent.com/nurilhidayati/analisiskekeringanpertanian/main/Peta%20Batas%20Administrasi%20Kab.%20Mojokerto.png'),
-        ui.Label(''),
-    ]
-);
-keteranganPanel.add(keteranganTVDI);
 
 //Grafik Luas Sebaran Kekeringan Pertanian
 var grafikButtonMean = ui.Button({
@@ -1565,7 +1573,7 @@ graphPanelMean.add(grafikTVDI);
 // Define a DataTable using a JavaScript literal.
 var dataTable = {
   cols: [{id: 'Class', label: 'Classification', type: 'string'},
-         {id: 'Area', label: 'Area (ha)', type: 'number'}],
+         {id: 'Nilai', label: 'Nilai TVDI', type: 'number'}],
   rows: [{c: [{v: '28 Juli 2013'},  {v: 0.542}]},
          {c: [{v: '1 Oktober 2013'}, {v: 0.576}]},
          {c: [{v: '1 September 2014'},     {v: 0.447}]},
@@ -1872,6 +1880,8 @@ var tabelLuas = ui.Panel(
 tabelPanel.add(tabelLuas);
 
 
+
+
 //Membuat Credit
 var NOTE_STYLE = {
     fontFamily: 'sans-serif',
@@ -1884,7 +1894,7 @@ var NOTE_STYLE = {
 var credit = ui.Panel(
     [
         ui.Label('Credits:', {fontSize:'12px', fontWeight: 'bold', margin: '15px 0 0 12px'}),
-        ui.Label('● Aplikasi ini dibuat sebagai oleh Nuril Hidayati syarat Proyek Akhir (PA), serta dibimbing oleh Bapak Dwi Setyo Aji, S.Si., M.Sc..', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('● Earth Engine Apps ini dibuat sebagai oleh Nuril Hidayati syarat Proyek Akhir (PA), serta dibimbing oleh Bapak Dwi Setyo Aji, S.Si., M.Sc..', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label('● Apabila terdapat pertanyaan atau saran mengenai platform ini silakan menghubungi nurilhidayati@mail.ugm.ac.id atau ', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label('linkedin.com/in/nuril-hidayati/', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://www.linkedin.com/in/nuril-hidayati/'),
         ui.Label(''),
