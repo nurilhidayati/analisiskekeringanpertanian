@@ -91,7 +91,7 @@ var imgSampel = stacked.sampleRegions({
 
 //Ekspor ke Tabel
 Export.table.toDrive({
-  collection: imgSampel1,
+  collection: imgSampel,
   description: 'NDVIdanLST',
   folder: 'PA_TVDI',
   fileNamePrefix:'NDVIdanLST',
@@ -104,12 +104,12 @@ Export.table.toDrive({
 //Mendeskripsikan Batas Basah
 var LSTmin = ndvi.expression(
     '((-3.4512 * ndvi) + 26.079)', {   //Didapatkan dari hasil regresi NDVI dan LST
-    'ndvi': ndvi.select('ndvi1')});
+    'ndvi': ndvi.select('ndvi')});
 
 //Mendeskripsikan Batas Kering
 var LSTmax = ndvi.expression(
     '((-2.4359 * ndvi) + 34.807)', {   //Didapatkan dari hasil regresi NDVI dan LST
-    'ndvi': ndvi.select('ndvi1')});
+    'ndvi': ndvi.select('ndvi')});
     
 //Menghitung nilai Temperature Vegetation Dryness Index (TVDI)
 var TVDI =(LST.subtract(LSTmin).divide(LSTmax.subtract(LSTmin)));
