@@ -120,7 +120,7 @@ var TVDI =(LST.subtract(LSTmin).divide(LSTmax.subtract(LSTmin)));
 var sld_intervals =
   '<RasterSymbolizer>' +
     '<ColorMap type="intervals" extended="false" >' +
-      '<ColorMapEntry color="#ffffff" quantity="0" label="No Drought"/>' +
+      '<ColorMapEntry color="#ffffff" quantity="0" label="Tidak Ada Data (NA)"/>' +
       '<ColorMapEntry color="#7a8737" quantity="0.2" label="Kelas Basah"/>' +
       '<ColorMapEntry color="#0ae042" quantity="0.4" label="Kelas Agak Basah" />' +
       '<ColorMapEntry color="#fff70b" quantity="0.6" label="Kelas Normal" />' +
