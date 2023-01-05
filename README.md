@@ -15,7 +15,7 @@ Earth Engine Apps yang manyajikan peta interaktif sebaran kekeringan pertanian d
 
 ## Metode yang Digunakan:
 1. Menentukan area penelitian. Secara default penelitian ini menggunakan data shapefile lahan pertanian di Kabupaten Mojokerto sebagai batas area penelitian. Ini bisa diganti oleh data shapefile mana pun yang dikehendaki.
-2. Mendeskripsikan Citra Landsat 8 yang dikehendaki.
+2. Menentukan Citra Landsat 8 yang dikehendaki.
 3. Perhitungan nilai Normalized Difference Vegetation Index (NDVI) diperoleh dari saluran merah (Band 4) dan saluran inframerah dekat (Band 5) pada Citra Landsat 8 Collection 2 Tier 1 TOA Reflectance.
 ```
 //Perhitungan Normalized Difference Vegetation Index (NDVI)  
