@@ -13,31 +13,91 @@ PERITANI merupakan dashboard yang manyajikan peta interaktif sebaran kekeringan 
 ## Metode yang Digunakan::
 1. Perhitungan nilai Normalized Difference Vegetation Index (NDVI) diperoleh dari saluran merah (Band 4) dan saluran inframerah dekat (Band 5) pada Citra Landsat 8 Collection 2 Tier 1 TOA Reflectance.
 ```
-    var ndvi = img.normalizedDifference(['B5', 'B4']).rename('ndvi');
+ var ndvi = img.normalizedDifference(['B5', 'B4']).rename('ndvi');
 ```
 2. Perhitungan nilai Land Surface Temperature (LST) menggunakan metode Split Window Algorithm (SWA)
-- Perhitungan FVC 
 ```
-    var ndvi = img.normalizedDifference(['B5', 'B4']).rename('ndvi');
-```
-- Perhitungan LSE
-```
-    var ndvi = img.normalizedDifference(['B5', 'B4']).rename('ndvi');
-```
-- Perhitungan LST
-```
-    var ndvi = img.normalizedDifference(['B5', 'B4']).rename('ndvi');
+//Perhitungan FVC
+
+//Perhitungan LSE
+//Min dan Max NDVI
+{var minNDVI = ee.Number(ndvi.reduceRegion({
+reducer: ee.Reducer.min(),
+geometry: pertanian_mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+var maxNDVI = ee.Number(ndvi.reduceRegion({
+reducer: ee.Reducer.max(),
+geometry: pertanian_mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));}
+
+var soil = ee.Number(0.2)
+
+
+//fvc
+var fv =(ndvi.subtract(soil).divide(maxNDVI.subtract(soil))).rename('fv');
+
+//termal 10
+var termal10= img.select('B10');
+
+//LSE10
+var LSE10 = termal10.expression(
+    '(0.971*(1-fvc))+(0.987*(fvc))',{
+      'fvc': fv.select('fv'),}).rename('LSE10');
+
+//termal 11
+var termal11= img.select('B11');
+
+//LSE 11
+var LSE11 = termal11.expression(
+    '(0.977*(1-fvc))+(0.989*(fvc))',{
+      'fvc': fv.select('fv'),}).rename('LSE11');
+
+//m
+var m = LSE10.add(LSE11).divide(ee.Number(2)).rename('mLSE');
+
+//delta m
+var deltam = LSE10.subtract(LSE11).rename('deltaLSE');
+
+//Perhitungan LST
+var LST = img.expression(
+    '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
+    {
+     'TB10' : img201307.select('B10'),
+     'TB11' : img201307.select('B11'),
+     'm' : m1.select('mLSE'),
+     'deltam' : deltam1.select('deltaLSE')
+    }
+  ).rename('LST');
 ```
 4. Ekstraksi nilai NDVI dan LST dilakukan dengan mengambil sampel random berdasarkan area kajian pada lahan pertanian Kabupaten Mojokerto. Penentuan titik sampel menggunakan metode acak menggunakan fungsi ee.FeatureCollection.randomPoints(). Selanjutnya, nilai hasil ekstrasi NDVI dan LST diekport dalam format CSV.
 ```
-    var ndvi = img.normalizedDifference(['B5', 'B4']).rename('ndvi');
+//Mencari sampel
+var sampel= ee.FeatureCollection.randomPoints(pertanian_mojokerto);
+
+//Menggabungkan citra NDVI DAN LST
+var stacked = ndvi.addBands(LST2);
+
+//Ekstraksi Nilai NDVI dan LST berdasarkan sampel
+var imgSampel = stacked.sampleRegions({
+  collection: sampel,
+  scale:30
+})
+
+//Ekspor ke Tabel
+Export.table.toDrive({
+  collection: imgSampel1,
+  description: 'NDVIdanLST',
+  folder: 'PA_TVDI',
+  fileNamePrefix:'NDVIdanLST',
+  fileFormat: 'CSV'
+});
 ```
 6. Regresi linear antara nilai NDVI dan nilai LST menggunakan scatter plot bertujuan untuk memperoleh batas basah dan batas kering yang digunakan sebagai persamaan nilai indeks kekeringan TVDI. Regresi linear nilai NDVI dan LST dilakukan menggunakan Microsoft Excel
 7. Perhitungan nilai Temperature-Vegetation Dryness Index (TVDI). Nilai TVDI menghasilkan nilai minimum: 0 dan maximum: 1
-```
-    var ndvi = img.normalizedDifference(['B5', 'B4']).rename('ndvi');
-```
-9. Visualisasi Peta TVDI mengacu pada Sandholt (2002) yang membagi nilai TVDI menjadi 5 kelas yaitu: kelas basah (hijau tua), kelas agak basah (hijau muda), kelas normal (kuning), kelas agak kering (oranye), dan kelas kering (merah)
 ```
 //Batas Basah
 var LSTmin1 = ndvi201307.expression(
@@ -51,7 +111,9 @@ var LSTmax1 = ndvi201307.expression(
     
 //Menghitung TVDI
 var TVDI =(LST.subtract(LSTmin).divide(LSTmax.subtract(LSTmin)));
-
+```
+9. Visualisasi Peta TVDI mengacu pada Sandholt (2002) yang membagi nilai TVDI menjadi 5 kelas yaitu: kelas basah (hijau tua), kelas agak basah (hijau muda), kelas normal (kuning), kelas agak kering (oranye), dan kelas kering (merah)
+```
 //Simbolisasi nilai TVDI
 var sld_intervals =
   '<RasterSymbolizer>' +
