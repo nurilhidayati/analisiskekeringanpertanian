@@ -1,6 +1,6 @@
 # PERITANI: Dashboard Pemantauan Sebaran Kekeringan Pertanian Kabupaten Mojokerto, Provinsi jawa Timur Tahun 2013-2022
 
-## Tentang Earth Engine Apps
+## Tentang Project
 Eart Engine Apps yang manyajikan peta interaktif sebaran kekeringan pertanian di Kabupaten Mojokerto pada tahun 2013-2022. Informasi sebaran kekeringan pertanian diperoleh dari data citra Landsat 8 Collection 2 Tier 1 TOA Reflectance dengan interval perekaman dari perwakilan data tahun 2013 hingga 2022 saat musim kemarau. Metode yang digunakan untuk memetakan sebaran kekeringan adalah Temperature Vegetation Dryness Index (TVDI) yang memanfaatkan dua data masukan yaitu Normalized Difference Vegetation Index (NDVI) dan Land Surface Temperature (LST). Keseluruhan pengolahan hingga penyajian data dilakukan menggunakan platform Google Earth Engine menggunakan bahasa pemrograman JavaScript
 
 ## Data yang Digunakan:
