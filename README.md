@@ -1,7 +1,10 @@
 # PERITANI: Dashboard Pemantauan Sebaran Kekeringan Pertanian Kabupaten Mojokerto, Provinsi jawa Timur Tahun 2013-2022
 
 ## Tentang Project
-Eart Engine Apps yang manyajikan peta interaktif sebaran kekeringan pertanian di Kabupaten Mojokerto pada tahun 2013-2022. Informasi sebaran kekeringan pertanian diperoleh dari data citra Landsat 8 Collection 2 Tier 1 TOA Reflectance dengan interval perekaman dari perwakilan data tahun 2013 hingga 2022 saat musim kemarau. Metode yang digunakan untuk memetakan sebaran kekeringan adalah Temperature Vegetation Dryness Index (TVDI) yang memanfaatkan dua data masukan yaitu Normalized Difference Vegetation Index (NDVI) dan Land Surface Temperature (LST). Keseluruhan pengolahan hingga penyajian data dilakukan menggunakan platform Google Earth Engine menggunakan bahasa pemrograman JavaScript
+Earth Engine Apps yang manyajikan peta interaktif sebaran kekeringan pertanian di Kabupaten Mojokerto pada tahun 2013-2022. Informasi sebaran kekeringan pertanian diperoleh dari data citra Landsat 8 Collection 2 Tier 1 TOA Reflectance dengan interval perekaman dari perwakilan data tahun 2013 hingga 2022 saat musim kemarau. Metode yang digunakan untuk memetakan sebaran kekeringan adalah Temperature Vegetation Dryness Index (TVDI) yang memanfaatkan dua data masukan yaitu Normalized Difference Vegetation Index (NDVI) dan Land Surface Temperature (LST). Keseluruhan pengolahan hingga penyajian data dilakukan menggunakan platform Google Earth Engine menggunakan bahasa pemrograman JavaScript
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/99332005/172110105-f347d377-cbb0-46ae-a647-69443dbb9b4b.png", width="227" height="328">
+</p>
 
 ## Data yang Digunakan:
 1. Citra Landsat 8 Collection 2 Tier 1 TOA Reflectance Path/Row 118/65 dengan interval perekaman dari perwakilan data tahun 2013 hingga 2022 saat musim kemarau pada rentang bulan Juli-Oktober. Data Citra Landsat 8 di dapatkan dari Earth Engine Data Catalog. (http://developers.google.com/earthengine/datasets/catalog/LANDSAT_LC08_C02_T1_TOA0
