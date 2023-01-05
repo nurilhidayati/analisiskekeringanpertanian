@@ -11,23 +11,29 @@ PERITANI merupakan dashboard yang manyajikan peta interaktif sebaran kekeringan 
 
 
 ## Metode yang Digunakan:
-1. Perhitungan nilai Normalized Difference Vegetation Index (NDVI) diperoleh dari saluran merah (Band 4) dan saluran inframerah dekat (Band 5) pada Citra Landsat 8 Collection 2 Tier 1 TOA Reflectance.
+1. Menentukan area penelitian. Secara default penelitian ini menggunakan data shapefile lahan pertanian di Kabupaten Mojokerto sebagai batas area penelitian. Ini bisa diganti oleh data shapefile mana pun yang dikehendaki.
+2. Mendeskripsikan Citra Landsat 8 yang dikehendaki.
+```
+//Load data Citra Landsat 8 yang dipilih
+var img = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20130728').clip(mojokerto);
+```
+3. Perhitungan nilai Normalized Difference Vegetation Index (NDVI) diperoleh dari saluran merah (Band 4) dan saluran inframerah dekat (Band 5) pada Citra Landsat 8 Collection 2 Tier 1 TOA Reflectance.
 ```
 //Perhitungan Normalized Difference Vegetation Index (NDVI)  
 var ndvi = img.normalizedDifference(['B5', 'B4']).rename('ndvi');
 ```
-2. Perhitungan nilai Land Surface Temperature (LST) menggunakan metode Split Window Algorithm (SWA)
+4. Perhitungan nilai Land Surface Temperature (LST) menggunakan metode Split Window Algorithm (SWA)
 ```
 //Menentukan nilai Min dan Max NDVI
 {var minNDVI = ee.Number(ndvi.reduceRegion({
 reducer: ee.Reducer.min(),
-geometry: pertanian_mojokerto,
+geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
 var maxNDVI = ee.Number(ndvi.reduceRegion({
 reducer: ee.Reducer.max(),
-geometry: pertanian_mojokerto,
+geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));}
@@ -72,10 +78,10 @@ var LST = img.expression(
     }
   ).rename('LST');
 ```
-4. Ekstraksi nilai NDVI dan LST dilakukan dengan mengambil sampel random berdasarkan area kajian pada lahan pertanian Kabupaten Mojokerto. Penentuan titik sampel menggunakan metode acak menggunakan fungsi ee.FeatureCollection.randomPoints(). Selanjutnya, nilai hasil ekstrasi NDVI dan LST diekport dalam format CSV.
+5. Ekstraksi nilai NDVI dan LST dilakukan dengan mengambil sampel random berdasarkan area kajian pada lahan pertanian Kabupaten Mojokerto. Penentuan titik sampel menggunakan metode acak menggunakan fungsi ee.FeatureCollection.randomPoints(). Selanjutnya, nilai hasil ekstrasi NDVI dan LST diekport dalam format CSV.
 ```
 //Mendeskripsikan sampel sampel
-var sampel= ee.FeatureCollection.randomPoints(pertanian_mojokerto);
+var sampel= ee.FeatureCollection.randomPoints(mojokerto);
 
 //Menggabungkan citra NDVI DAN LST
 var stacked = ndvi.addBands(LST2);
@@ -111,7 +117,7 @@ var LSTmax1 = ndvi201307.expression(
 //Menghitung nilai Temperature Vegetation Dryness Index (TVDI)
 var TVDI =(LST.subtract(LSTmin).divide(LSTmax.subtract(LSTmin)));
 ```
-9. Visualisasi Peta TVDI mengacu pada Sandholt (2002) yang membagi nilai TVDI menjadi 5 kelas yaitu: kelas basah (hijau tua), kelas agak basah (hijau muda), kelas normal (kuning), kelas agak kering (oranye), dan kelas kering (merah)
+8. Visualisasi Peta TVDI mengacu pada Sandholt (2002) yang membagi nilai TVDI menjadi 5 kelas yaitu: kelas basah (hijau tua), kelas agak basah (hijau muda), kelas normal (kuning), kelas agak kering (oranye), dan kelas kering (merah)
 ```
 //Simbolisasi nilai TVDI 
 var sld_intervals =
@@ -132,7 +138,7 @@ var thresholds = ee.Image([0, 0.19, 0.39, 0.59, 0.79, 1]);
 //Menampilkan hasil TVDI
 Map.addLayer(TVDI.sldStyle(sld_intervals), {}, 'TVDI');
 ```
-11. Penyajian Peta TVDI menggunakan tampilan antarmuka Split Panel Map untuk memudahkan dalam membandingkan sebaran kekeringan pertanian setiap tahun perekamannya.
+9. Penyajian Peta TVDI menggunakan tampilan antarmuka Split Panel Map untuk memudahkan dalam membandingkan sebaran kekeringan pertanian setiap tahun perekamannya.
 ```
 // Pendeskripsian citra yang dimasukkan pada layer split panel
 var images = {
@@ -181,7 +187,7 @@ var linker = ui.Map.Linker([leftMap, rightMap]);
 leftMap.centerObject(mojokerto,10.3); 
 rightMap.centerObject(mojokerto,10.3);
 ```
-13. Uji Usabilitas dilakukan dengan menyebarkan kuisioner melalui Google Form untuk mengetahui penilaian dan respon dari pengguna mengenai pengalamannya menggunakan Earth Engine Apps ini
+10. Uji Usabilitas dilakukan dengan menyebarkan kuisioner melalui Google Form untuk mengetahui penilaian dan respon dari pengguna mengenai pengalamannya menggunakan Earth Engine Apps ini
 
 ## Credits
 Earth Engine Apps ini dibuat sebagai oleh Nuril Hidayati syarat Proyek Akhir (PA), serta dibimbing oleh Bapak Dwi Setyo Aji, S.Si., M.Sc..
