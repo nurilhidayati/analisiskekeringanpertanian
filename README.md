@@ -3,7 +3,7 @@
 ## Tentang Project
 Earth Engine Apps yang manyajikan peta interaktif sebaran kekeringan pertanian di Kabupaten Mojokerto pada tahun 2013-2022. Informasi sebaran kekeringan pertanian diperoleh dari data citra Landsat 8 Collection 2 Tier 1 TOA Reflectance dengan interval perekaman dari perwakilan data tahun 2013 hingga 2022 saat musim kemarau. Metode yang digunakan untuk memetakan sebaran kekeringan adalah Temperature Vegetation Dryness Index (TVDI) yang memanfaatkan dua data masukan yaitu Normalized Difference Vegetation Index (NDVI) dan Land Surface Temperature (LST). Keseluruhan pengolahan hingga penyajian data dilakukan menggunakan platform Google Earth Engine menggunakan bahasa pemrograman JavaScript
 <p align="center">
-  <img src="https://raw.githubusercontent.com/nurilhidayati/analisiskekeringanpertanian/main/dashboard.png", height="328">
+  <img src="https://github.com/nurilhidayati/analisiskekeringanpertanian/blob/main/dashboard%20EEAPS.png?raw=true", height="328">
 </p>
 
 ## Data yang Digunakan:
