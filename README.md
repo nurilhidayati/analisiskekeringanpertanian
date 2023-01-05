@@ -12,8 +12,8 @@ PERITANI merupakan dashboard yang manyajikan peta interaktif sebaran kekeringan 
 
 ## Metode yang Digunakan::
 1. Perhitungan nilai Normalized Difference Vegetation Index (NDVI) diperoleh dari saluran merah (Band 4) dan saluran inframerah dekat (Band 5) pada Citra Landsat 8 Collection 2 Tier 1 TOA Reflectance.
-```json
-    var ndvi : img.normalizedDifference(['B5', 'B4']).rename('ndvi');
+```
+    var ndvi = img.normalizedDifference(['B5', 'B4']).rename('ndvi');
 ```
 2. Perhitungan nilai Land Surface Temperature (LST) menggunakan metode Split Window Algorithm (SWA)
 3. Ekstraksi nilai NDVI dan LST dilakukan dengan mengambil sampel random berdasarkan area kajian pada lahan pertanian Kabupaten Mojokerto. Penentuan titik sampel menggunakan metode acak menggunakan fungsi ee.FeatureCollection.randomPoints(). Selanjutnya, nilai hasil ekstrasi NDVI dan LST diekport dalam format CSV.
