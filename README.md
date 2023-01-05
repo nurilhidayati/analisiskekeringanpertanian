@@ -192,6 +192,9 @@ rightMap.centerObject(mojokerto,10.3);
 ```
 10. Uji Usabilitas dilakukan dengan menyebarkan kuisioner melalui Google Form untuk mengetahui penilaian dan respon dari pengguna mengenai pengalamannya menggunakan Earth Engine Apps ini
 
+## Disclaimer
+Hasil pengolahan data sudah dilakukan uji akurasi pada dua data masukan yang digunakan, karena akurasi yang baik dari data masukan diperlukan agar nilai TVDI yang dihasilkan juga dapat akurat. Hasil uji akurasi dilakukan pada dua data masukan yaitu NDVI dan LST menghasilkan nilai akurasi NDVI pada lahan pertanian sebesar 83,33% dan rata-rata ketelitian nilai LST pada lahan pertanian sebesar 91,49%.
+
 ## Credits
 Earth Engine Apps ini dibuat sebagai oleh Nuril Hidayati syarat Proyek Akhir (PA), serta dibimbing oleh Bapak Dwi Setyo Aji, S.Si., M.Sc..
 
