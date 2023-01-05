@@ -64,6 +64,7 @@ var sld_intervals =
       '<ColorMapEntry color="#ff641b" quantity="1" label="Kelas Kering" />' +
     '</ColorMap>' +
   '</RasterSymbolizer>';
+ 
 // Memisahkan hasil dalam 8 kelas klasifikasi
 var thresholds = ee.Image([0, 0.19, 0.39, 0.59, 0.79, 1]);
 
