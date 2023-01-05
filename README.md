@@ -10,7 +10,7 @@ PERITANI merupakan dashboard yang manyajikan peta interaktif sebaran kekeringan 
 4. Informasi Validasi Nilai NDVI dan LST dari Survei Lapangan pada Bulan Oktober 2022
 
 
-## Metode yang Digunakan::
+## Metode yang Digunakan:
 1. Perhitungan nilai Normalized Difference Vegetation Index (NDVI) diperoleh dari saluran merah (Band 4) dan saluran inframerah dekat (Band 5) pada Citra Landsat 8 Collection 2 Tier 1 TOA Reflectance.
 ```
  var ndvi = img.normalizedDifference(['B5', 'B4']).rename('ndvi');
