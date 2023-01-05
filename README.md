@@ -102,12 +102,12 @@ Export.table.toDrive({
 5. Perhitungan nilai Temperature-Vegetation Dryness Index (TVDI). Nilai TVDI menghasilkan nilai minimum: 0 dan maximum: 1
 ```
 //Mendeskripsikan Batas Basah
-var LSTmin1 = ndvi.expression(
+var LSTmin = ndvi.expression(
     '((-3.4512 * ndvi) + 26.079)', {   //Didapatkan dari hasil regresi NDVI dan LST
     'ndvi': ndvi.select('ndvi1')});
 
 //Mendeskripsikan Batas Kering
-var LSTmax1 = ndvi.expression(
+var LSTmax = ndvi.expression(
     '((-2.4359 * ndvi) + 34.807)', {   //Didapatkan dari hasil regresi NDVI dan LST
     'ndvi': ndvi.select('ndvi1')});
     
