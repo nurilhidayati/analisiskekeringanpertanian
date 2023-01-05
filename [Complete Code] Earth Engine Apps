@@ -1173,6 +1173,269 @@ var classified18 = TVDI202109.lt(thresholds).reduce('sum').toInt();
 var classified19 = TVDI202208.lt(thresholds).reduce('sum').toInt();
 var classified20 = TVDI202210.lt(thresholds).reduce('sum').toInt();
 
+//MENGHITUNG LUAS TIAP KELAS DI TIAP CITRA
+// Menghitung jumpah pixel di seluruh lapisan
+var pixstats1 = classified1.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+var pixstats2 = classified2.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+var pixstats3 = classified3.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+var pixstats4 = classified4.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+var pixstats5 = classified5.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+var pixstats6 = classified6.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+var pixstats7 = classified7.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+var pixstats8 = classified8.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+var pixstats9 = classified9.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+var pixstats10 = classified10.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+var pixstats11 = classified11.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+var pixstats12 = classified12.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+var pixstats13 = classified13.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+var pixstats14 = classified14.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+var pixstats15 = classified15.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+var pixstats16 = classified16.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+var pixstats17 = classified17.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+var pixstats18 = classified18.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+var pixstats19 = classified19.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+var pixstats20 = classified20.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+// extract jumlah pixel menjadi angka
+var allpixels1 = ee.Number(pixstats1.get('sum')); 
+var allpixels2 = ee.Number(pixstats2.get('sum'));
+var allpixels3 = ee.Number(pixstats3.get('sum'));
+var allpixels4 = ee.Number(pixstats4.get('sum'));
+var allpixels5 = ee.Number(pixstats5.get('sum'));
+var allpixels6 = ee.Number(pixstats6.get('sum'));
+var allpixels7 = ee.Number(pixstats7.get('sum'));
+var allpixels8 = ee.Number(pixstats8.get('sum'));
+var allpixels9 = ee.Number(pixstats9.get('sum'));
+var allpixels10 = ee.Number(pixstats10.get('sum'));
+var allpixels11 = ee.Number(pixstats11.get('sum'));
+var allpixels12 = ee.Number(pixstats12.get('sum'));
+var allpixels13 = ee.Number(pixstats13.get('sum'));
+var allpixels14 = ee.Number(pixstats14.get('sum'));
+var allpixels15 = ee.Number(pixstats15.get('sum'));
+var allpixels16 = ee.Number(pixstats16.get('sum'));
+var allpixels17 = ee.Number(pixstats17.get('sum'));
+var allpixels18 = ee.Number(pixstats18.get('sum'));
+var allpixels19 = ee.Number(pixstats19.get('sum'));
+var allpixels20 = ee.Number(pixstats20.get('sum'));
+// Membuat daftar kosong untuk menyimpan suatu nilai area
+var arealist1 = [];
+var arealist2 = [];
+var arealist3 = [];
+var arealist4 = [];
+var arealist5 = [];
+var arealist6 = [];
+var arealist7 = [];
+var arealist8 = [];
+var arealist9 = [];
+var arealist10 = [];
+var arealist11 = [];
+var arealist12 = [];
+var arealist13 = [];
+var arealist14 = [];
+var arealist15 = [];
+var arealist16 = [];
+var arealist17 = [];
+var arealist18 = [];
+var arealist19 = [];
+var arealist20 = [];
+// Membuat fungsi untuk memperoleh tingkat satu kelas keparahan luka bakar
+// Argumen adalah nomor kelas dan nama kelas
+var areacount1 = function(cnr, name) {
+  var singleMask =  classified1.updateMask(classified1.eq(cnr));
+  var stats = singleMask.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+  var pix =  ee.Number(stats.get('sum'));
+  var hect = pix.multiply(900).divide(10000);                
+  var perc = pix.divide(allpixels1).multiply(10000).round().divide(100);   
+             arealist1.push({Class: name, Pixels: pix, Hectares: hect, Percentage: perc})};
+var areacount2 = function(cnr, name) {
+  var singleMask2 =  classified2.updateMask(classified2.eq(cnr));
+  var stats2 = singleMask2.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+  var pix2 =  ee.Number(stats2.get('sum'));
+  var hect2 = pix2.multiply(900).divide(10000);                
+  var perc2 = pix2.divide(allpixels2).multiply(10000).round().divide(100);   
+             arealist2.push({Class: name, Pixels: pix2, Hectares: hect2, Percentage: perc2})};
+var areacount3 = function(cnr, name) {
+  var singleMask3 =  classified3.updateMask(classified3.eq(cnr));
+  var stats3 = singleMask3.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+  var pix3 =  ee.Number(stats3.get('sum'));
+  var hect3 = pix3.multiply(900).divide(10000);                
+  var perc3 = pix3.divide(allpixels3).multiply(10000).round().divide(100);   
+             arealist3.push({Class: name, Pixels: pix3, Hectares: hect3, Percentage: perc3})};
+var areacount4 = function(cnr, name) {
+  var singleMask4 =  classified4.updateMask(classified4.eq(cnr));
+  var stats4 = singleMask4.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+  var pix4 =  ee.Number(stats4.get('sum'));
+  var hect4 = pix4.multiply(900).divide(10000);                
+  var perc4 = pix4.divide(allpixels4).multiply(10000).round().divide(100);   
+             arealist4.push({Class: name, Pixels: pix4, Hectares: hect4, Percentage: perc4})};
+var areacount5 = function(cnr, name) {
+  var singleMask5 =  classified5.updateMask(classified5.eq(cnr));
+  var stats5 = singleMask5.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+  var pix5 =  ee.Number(stats5.get('sum'));
+  var hect5 = pix5.multiply(900).divide(10000);                
+  var perc5 = pix5.divide(allpixels5).multiply(10000).round().divide(100);   
+             arealist5.push({Class: name, Pixels: pix5, Hectares: hect5, Percentage: perc5})};
+var areacount6 = function(cnr, name) {
+  var singleMask6 =  classified6.updateMask(classified6.eq(cnr));
+  var stats6 = singleMask6.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+  var pix6 =  ee.Number(stats6.get('sum'));
+  var hect6 = pix6.multiply(900).divide(10000);                
+  var perc6 = pix6.divide(allpixels6).multiply(10000).round().divide(100);   
+             arealist6.push({Class: name, Pixels: pix6, Hectares: hect6, Percentage: perc6})};
+var areacount7 = function(cnr, name) {
+  var singleMask7 =  classified7.updateMask(classified7.eq(cnr));
+  var stats7 = singleMask7.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+  var pix7 =  ee.Number(stats7.get('sum'));
+  var hect7 = pix7.multiply(900).divide(10000);                
+  var perc7 = pix7.divide(allpixels7).multiply(10000).round().divide(100);   
+             arealist7.push({Class: name, Pixels: pix7, Hectares: hect7, Percentage: perc7})};
+var areacount8 = function(cnr, name) {
+  var singleMask8 =  classified8.updateMask(classified8.eq(cnr));
+  var stats8 = singleMask8.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+  var pix8 =  ee.Number(stats8.get('sum'));
+  var hect8 = pix8.multiply(900).divide(10000);                
+  var perc8 = pix8.divide(allpixels8).multiply(10000).round().divide(100);   
+             arealist8.push({Class: name, Pixels: pix8, Hectares: hect8, Percentage: perc8})};
+var areacount9 = function(cnr, name) {
+  var singleMask9 =  classified9.updateMask(classified9.eq(cnr));
+  var stats9 = singleMask9.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+  var pix9 =  ee.Number(stats9.get('sum'));
+  var hect9 = pix9.multiply(900).divide(10000);                
+  var perc9 = pix9.divide(allpixels9).multiply(10000).round().divide(100);   
+             arealist9.push({Class: name, Pixels: pix9, Hectares: hect9, Percentage: perc9})};
+var areacount10 = function(cnr, name) {
+  var singleMask10 =  classified10.updateMask(classified10.eq(cnr));
+  var stats10 = singleMask10.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+  var pix10 =  ee.Number(stats10.get('sum'));
+  var hect10 = pix10.multiply(900).divide(10000);                
+  var perc10 = pix10.divide(allpixels10).multiply(10000).round().divide(100);   
+             arealist10.push({Class: name, Pixels: pix10, Hectares: hect10, Percentage: perc10})};
+var areacount11 = function(cnr, name) {
+  var singleMask11 =  classified11.updateMask(classified11.eq(cnr));
+  var stats11 = singleMask11.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+  var pix11 =  ee.Number(stats11.get('sum'));
+  var hect11 = pix11.multiply(900).divide(10000);                
+  var perc11 = pix11.divide(allpixels11).multiply(10000).round().divide(100);   
+             arealist11.push({Class: name, Pixels: pix11, Hectares: hect11, Percentage: perc11})};
+var areacount12 = function(cnr, name) {
+  var singleMask12 =  classified12.updateMask(classified12.eq(cnr));
+  var stats12 = singleMask12.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+  var pix12 =  ee.Number(stats12.get('sum'));
+  var hect12 = pix12.multiply(900).divide(10000);                
+  var perc12 = pix12.divide(allpixels12).multiply(10000).round().divide(100);   
+             arealist12.push({Class: name, Pixels: pix12, Hectares: hect12, Percentage: perc12})};
+
+
+var areacount13 = function(cnr, name) {
+  var singleMask13 =  classified13.updateMask(classified13.eq(cnr));
+  var stats13 = singleMask13.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+  var pix13 =  ee.Number(stats13.get('sum'));
+  var hect13 = pix13.multiply(900).divide(10000);                
+  var perc13 = pix13.divide(allpixels13).multiply(10000).round().divide(100);   
+             arealist13.push({Class: name, Pixels: pix13, Hectares: hect13, Percentage: perc13})};
+
+var areacount14 = function(cnr, name) {
+  var singleMask14 =  classified14.updateMask(classified14.eq(cnr));
+  var stats14 = singleMask14.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+  var pix14 =  ee.Number(stats14.get('sum'));
+  var hect14 = pix14.multiply(900).divide(10000);                
+  var perc14 = pix14.divide(allpixels14).multiply(10000).round().divide(100);   
+             arealist14.push({Class: name, Pixels: pix14, Hectares: hect14, Percentage: perc14})};
+
+var areacount15 = function(cnr, name) {
+  var singleMask15 =  classified15.updateMask(classified15.eq(cnr));
+  var stats15 = singleMask15.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+  var pix15 =  ee.Number(stats15.get('sum'));
+  var hect15 = pix15.multiply(900).divide(10000);                
+  var perc15 = pix15.divide(allpixels15).multiply(10000).round().divide(100);   
+             arealist15.push({Class: name, Pixels: pix15, Hectares: hect15, Percentage: perc15})};
+
+var areacount16 = function(cnr, name) {
+  var singleMask16 =  classified16.updateMask(classified16.eq(cnr));
+  var stats16 = singleMask16.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+  var pix16 =  ee.Number(stats16.get('sum'));
+  var hect16 = pix16.multiply(900).divide(10000);                
+  var perc16 = pix16.divide(allpixels16).multiply(10000).round().divide(100);   
+             arealist16.push({Class: name, Pixels: pix16, Hectares: hect16, Percentage: perc16})};
+
+
+var areacount17 = function(cnr, name) {
+  var singleMask17 =  classified17.updateMask(classified17.eq(cnr));
+  var stats17 = singleMask17.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+  var pix17 =  ee.Number(stats17.get('sum'));
+  var hect17 = pix17.multiply(900).divide(10000);                
+  var perc17 = pix17.divide(allpixels17).multiply(10000).round().divide(100);   
+             arealist17.push({Class: name, Pixels: pix17, Hectares: hect17, Percentage: perc17})};
+
+var areacount18 = function(cnr, name) {
+  var singleMask18 =  classified18.updateMask(classified18.eq(cnr));
+  var stats18 = singleMask18.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+  var pix18 =  ee.Number(stats18.get('sum'));
+  var hect18 = pix18.multiply(900).divide(10000);                
+  var perc18 = pix18.divide(allpixels18).multiply(10000).round().divide(100);   
+             arealist18.push({Class: name, Pixels: pix18, Hectares: hect18, Percentage: perc18})};
+
+var areacount19 = function(cnr, name) {
+  var singleMask19 =  classified19.updateMask(classified19.eq(cnr));
+  var stats19 = singleMask19.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+  var pix19 =  ee.Number(stats19.get('sum'));
+  var hect19 = pix19.multiply(900).divide(10000);                
+  var perc19 = pix19.divide(allpixels19).multiply(10000).round().divide(100);   
+             arealist19.push({Class: name, Pixels: pix19, Hectares: hect19, Percentage: perc19})};
+
+var areacount20 = function(cnr, name) {
+  var singleMask20 =  classified20.updateMask(classified20.eq(cnr));
+  var stats20 = singleMask20.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
+  var pix20 =  ee.Number(stats20.get('sum'));
+  var hect20 = pix20.multiply(900).divide(10000);                
+  var perc20 = pix20.divide(allpixels20).multiply(10000).round().divide(100);   
+             arealist20.push({Class: name, Pixels: pix20, Hectares: hect20, Percentage: perc20})};
+
+
+// Urutan berbeda untuk kelas keparahan 
+var names2 =  [ 'NA','Kering','Agak Kering', 'Normal', 'Agak Basah','Basah'];
+// Menjalankan fungsi di setiap kelas
+for (var i = 0; i < 6; i++) {areacount1(i, names2[i]);}
+for (var i = 0; i < 6; i++) {areacount2(i, names2[i]);}
+for (var i = 0; i < 6; i++) {areacount3(i, names2[i]);}
+for (var i = 0; i < 6; i++) {areacount4(i, names2[i]);}
+for (var i = 0; i < 6; i++) {areacount5(i, names2[i]);}
+for (var i = 0; i < 6; i++) {areacount6(i, names2[i]);}
+for (var i = 0; i < 6; i++) {areacount7(i, names2[i]);}
+for (var i = 0; i < 6; i++) {areacount8(i, names2[i]);}
+for (var i = 0; i < 6; i++) {areacount9(i, names2[i]);}
+for (var i = 0; i < 6; i++) {areacount10(i, names2[i]);}
+for (var i = 0; i < 6; i++) {areacount11(i, names2[i]);}
+for (var i = 0; i < 6; i++) {areacount12(i, names2[i]);}
+for (var i = 0; i < 6; i++) {areacount13(i, names2[i]);}
+for (var i = 0; i < 6; i++) {areacount14(i, names2[i]);}
+for (var i = 0; i < 6; i++) {areacount15(i, names2[i]);}
+for (var i = 0; i < 6; i++) {areacount16(i, names2[i]);}
+for (var i = 0; i < 6; i++) {areacount17(i, names2[i]);}
+for (var i = 0; i < 6; i++) {areacount18(i, names2[i]);}
+for (var i = 0; i < 6; i++) {areacount19(i, names2[i]);}
+for (var i = 0; i < 6; i++) {areacount20(i, names2[i]);}
+print('Jul 2013', arealist1);
+print('Okt 2013', arealist2);
+print('Sep 2014', arealist3);
+print('Okt 2014', arealist4);
+print('Agt 2015', arealist5);
+print('Okt 2015', arealist6);
+print('Agt 2016', arealist7);
+print('Sep 2016', arealist8);
+print('Agt 2017', arealist9);
+print('Sep 2017', arealist10);
+print('Agt 2018', arealist11);
+print('Sep 2018', arealist12);
+print('Agt 2019', arealist13);
+print('Okt 2019', arealist14);
+print('Sep 2020', arealist15);
+print('Okt 2020', arealist16);
+print('Agt 2021', arealist17);
+print('Sep 2021', arealist18);
+print('Agt 2022', arealist19);
+print('Okt 2022', arealist20);
+
+
 
 //Menampilkan hasil tvdi
 Map.addLayer(TVDI201307.sldStyle(sld_intervals), {}, 'Jul 2013');
