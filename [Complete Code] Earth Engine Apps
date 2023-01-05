@@ -1,8 +1,10 @@
 var mojokerto= ee.FeatureCollection("users/nurilassajdah/pertanian_mojokerto");
 var mojokertokec= ee.FeatureCollection("users/nurilassajdah/kecamatan_mojokerto");
 var sampel= ee.FeatureCollection.randomPoints(mojokerto);
+//print('Titik Sampel pada Lahan Pertanian', titikSampel);
+//Map.addLayer(titikSampel, {color: 'black'}, 'Titik Sampel');
 
-var img201307 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20130914').clip(mojokerto);
+var img201309 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20130914').clip(mojokerto);
 var img201310 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20131016').clip(mojokerto);
 var img201409 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20140917').clip(mojokerto);
 var img201410 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20141003').clip(mojokerto);
@@ -24,7 +26,7 @@ var img202208 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20220822').clip(mo
 var img202210 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20221009').clip(mojokerto);
 
 //NDVI
-var ndvi201307 = img201307.normalizedDifference(['B5', 'B4']).rename('ndvi1');
+var ndvi201309 = img201309.normalizedDifference(['B5', 'B4']).rename('ndvi1');
 var ndvi201310 = img201310.normalizedDifference(['B5', 'B4']).rename('ndvi2');
 var ndvi201409 = img201409.normalizedDifference(['B5', 'B4']).rename('ndvi3');
 var ndvi201410 = img201410.normalizedDifference(['B5', 'B4']).rename('ndvi4');
@@ -46,21 +48,21 @@ var ndvi202208 = img202208.normalizedDifference(['B5', 'B4']).rename('ndvi19');
 var ndvi202210 = img202210.normalizedDifference(['B5', 'B4']).rename('ndvi20');
 
 //NDVI
-{var minNDVI1 = ee.Number(ndvi201307.reduceRegion({
+{var minNDVI1 = ee.Number(ndvi201309.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
 
-var maxNDVI1 = ee.Number(ndvi201307.reduceRegion({
+var maxNDVI1 = ee.Number(ndvi201309.reduceRegion({
 reducer: ee.Reducer.max(),
 geometry: mojokerto,
 scale: 30,
 maxPixels: 1e9
 }).values().get(0));
 
-var meanNDVI1 = ee.Number(ndvi201307.reduceRegion({
+var meanNDVI1 = ee.Number(ndvi201309.reduceRegion({
 reducer: ee.Reducer.mean(),
 geometry: mojokerto,
 scale: 30,
@@ -509,7 +511,7 @@ maxPixels: 1e9
 var soil = ee.Number(0.2)
 
 //fvc
-var fv1 =(ndvi201307.subtract(soil).divide(maxNDVI1.subtract(soil))).rename('fv1');
+var fv1 =(ndvi201309.subtract(soil).divide(maxNDVI1.subtract(soil))).rename('fv1');
 var fv2 =(ndvi201310.subtract(soil).divide(maxNDVI2.subtract(soil))).rename('fv2');
 var fv3 =(ndvi201409.subtract(soil).divide(maxNDVI3.subtract(soil))).rename('fv3');
 var fv4 =(ndvi201410.subtract(soil).divide(maxNDVI4.subtract(soil))).rename('fv4');
@@ -531,7 +533,7 @@ var fv19 =(ndvi202208.subtract(soil).divide(maxNDVI19.subtract(soil))).rename('f
 var fv20 =(ndvi202210.subtract(soil).divide(maxNDVI20.subtract(soil))).rename('fv20');
 
 //termal 10
-var termal10_1= img201307.select('B10');
+var termal10_1= img201309.select('B10');
 var termal10_2= img201310.select('B10');
 var termal10_3= img201409.select('B10');
 var termal10_4= img201410.select('B10');
@@ -615,7 +617,7 @@ var LSE10_20 = termal10_20.expression(
       'fvc': fv20.select('fv20'),}).rename('LSE10_20');
 
 //termal 11
-var termal11_1= img201307.select('B11');
+var termal11_1= img201309.select('B11');
 var termal11_2= img201310.select('B11');
 var termal11_3= img201409.select('B11');
 var termal11_4= img201410.select('B11');
@@ -745,11 +747,11 @@ var deltam20 = LSE10_20.subtract(LSE11_20).rename('deltaLSE20');
 
 
 //LST
-var LST201307 = img201307.expression(
+var LST201309 = img201309.expression(
     '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
     {
-     'TB10' : img201307.select('B10'),
-     'TB11' : img201307.select('B11'),
+     'TB10' : img201309.select('B10'),
+     'TB11' : img201309.select('B11'),
      'm' : m1.select('mLSE1'),
      'deltam' : deltam1.select('deltaLSE1')
     }
@@ -949,19 +951,361 @@ var LST202210 = img202210.expression(
   ).rename('LST20');
 
 
+//Ekstraksi Nilai NDVI dan LST
+var sampel= ee.FeatureCollection.randomPoints(mojokerto);
+
+//LAYER STACKING NDVI DAN LST
+var stacked1 = ndvi201309.addBands(LST201309);
+var stacked2 = ndvi201310.addBands(LST201310);
+var stacked3 = ndvi201409.addBands(LST201409);
+var stacked4 = ndvi201410.addBands(LST201410);
+var stacked5 = ndvi201508.addBands(LST201508);
+var stacked6 = ndvi201510.addBands(LST201510);
+var stacked7 = ndvi201608.addBands(LST201608);
+var stacked8 = ndvi201609.addBands(LST201609);
+var stacked9 = ndvi201708.addBands(LST201708);
+var stacked10 = ndvi201709.addBands(LST201709);
+var stacked11 = ndvi201808.addBands(LST201808);
+var stacked12 = ndvi201809.addBands(LST201809);
+var stacked13 = ndvi201908.addBands(LST201908);
+var stacked14 = ndvi201910.addBands(LST201910);
+var stacked15 = ndvi202009.addBands(LST202009);
+var stacked16 = ndvi202010.addBands(LST202010);
+var stacked17 = ndvi202108.addBands(LST202108);
+var stacked18 = ndvi202109.addBands(LST202109);
+var stacked19 = ndvi202208.addBands(LST202208);
+var stacked20 = ndvi202210.addBands(LST202210);
+
+//Ekstraksi Nilai NDVI dan LST berdasarkan sampel
+var imgSampel1 = stacked1.sampleRegions({
+  collection: sampel,
+  scale:30
+})
+
+var imgSampel2 = stacked2.sampleRegions({
+    collection: sampel,
+    scale:30
+  })
+
+var imgSampel3 = stacked3.sampleRegions({
+  collection: sampel,
+  scale:30
+})
+
+var imgSampel4 = stacked4.sampleRegions({
+    collection: sampel,
+    scale:30
+  })
+
+var imgSampel5 = stacked5.sampleRegions({
+  collection: sampel,
+  scale:30
+})
+var imgSampel6 = stacked6.sampleRegions({
+    collection: sampel,
+    scale:30
+  })
+var imgSampel7 = stacked7.sampleRegions({
+  collection: sampel,
+  scale:30
+})
+var imgSampel8 = stacked8.sampleRegions({
+    collection: sampel,
+    scale:30
+  })
+
+var imgSampel9 = stacked9.sampleRegions({
+  collection: sampel,
+  scale:30
+})
+
+var imgSampel10 = stacked10.sampleRegions({
+    collection: sampel,
+    scale:30
+  })
+
+var imgSampel11 = stacked11.sampleRegions({
+  collection: sampel,
+  scale:30
+})
+var imgSampel12 = stacked12.sampleRegions({
+    collection: sampel,
+    scale:30
+  })
+var imgSampel13 = stacked13.sampleRegions({
+  collection: sampel,
+  scale:30
+})
+var imgSampel14 = stacked14.sampleRegions({
+    collection: sampel,
+    scale:30
+  })
+var imgSampel15 = stacked15.sampleRegions({
+  collection: sampel,
+  scale:30
+})
+var imgSampel16 = stacked16.sampleRegions({
+    collection: sampel,
+    scale:30
+  })
+var imgSampel17 = stacked17.sampleRegions({
+  collection: sampel,
+  scale:30
+})
+var imgSampel18 = stacked18.sampleRegions({
+  collection: sampel,
+  scale:30
+})
+var imgSampel19 = stacked19.sampleRegions({
+    collection: sampel,
+    scale:30
+  })
+var imgSampel20 = stacked20.sampleRegions({
+  collection: sampel,
+  scale:30
+})
+        
+  
+//Ekspor ke Tabel
+Export.table.toDrive({
+  collection: imgSampel1,
+  description: 'Sep2013',
+  folder: 'PA_TVDI',
+  fileNamePrefix:'Sep2013',
+  fileFormat: 'CSV'
+});
+Export.table.toDrive({
+    collection: imgSampel2,
+    description: 'Okt2013',
+    folder: 'PA_TVDI',
+    fileNamePrefix:'Okt2013',
+    fileFormat: 'CSV'
+  });
+Export.table.toDrive({
+    collection: imgSampel3,
+    description: 'Sep2014',
+    folder: 'PA_TVDI',
+    fileNamePrefix:'Sep2014',
+    fileFormat: 'CSV'
+  });
+Export.table.toDrive({
+    collection: imgSampel4,
+    description: 'Okt2014',
+    folder: 'PA_TVDI',
+    fileNamePrefix:'Okt2014',
+    fileFormat: 'CSV'
+  });
+Export.table.toDrive({
+    collection: imgSampel5,
+    description: 'Agt2015',
+    folder: 'PA_TVDI',
+    fileNamePrefix:'Agt2015',
+    fileFormat: 'CSV'
+  });
+Export.table.toDrive({
+    collection: imgSampel6,
+    description: 'Okt2015',
+    folder: 'PA_TVDI',
+    fileNamePrefix:'Okt2015',
+    fileFormat: 'CSV'
+  });
+Export.table.toDrive({
+    collection: imgSampel7,
+    description: 'Agt2016',
+    folder: 'PA_TVDI',
+    fileNamePrefix:'Agt2016',
+    fileFormat: 'CSV'
+  });
+Export.table.toDrive({
+    collection: imgSampel8,
+    description: 'Sep2016',
+    folder: 'PA_TVDI',
+    fileNamePrefix:'Sep2016',
+    fileFormat: 'CSV'
+  });
+Export.table.toDrive({
+    collection: imgSampel9,
+    description: 'Agt2017',
+    folder: 'PA_TVDI',
+    fileNamePrefix:'Agt2017',
+    fileFormat: 'CSV'
+  });
+Export.table.toDrive({
+    collection: imgSampel10,
+    description: 'Sep2017',
+    folder: 'PA_TVDI',
+    fileNamePrefix:'Sep2017',
+    fileFormat: 'CSV'
+  });
+Export.table.toDrive({
+    collection: imgSampel11,
+    description: 'Agt2018',
+    folder: 'PA_TVDI',
+    fileNamePrefix:'Agt2018',
+    fileFormat: 'CSV'
+  });
+Export.table.toDrive({
+    collection: imgSampel12,
+    description: 'Sep2018',
+    folder: 'PA_TVDI',
+    fileNamePrefix:'Sep2018',
+    fileFormat: 'CSV'
+  });
+Export.table.toDrive({
+    collection: imgSampel13,
+    description: 'Agt2019',
+    folder: 'PA_TVDI',
+    fileNamePrefix:'Agt2019',
+    fileFormat: 'CSV'
+  });
+Export.table.toDrive({
+    collection: imgSampel14,
+    description: 'Okt2019',
+    folder: 'PA_TVDI',
+    fileNamePrefix:'Okt2019',
+    fileFormat: 'CSV'
+  });
+Export.table.toDrive({
+    collection: imgSampel15,
+    description: 'Sep2020',
+    folder: 'PA_TVDI',
+    fileNamePrefix:'Sep2020',
+    fileFormat: 'CSV'
+  });
+Export.table.toDrive({
+    collection: imgSampel16,
+    description: 'Okt2020',
+    folder: 'PA_TVDI',
+    fileNamePrefix:'Okt2020',
+    fileFormat: 'CSV'
+  });
+Export.table.toDrive({
+    collection: imgSampel17,
+    description: 'Agt2021',
+    folder: 'PA_TVDI',
+    fileNamePrefix:'Agt2021',
+    fileFormat: 'CSV'
+  });
+Export.table.toDrive({
+    collection: imgSampel18,
+    description: 'Sep2021',
+    folder: 'PA_TVDI',
+    fileNamePrefix:'Sep2021',
+    fileFormat: 'CSV'
+  });
+Export.table.toDrive({
+    collection: imgSampel19,
+    description: 'Agt2022',
+    folder: 'PA_TVDI',
+    fileNamePrefix:'Agt2022',
+    fileFormat: 'CSV'
+  });
+Export.table.toDrive({
+    collection: imgSampel20,
+    description: 'Okt2022',
+    folder: 'PA_TVDI',
+    fileNamePrefix:'Okt2022',
+    fileFormat: 'CSV'
+  });
+  
+
+
+
+//Pengolahan LAI
+var LAI201309 = ndvi201309.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201309.select('ndvi1'),}).rename('lai1');
+
+var LAI201310 = ndvi201310.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201310.select('ndvi2'),}).rename('lai2');
+
+var LAI201409 = ndvi201409.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201409.select('ndvi3'),}).rename('lai3');
+
+var LAI201410 = ndvi201410.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201410.select('ndvi4'),}).rename('lai4');
+
+var LAI201508 = ndvi201508.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201508.select('ndvi5'),}).rename('lai5')
+
+var LAI201510 = ndvi201510.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201510.select('ndvi6'),}).rename('lai6');
+
+var LAI201608 = ndvi201608.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201608.select('ndvi7'),}).rename('lai7');
+
+var LAI201609 = ndvi201609.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201609.select('ndvi8'),}).rename('lai8');
+  
+var LAI201708 = ndvi201708.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201708.select('ndvi9'),}).rename('lai9');
+
+var LAI201709 = ndvi201709.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201709.select('ndvi10'),}).rename('lai10');
+  
+var LAI201808 = ndvi201808.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201808.select('ndvi11'),}).rename('lai11');
+
+var LAI201809 = ndvi201809.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201809.select('ndvi12'),}).rename('lai12');
+
+var LAI201908 = ndvi201908.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201908.select('ndvi13'),}).rename('lai13');
+
+var LAI201910 = ndvi201910.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi201910.select('ndvi14'),}).rename('lai14');
+
+var LAI202009 = ndvi202009.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi202009.select('ndvi15'),}).rename('lai15');
+
+var LAI202010 = ndvi202010.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi202010.select('ndvi16'),}).rename('lai16');
+
+var LAI202108 = ndvi202108.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi202108.select('ndvi17'),}).rename('lai17');
+
+var LAI202109 = ndvi202109.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi202109.select('ndvi18'),}).rename('lai18');
+
+var LAI202208 = ndvi202208.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi202208.select('ndvi19'),}).rename('lai19');
+
+var LAI202210 = ndvi202210.expression(
+  '0.57 * exp(2.33 * NDVI)',{
+  'NDVI':ndvi202210.select('ndvi20'),}).rename('lai20');
+
+
 
 //-------------------------- TVDI --------------------
 //MIN ALGORITMA
-var LSTmin1 = ndvi201307.expression(
-    '((2.2658 * ndvi) + 28.677)', {
-    'ndvi': ndvi201307.select('ndvi1')});
+var LSTmin1 = ndvi201309.expression(
+    '((-3.4512 * ndvi) + 26.079)', {
+    'ndvi': ndvi201309.select('ndvi1')});
 
 var LSTmin2 = ndvi201310.expression(
     '((6.7403 * ndvi) + 26.088)', {
     'ndvi': ndvi201310.select('ndvi2')});
 
 var LSTmin3 = ndvi201409.expression(
-    '((-2.4659 * ndvi) + 32.215)', {
+    '((-2.8535 * ndvi) +23.936)', {
     'ndvi': ndvi201409.select('ndvi3')});
 
 var LSTmin4 = ndvi201410.expression(
@@ -1033,19 +1377,17 @@ var LSTmin20 = ndvi202210.expression(
     'ndvi': ndvi202210.select('ndvi20')});
 
 //MAX ALGORITMA
-var LSTmax1 = ndvi201307.expression(
-    '((-5.4556 * ndvi) + 42.763)', {
-    'ndvi': ndvi201307.select('ndvi1')});
+var LSTmax1 = ndvi201309.expression(
+    '((-2.4359 * ndvi) + 34.807)', {
+    'ndvi': ndvi201309.select('ndvi1')});
 
 var LSTmax2 = ndvi201310.expression(
     '((-4.7643 * ndvi)  + 41.793)', {
     'ndvi': ndvi201310.select('ndvi2')});
 
 var LSTmax3 = ndvi201409.expression(
-    '((-5.3105 * ndvi) + 42.68)', {
+    '((-2.8071 * ndvi) + 32.584)', {
     'ndvi': ndvi201409.select('ndvi3')});
-
-
 
 var LSTmax4 = ndvi201410.expression(
     '((-11.583 * ndvi)  + 45.803)', {
@@ -1116,7 +1458,7 @@ var LSTmax20 = ndvi202210.expression(
     'ndvi': ndvi202210.select('ndvi20')});
 
 //TVDI
-var TVDI201307 =(LST201307.subtract(LSTmin1).divide(LSTmax1.subtract(LSTmin1)));
+var TVDI201309 =(LST201309.subtract(LSTmin1).divide(LSTmax1.subtract(LSTmin1)));
 var TVDI201310 =(LST201310.subtract(LSTmin2).divide(LSTmax2.subtract(LSTmin2)));
 var TVDI201409 =(LST201409.subtract(LSTmin3).divide(LSTmax3.subtract(LSTmin3)));
 var TVDI201410 =(LST201410.subtract(LSTmin4).divide(LSTmax4.subtract(LSTmin4)));
@@ -1152,7 +1494,7 @@ var sld_intervals =
   '</RasterSymbolizer>';
 // Memisahkan hasil dalam 8 kelas klasifikasi
 var thresholds = ee.Image([-3, 0.2, 0.4, 0.6, 0.8, 3]);
-var classified1 = TVDI201307.lt(thresholds).reduce('sum').toInt();
+var classified1 = TVDI201309.lt(thresholds).reduce('sum').toInt();
 var classified2 = TVDI201310.lt(thresholds).reduce('sum').toInt();
 var classified3 = TVDI201409.lt(thresholds).reduce('sum').toInt();
 var classified4 = TVDI201410.lt(thresholds).reduce('sum').toInt();
@@ -1173,272 +1515,9 @@ var classified18 = TVDI202109.lt(thresholds).reduce('sum').toInt();
 var classified19 = TVDI202208.lt(thresholds).reduce('sum').toInt();
 var classified20 = TVDI202210.lt(thresholds).reduce('sum').toInt();
 
-//MENGHITUNG LUAS TIAP KELAS DI TIAP CITRA
-// Menghitung jumpah pixel di seluruh lapisan
-var pixstats1 = classified1.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-var pixstats2 = classified2.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-var pixstats3 = classified3.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-var pixstats4 = classified4.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-var pixstats5 = classified5.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-var pixstats6 = classified6.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-var pixstats7 = classified7.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-var pixstats8 = classified8.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-var pixstats9 = classified9.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-var pixstats10 = classified10.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-var pixstats11 = classified11.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-var pixstats12 = classified12.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-var pixstats13 = classified13.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-var pixstats14 = classified14.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-var pixstats15 = classified15.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-var pixstats16 = classified16.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-var pixstats17 = classified17.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-var pixstats18 = classified18.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-var pixstats19 = classified19.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-var pixstats20 = classified20.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-// extract jumlah pixel menjadi angka
-var allpixels1 = ee.Number(pixstats1.get('sum')); 
-var allpixels2 = ee.Number(pixstats2.get('sum'));
-var allpixels3 = ee.Number(pixstats3.get('sum'));
-var allpixels4 = ee.Number(pixstats4.get('sum'));
-var allpixels5 = ee.Number(pixstats5.get('sum'));
-var allpixels6 = ee.Number(pixstats6.get('sum'));
-var allpixels7 = ee.Number(pixstats7.get('sum'));
-var allpixels8 = ee.Number(pixstats8.get('sum'));
-var allpixels9 = ee.Number(pixstats9.get('sum'));
-var allpixels10 = ee.Number(pixstats10.get('sum'));
-var allpixels11 = ee.Number(pixstats11.get('sum'));
-var allpixels12 = ee.Number(pixstats12.get('sum'));
-var allpixels13 = ee.Number(pixstats13.get('sum'));
-var allpixels14 = ee.Number(pixstats14.get('sum'));
-var allpixels15 = ee.Number(pixstats15.get('sum'));
-var allpixels16 = ee.Number(pixstats16.get('sum'));
-var allpixels17 = ee.Number(pixstats17.get('sum'));
-var allpixels18 = ee.Number(pixstats18.get('sum'));
-var allpixels19 = ee.Number(pixstats19.get('sum'));
-var allpixels20 = ee.Number(pixstats20.get('sum'));
-// Membuat daftar kosong untuk menyimpan suatu nilai area
-var arealist1 = [];
-var arealist2 = [];
-var arealist3 = [];
-var arealist4 = [];
-var arealist5 = [];
-var arealist6 = [];
-var arealist7 = [];
-var arealist8 = [];
-var arealist9 = [];
-var arealist10 = [];
-var arealist11 = [];
-var arealist12 = [];
-var arealist13 = [];
-var arealist14 = [];
-var arealist15 = [];
-var arealist16 = [];
-var arealist17 = [];
-var arealist18 = [];
-var arealist19 = [];
-var arealist20 = [];
-// Membuat fungsi untuk memperoleh tingkat satu kelas keparahan luka bakar
-// Argumen adalah nomor kelas dan nama kelas
-var areacount1 = function(cnr, name) {
-  var singleMask =  classified1.updateMask(classified1.eq(cnr));
-  var stats = singleMask.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-  var pix =  ee.Number(stats.get('sum'));
-  var hect = pix.multiply(900).divide(10000);                
-  var perc = pix.divide(allpixels1).multiply(10000).round().divide(100);   
-             arealist1.push({Class: name, Pixels: pix, Hectares: hect, Percentage: perc})};
-var areacount2 = function(cnr, name) {
-  var singleMask2 =  classified2.updateMask(classified2.eq(cnr));
-  var stats2 = singleMask2.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-  var pix2 =  ee.Number(stats2.get('sum'));
-  var hect2 = pix2.multiply(900).divide(10000);                
-  var perc2 = pix2.divide(allpixels2).multiply(10000).round().divide(100);   
-             arealist2.push({Class: name, Pixels: pix2, Hectares: hect2, Percentage: perc2})};
-var areacount3 = function(cnr, name) {
-  var singleMask3 =  classified3.updateMask(classified3.eq(cnr));
-  var stats3 = singleMask3.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-  var pix3 =  ee.Number(stats3.get('sum'));
-  var hect3 = pix3.multiply(900).divide(10000);                
-  var perc3 = pix3.divide(allpixels3).multiply(10000).round().divide(100);   
-             arealist3.push({Class: name, Pixels: pix3, Hectares: hect3, Percentage: perc3})};
-var areacount4 = function(cnr, name) {
-  var singleMask4 =  classified4.updateMask(classified4.eq(cnr));
-  var stats4 = singleMask4.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-  var pix4 =  ee.Number(stats4.get('sum'));
-  var hect4 = pix4.multiply(900).divide(10000);                
-  var perc4 = pix4.divide(allpixels4).multiply(10000).round().divide(100);   
-             arealist4.push({Class: name, Pixels: pix4, Hectares: hect4, Percentage: perc4})};
-var areacount5 = function(cnr, name) {
-  var singleMask5 =  classified5.updateMask(classified5.eq(cnr));
-  var stats5 = singleMask5.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-  var pix5 =  ee.Number(stats5.get('sum'));
-  var hect5 = pix5.multiply(900).divide(10000);                
-  var perc5 = pix5.divide(allpixels5).multiply(10000).round().divide(100);   
-             arealist5.push({Class: name, Pixels: pix5, Hectares: hect5, Percentage: perc5})};
-var areacount6 = function(cnr, name) {
-  var singleMask6 =  classified6.updateMask(classified6.eq(cnr));
-  var stats6 = singleMask6.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-  var pix6 =  ee.Number(stats6.get('sum'));
-  var hect6 = pix6.multiply(900).divide(10000);                
-  var perc6 = pix6.divide(allpixels6).multiply(10000).round().divide(100);   
-             arealist6.push({Class: name, Pixels: pix6, Hectares: hect6, Percentage: perc6})};
-var areacount7 = function(cnr, name) {
-  var singleMask7 =  classified7.updateMask(classified7.eq(cnr));
-  var stats7 = singleMask7.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-  var pix7 =  ee.Number(stats7.get('sum'));
-  var hect7 = pix7.multiply(900).divide(10000);                
-  var perc7 = pix7.divide(allpixels7).multiply(10000).round().divide(100);   
-             arealist7.push({Class: name, Pixels: pix7, Hectares: hect7, Percentage: perc7})};
-var areacount8 = function(cnr, name) {
-  var singleMask8 =  classified8.updateMask(classified8.eq(cnr));
-  var stats8 = singleMask8.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-  var pix8 =  ee.Number(stats8.get('sum'));
-  var hect8 = pix8.multiply(900).divide(10000);                
-  var perc8 = pix8.divide(allpixels8).multiply(10000).round().divide(100);   
-             arealist8.push({Class: name, Pixels: pix8, Hectares: hect8, Percentage: perc8})};
-var areacount9 = function(cnr, name) {
-  var singleMask9 =  classified9.updateMask(classified9.eq(cnr));
-  var stats9 = singleMask9.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-  var pix9 =  ee.Number(stats9.get('sum'));
-  var hect9 = pix9.multiply(900).divide(10000);                
-  var perc9 = pix9.divide(allpixels9).multiply(10000).round().divide(100);   
-             arealist9.push({Class: name, Pixels: pix9, Hectares: hect9, Percentage: perc9})};
-var areacount10 = function(cnr, name) {
-  var singleMask10 =  classified10.updateMask(classified10.eq(cnr));
-  var stats10 = singleMask10.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-  var pix10 =  ee.Number(stats10.get('sum'));
-  var hect10 = pix10.multiply(900).divide(10000);                
-  var perc10 = pix10.divide(allpixels10).multiply(10000).round().divide(100);   
-             arealist10.push({Class: name, Pixels: pix10, Hectares: hect10, Percentage: perc10})};
-var areacount11 = function(cnr, name) {
-  var singleMask11 =  classified11.updateMask(classified11.eq(cnr));
-  var stats11 = singleMask11.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-  var pix11 =  ee.Number(stats11.get('sum'));
-  var hect11 = pix11.multiply(900).divide(10000);                
-  var perc11 = pix11.divide(allpixels11).multiply(10000).round().divide(100);   
-             arealist11.push({Class: name, Pixels: pix11, Hectares: hect11, Percentage: perc11})};
-var areacount12 = function(cnr, name) {
-  var singleMask12 =  classified12.updateMask(classified12.eq(cnr));
-  var stats12 = singleMask12.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-  var pix12 =  ee.Number(stats12.get('sum'));
-  var hect12 = pix12.multiply(900).divide(10000);                
-  var perc12 = pix12.divide(allpixels12).multiply(10000).round().divide(100);   
-             arealist12.push({Class: name, Pixels: pix12, Hectares: hect12, Percentage: perc12})};
-
-
-var areacount13 = function(cnr, name) {
-  var singleMask13 =  classified13.updateMask(classified13.eq(cnr));
-  var stats13 = singleMask13.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-  var pix13 =  ee.Number(stats13.get('sum'));
-  var hect13 = pix13.multiply(900).divide(10000);                
-  var perc13 = pix13.divide(allpixels13).multiply(10000).round().divide(100);   
-             arealist13.push({Class: name, Pixels: pix13, Hectares: hect13, Percentage: perc13})};
-
-var areacount14 = function(cnr, name) {
-  var singleMask14 =  classified14.updateMask(classified14.eq(cnr));
-  var stats14 = singleMask14.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-  var pix14 =  ee.Number(stats14.get('sum'));
-  var hect14 = pix14.multiply(900).divide(10000);                
-  var perc14 = pix14.divide(allpixels14).multiply(10000).round().divide(100);   
-             arealist14.push({Class: name, Pixels: pix14, Hectares: hect14, Percentage: perc14})};
-
-var areacount15 = function(cnr, name) {
-  var singleMask15 =  classified15.updateMask(classified15.eq(cnr));
-  var stats15 = singleMask15.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-  var pix15 =  ee.Number(stats15.get('sum'));
-  var hect15 = pix15.multiply(900).divide(10000);                
-  var perc15 = pix15.divide(allpixels15).multiply(10000).round().divide(100);   
-             arealist15.push({Class: name, Pixels: pix15, Hectares: hect15, Percentage: perc15})};
-
-var areacount16 = function(cnr, name) {
-  var singleMask16 =  classified16.updateMask(classified16.eq(cnr));
-  var stats16 = singleMask16.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-  var pix16 =  ee.Number(stats16.get('sum'));
-  var hect16 = pix16.multiply(900).divide(10000);                
-  var perc16 = pix16.divide(allpixels16).multiply(10000).round().divide(100);   
-             arealist16.push({Class: name, Pixels: pix16, Hectares: hect16, Percentage: perc16})};
-
-
-var areacount17 = function(cnr, name) {
-  var singleMask17 =  classified17.updateMask(classified17.eq(cnr));
-  var stats17 = singleMask17.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-  var pix17 =  ee.Number(stats17.get('sum'));
-  var hect17 = pix17.multiply(900).divide(10000);                
-  var perc17 = pix17.divide(allpixels17).multiply(10000).round().divide(100);   
-             arealist17.push({Class: name, Pixels: pix17, Hectares: hect17, Percentage: perc17})};
-
-var areacount18 = function(cnr, name) {
-  var singleMask18 =  classified18.updateMask(classified18.eq(cnr));
-  var stats18 = singleMask18.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-  var pix18 =  ee.Number(stats18.get('sum'));
-  var hect18 = pix18.multiply(900).divide(10000);                
-  var perc18 = pix18.divide(allpixels18).multiply(10000).round().divide(100);   
-             arealist18.push({Class: name, Pixels: pix18, Hectares: hect18, Percentage: perc18})};
-
-var areacount19 = function(cnr, name) {
-  var singleMask19 =  classified19.updateMask(classified19.eq(cnr));
-  var stats19 = singleMask19.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-  var pix19 =  ee.Number(stats19.get('sum'));
-  var hect19 = pix19.multiply(900).divide(10000);                
-  var perc19 = pix19.divide(allpixels19).multiply(10000).round().divide(100);   
-             arealist19.push({Class: name, Pixels: pix19, Hectares: hect19, Percentage: perc19})};
-
-var areacount20 = function(cnr, name) {
-  var singleMask20 =  classified20.updateMask(classified20.eq(cnr));
-  var stats20 = singleMask20.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-  var pix20 =  ee.Number(stats20.get('sum'));
-  var hect20 = pix20.multiply(900).divide(10000);                
-  var perc20 = pix20.divide(allpixels20).multiply(10000).round().divide(100);   
-             arealist20.push({Class: name, Pixels: pix20, Hectares: hect20, Percentage: perc20})};
-
-
-// Urutan berbeda untuk kelas keparahan 
-var names2 =  [ 'NA','Kering','Agak Kering', 'Normal', 'Agak Basah','Basah'];
-// Menjalankan fungsi di setiap kelas
-for (var i = 0; i < 6; i++) {areacount1(i, names2[i]);}
-for (var i = 0; i < 6; i++) {areacount2(i, names2[i]);}
-for (var i = 0; i < 6; i++) {areacount3(i, names2[i]);}
-for (var i = 0; i < 6; i++) {areacount4(i, names2[i]);}
-for (var i = 0; i < 6; i++) {areacount5(i, names2[i]);}
-for (var i = 0; i < 6; i++) {areacount6(i, names2[i]);}
-for (var i = 0; i < 6; i++) {areacount7(i, names2[i]);}
-for (var i = 0; i < 6; i++) {areacount8(i, names2[i]);}
-for (var i = 0; i < 6; i++) {areacount9(i, names2[i]);}
-for (var i = 0; i < 6; i++) {areacount10(i, names2[i]);}
-for (var i = 0; i < 6; i++) {areacount11(i, names2[i]);}
-for (var i = 0; i < 6; i++) {areacount12(i, names2[i]);}
-for (var i = 0; i < 6; i++) {areacount13(i, names2[i]);}
-for (var i = 0; i < 6; i++) {areacount14(i, names2[i]);}
-for (var i = 0; i < 6; i++) {areacount15(i, names2[i]);}
-for (var i = 0; i < 6; i++) {areacount16(i, names2[i]);}
-for (var i = 0; i < 6; i++) {areacount17(i, names2[i]);}
-for (var i = 0; i < 6; i++) {areacount18(i, names2[i]);}
-for (var i = 0; i < 6; i++) {areacount19(i, names2[i]);}
-for (var i = 0; i < 6; i++) {areacount20(i, names2[i]);}
-print('Jul 2013', arealist1);
-print('Okt 2013', arealist2);
-print('Sep 2014', arealist3);
-print('Okt 2014', arealist4);
-print('Agt 2015', arealist5);
-print('Okt 2015', arealist6);
-print('Agt 2016', arealist7);
-print('Sep 2016', arealist8);
-print('Agt 2017', arealist9);
-print('Sep 2017', arealist10);
-print('Agt 2018', arealist11);
-print('Sep 2018', arealist12);
-print('Agt 2019', arealist13);
-print('Okt 2019', arealist14);
-print('Sep 2020', arealist15);
-print('Okt 2020', arealist16);
-print('Agt 2021', arealist17);
-print('Sep 2021', arealist18);
-print('Agt 2022', arealist19);
-print('Okt 2022', arealist20);
-
-
 
 //Menampilkan hasil tvdi
-Map.addLayer(TVDI201307.sldStyle(sld_intervals), {}, 'Jul 2013');
+Map.addLayer(TVDI201309.sldStyle(sld_intervals), {}, 'Sep 2013');
 Map.addLayer(TVDI201310.sldStyle(sld_intervals), {}, 'Okt 2013');
 Map.addLayer(TVDI201409.sldStyle(sld_intervals), {}, 'Sep 2014');
 Map.addLayer(TVDI201410.sldStyle(sld_intervals), {}, 'Okt 2014');
@@ -1481,7 +1560,7 @@ var images = {
       'TVDI Okober 2014': TVDI201410.sldStyle(sld_intervals),
       'TVDI September 2014': TVDI201409.sldStyle(sld_intervals),
       'TVDI Oktober 2013': TVDI201310.sldStyle(sld_intervals),
-      'TVDI September 2013': TVDI201307.sldStyle(sld_intervals),
+      'TVDI September 2013': TVDI201309.sldStyle(sld_intervals),
 };
 // Pembuatan peta split sisi kiri 
 var leftMap = ui.Map(); 
@@ -1551,7 +1630,7 @@ ui.root.insert(0,panel);
 
 
 // Define title and description.
-var judul = ui.Label('Dashboard Pemantauan Sebaran Kekeringan Pertanian Kabupaten Mojokerto, Provinsi jawa Timur Tahun 2013-2022',
+var judul = ui.Label('Aplikasi Pemantauan Sebaran Kekeringan Pertanian Kabupaten Mojokerto, Provinsi jawa Timur Tahun 2013-2022',
   { fontFamily: 'sans-serif',
     fontWeight:'550',
     fontSize:'20px',
@@ -1559,7 +1638,7 @@ var judul = ui.Label('Dashboard Pemantauan Sebaran Kekeringan Pertanian Kabupate
     textAlign: 'center'
   }
 );
-var paragraf1 = ui.Label('Earth Engine Apps yang manyajikan peta interaktif sebaran kekeringan pertanian di Kabupaten Mojokerto pada tahun 2013-2022. Informasi sebaran kekeringan pertanian diperoleh dari data citra Landsat 8 Collection 2 Tier 1 TOA Reflectance dengan interval perekaman dari perwakilan data tahun 2013 hingga 2022 saat musim kemarau. Metode yang digunakan untuk memetakan sebaran kekeringan adalah Temperature Vegetation Dryness Index (TVDI) yang memanfaatkan dua data masukan yaitu Normalized Difference Vegetation Index (NDVI) dan Land Surface Temperature (LST). Keseluruhan pengolahan hingga penyajian data dilakukan menggunakan platform Google Earth Engine menggunakan bahasa pemrograman JavaScript', 
+var paragraf1 = ui.Label('Kabupaten Mojokerto merupakan salah satu kabupaten dengan tingkat kekeringan pertanian yang cukup parah di Jawa Timur. Dampak dari bencana kekeringan pertanian adalah tidak terpenuhinya kebutuhan air pada fase tertentu yang mengakibatkan pertumbuhan tanaman tidak optimal. Oleh karena itu, Earth Engine Apps ini dibuat dengan tujuan untuk memantau dan mengetahui pola persebaran kekeringan kekeringan pertanian di Kabupaten Mojokerto dari tahun 2013-2022. Harapannya, dengan dilakukannya identifikasi area terdampak kekeringan pertanian secara berkala dapat digunakan sebagai tindakan preventif kedepannya dalam mengatasi bencana kekeringan pertanian di Kabupaten Mojokerto.', 
  {  fontFamily: 'sans-serif',
     fontSize:'14px',
     padding:'2px 0 4px 6px',
@@ -1572,8 +1651,8 @@ panel.add(judul).add(paragraf1);
 
 var disclaimer = ui.Panel(
     [
-        ui.Label('Disclaimer!!!', {fontSize:'12px', fontWeight: 'bold', margin: '15px 0 0 15px'}),
-        ui.Label('Hasil pengolahan data sudah dilakukan uji akurasi pada dua data masukan yang digunakan, karena akurasi yang baik dari data masukan diperlukan agar nilai TVDI yang dihasilkan juga dapat akurat. Hasil uji akurasi dilakukan pada dua data masukan yaitu NDVI dan LST menghasilkan nilai akurasi NDVI pada lahan pertanian sebesar 83,33% dan rata-rata ketelitian nilai LST pada lahan pertanian sebesar 91,49%. ', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
+        ui.Label('Disclaimer:', {fontSize:'12px', fontWeight: 'bold', margin: '15px 0 0 15px'}),
+        ui.Label('● Informasi sebaran kekeringan pertanian diperoleh melalui analisis data citra Landsat 8 Collection 2 Tier 1 TOA Reflectance menggunakan metode Temperature-Vegetation Dryness Index (TVDI), serta didukung informasi validasi dari lapangan pada bulan Oktober 2022 yang menghasilkan nilai akurasi ekstraksi metode TVDI sebesar 86,67% dan rata-rata ketelitian nilai parameter Land Surface Temperature (LST) sebesar 91.49%.', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
         ui.Label(''),
     ]
 );
@@ -1606,14 +1685,13 @@ panel.add(petunjukPanel);
 
 var petunjukAplikasi = ui.Panel(
     [
-        ui.Label('Petunjuk Penggunaan Earth Engine Apps:', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
+        ui.Label('Petunjuk Penggunaan Earth Engine Apps:', {fontSize:'12px', fontWeight: 'bold', margin: '15px 0 0 15px'}),
+        ui.Label('[Klik Disini] Video Tutorial Penggunaan Earth Engine Apps', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://music.youtube.com/watch?v=TN5Ye9pQhlM&list=RDAOASm6zw3fwwNHHUAmqi82kg'),
         ui.Label('1. Menggeser garis split panel ke bagian tengah peta untuk membandingkan informasi sebaran kekeringan pertanian.', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label('2. Memilih tahun berbeda yang akan digunakan untuk memantau sebaran kekeringan pertanian dengan cara klik button pada menu “Pilih Tahun”.', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label('3. Dapat mengatur zoom In/Out pada peta untuk menyamakan kedua panel. ', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label('4. Proses menunggu loading peta tergantung pada kecepatan jaringan internet.', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label(''),
-        ui.Label('Untuk lebih rinci, anda bisa mengunjungi video tutorial dibawah ini untuk mengeksplor dashboard ini', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
-        ui.Label('[Klik Disini] Video Tutorial Penggunaan Earth Engine Apps', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://youtu.be/bEJ4tFi3wl8'),
     ]
 );
 petunjukPanel.add(petunjukAplikasi);
@@ -1690,58 +1768,16 @@ panel.add(profilPanel);
 
 var profil = ui.Panel(
     [
-        ui.Label('Profil Wilayah Kajian Penelitian', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
-        ui.Label('Kabupaten Mojokerto merupakan salah satu kabupaten di Provinsi Jawa Timur yang terdiri atas 18 Kecamatan, 299 Desa dan 5 Kelurahan. Topografi wilayah Kabupaten Mojokerto terdiri dari dataran rendah dan pegunungan yang dilalui aliran sungai Brantas (BPS Kabupaten Mojokerto, 2022). Pada wilayah utara Kabupaten Mojokerto didominasi oleh bentuklahan karst yang dipengaruhi oleh bukit-bukit berbatu kapur sehingga menyebabkan keadaan tanah yang kurang subur. Sedangkan, pada bagian selatan Kabupaten Mojokerto di dominasi oleh bentuklahan vulkanik yang dipengaruhi oleh Gunung Penanggungan serta kompleks pegunungan Arjuna-Welirang sehingga keadaan tanahnya yang subur dan cocok digunakan sebagai lahan pertanian. ', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
-        ui.Label(''),
-        ui.Label('Batas area kajian yang digunakan adalah area lahan pertanian di Kabupaten Mojokerto, karena untuk membatasi kajian terhadap citra sehingga lebih terfokuskan pada lahan pertanian di Kabupaten Mojokerto. Hal ini sejalan dengan tujuan Earth Engine Apps ini untuk memantau dan memetakkan sebaran kekeringan pertanian di Kabupaten Mojokertp.', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('Profil Wilayah Kajian Penelitian', {fontSize:'12px', fontWeight: 'bold', margin: '15px 0 0 15px'}),
+        ui.Label('Kabupaten Mojokerto merupakan salah satu kabupaten di Provinsi Jawa Timur yang terdiri atas 18 Kecamatan, 299 Desa dan 5 Kelurahan. Topografi wilayah Kabupaten Mojokerto terdiri dari dataran rendah dan pegunungan yang dilalui aliran sungai Brantas (BPS Kabupaten Mojokerto, 2022). Pada wilayah utara Kabupaten Mojokerto didominasi oleh bentuklahan karst yang dipengaruhi oleh bukit-bukit berbatu kapur sehingga menyebabkan keadaan tanah yang kurang subur. Sedangkan, pada bagian selatan Kabupaten Mojokerto di dominasi oleh bentuklahan vulkanik yang dipengaruhi oleh Gunung Penanggungan serta kompleks pegunungan Arjuna-Welirang sehingga keadaan tanahnya yang subur dan cocok digunakan sebagai lahan pertanian. ', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
+        ui.Label('Berdasarkan jenis penggunaan lahannya, Kabupaten Mojokerto memiliki  penggunaan lahan berupa pemukiman, pertanian, hutan, rawa/waduk, perkebunan, lahan kritis, padang rumput, dan semak/alang-alang. Area penggunaan lahan dengan luas area terbesar didominasi oleh penggunaan lahan pertanian yaitu sebesar 45.138 hektar (BPS Kabupaten Mojokerto, 2022). Hal tersebut merupakan salah satu urgensi mengapa kajian tentang kekeringan pertanian ini penting dilakukan di Kabupaten Mojokerto.', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
         ui.Label(''),
         ui.Label('[Klik Disini] Peta Batas Administrasi Kabupaten Mojokerto', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://raw.githubusercontent.com/nurilhidayati/analisiskekeringanpertanian/main/Peta%20Batas%20Administrasi%20Kab.%20Mojokerto.png'),
-        ui.Label('[Klik Disini] Peta Lahan Pertanian Kabupaten Mojokerto', {fontSize:'12px',margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://raw.githubusercontent.com/nurilhidayati/analisiskekeringanpertanian/main/Peta%20Lahan%20Pertanian%20Kabupaten%20Mojokerto.png'),
+        ui.Label('[Klik Disini] Peta Lahan Pertanian Kabupaten Mojokerto', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://raw.githubusercontent.com/nurilhidayati/analisiskekeringanpertanian/main/Peta%20Lahan%20Pertanian%20Kab.%20Mojokerto.png'),
         ui.Label(''),
     ]
 );
 profilPanel.add(profil);
-
-
-//Button Keterangan
-//Keterangan Gambaran
-//Button Profil
-var keteranganButton = ui.Button({
-    label: 'Definisi Kekeringan Pertanian',
-    style: {stretch:'horizontal', color: 'black'}
-});
-var keteranganPanel = ui.Panel(null, null, {stretch:'horizontal', shown: false});
-
-keteranganButton.onClick(function(){
-    if(keteranganPanel.style().get('shown')){
-        keteranganButton.setLabel('Definisi Kekeringan Pertanian');
-        keteranganPanel.style().set('shown', false);
-    } 
-    else{
-        keteranganButton.setLabel('Definisi Kekeringan Pertanian');
-        keteranganPanel.style().set('shown', true);
-    }
-})
-panel.add(keteranganButton);
-panel.add(keteranganPanel);
-
-
-var keteranganTVDI = ui.Panel(
-    [
-        ui.Label('Definisi Kekeringan Pertanian', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
-        ui.Label('Kekeringan dikategorikan dalam bencana alam berdasarkan Undang-Undang Nomor 24 Tahun 2007 tentang Penanggulangan Bencana. Berdasarkan undang-undang tersebut kekeringan didefinisikan sebagai ketersediaan air yang jauh di bawah kebutuhan air untuk kebutuhan hidup, pertanian, kegiatan ekonomi dan lingkungan. Menurut Badan Koordinasi Nasional Penanganan Bencana (BAKORNAS PB) tahun 2007, kekeringan pertanian merupakan kekeringan yang berhubungan dengan berkurangnya kandungan air dalam tanah (lengas tanah) sehingga tak mampu lagi memenuhi kebutuhan air bagi tanaman pada suatu priode tertentu. Kekeringan ini biasanya terjadi setelah terjadinya gejala kekeringan meteorologis. Salah satu dampak bencana kekeringan pertanian yaitu mengakibatkan penurunan produksi atau kegagalan panen tanaman pangan terutama padi dan palawija di sebagian besar lahan pertanian Indonesia (Badan Penelitian dan Pengembangan Pertanian 2014).', {fontSize:'12px', textAlign: 'justify',  margin: '2px 15px 2px 15px'}),
-        ui.Label(''),
-        ui.Label('Klasifikasi Tingkat Kekeringan Pertanian', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
-        ui.Label('Kelas Kelasifikasi Tingkat Kekeringan Metode TVDI mengacu pada Sandholt (2002) yang membagi nilai TVDI menjadi 5 kelas yaitu:', {fontSize:'12px', textAlign: 'justify', margin: '2px 15px 2px 15px'}),
-        ui.Label('● Tingkat Kekeringan Kelas Basah (0 < TVDI ≤ 0.20) ', {fontSize:'12px',  margin: '2px 15px 2px 15px'}),
-        ui.Label('● Tingkat Kekeringan Kelas Agak Basah (0.21 < TVDI ≤ 0.40)', {fontSize:'12px',  margin: '2px 15px 2px 15px'}),
-        ui.Label('● Tingkat Kekeringan Kelas Normal (0.41 < TVDI ≤ 0.60)', {fontSize:'12px',  margin: '2px 15px 2px 15px'}),
-        ui.Label('● Tingkat Kekeringan Kelas Agak Kering (0.61 < TVDI ≤ 0.80)', {fontSize:'12px',  margin: '2px 15px 2px 15px'}),
-        ui.Label('● Tingkat Kekeringan Kelas Kering (0.81 < TVDI ≤ 1)', {fontSize:'12px',  margin: '2px 15px 2px 15px'}),
-        ui.Label(''),
-    ]
-);
-keteranganPanel.add(keteranganTVDI);
 
 
 //Buton Info pengolahan Data
@@ -1769,23 +1805,21 @@ panel.add(infoPanel);
 var pengolahanData = ui.Panel(
     [
         ui.Label('Data yang Digunakan:', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
-        ui.Label('1. Citra Landsat 8 Collection 2 Tier 1 TOA Reflectance Path/Row 118/65 dengan interval perekaman dari perwakilan data tahun 2013 hingga 2022 saat musim kemarau pada rentang bulan Juli-Oktober. Data Citra Landsat 8 di dapatkan dari Earth Engine Data Catalog.', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
-        ui.Label('developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_TOA', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_TOA'),
-        ui.Label('2 Data Shapefile Lahan Pertanian di Kabupaten Mojokerto dari Ditjen Prasarana dan Sarana Pertanian.', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
-        ui.Label('sikomantap.psp.pertanian.go.id/monitoring/peta/list', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'http://sikomantap.psp.pertanian.go.id/monitoring/peta/list'),
-        ui.Label('3 Data Shapefile Batas Administrasi Kecamatan di Kabupaten Mojokerto dari Badan Informasi Geospasial.', {fontSize:'12px',  margin: '2px 15px 2px 15px'}),
-        ui.Label('tanahair.indonesia.go.id/portal-web', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://tanahair.indonesia.go.id/portal-web'),
-        ui.Label('4 Informasi Validasi Nilai NDVI dan LST dari Survei Lapangan pada Bulan Oktober 2022. ', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('1. Citra Landsat 8 Collection 2 Tier 1 TOA Reflectance Path/Row 118/65 dari Tahun 2013-2022', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('2 Data Shapefile Lahan Pertanian di Kabupaten Mojokerto', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('3 Data Shapefile Batas Administrasi Kecamatan di Kabupaten Mojokerto', {fontSize:'12px',  margin: '2px 15px 2px 15px'}),
+        ui.Label('4 Informasi Validasi Nilai NDVI dan LST dari Survei Lapangan pada Bulan Oktober 2022 ', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label(''),
         ui.Label('Metode yang Digunakan::', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
         ui.Label('1. Perhitungan nilai Normalized Difference Vegetation Index (NDVI) diperoleh dari saluran merah (Band 4) dan saluran inframerah dekat (Band 5) pada Citra Landsat 8 Collection 2 Tier 1 TOA Reflectance.', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label('2. Perhitungan nilai Land Surface Temperature (LST) menggunakan metode Split Window Algorithm (SWA)', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label('3. Ekstraksi nilai NDVI dan LST dilakukan dengan mengambil sampel random berdasarkan area kajian pada lahan pertanian Kabupaten Mojokerto. Penentuan titik sampel menggunakan metode acak menggunakan fungsi ee.FeatureCollection.randomPoints(). Selanjutnya, nilai hasil ekstrasi NDVI dan LST diekport dalam format CSV.', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label('4. Regresi linear antara nilai NDVI dan nilai LST menggunakan scatter plot bertujuan untuk memperoleh persamaan nilai indeks kekeringan TVDI', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
-        ui.Label('5. Perhitungan nilai Temperature-Vegetation Dryness Index (TVDI). Nilai TVDI menghasilkan nilai minimum: 0 dan maximum: 1', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
-        ui.Label('6. Visualisasi Peta TVDI mengacu pada Sandholt (2002) yang membagi nilai TVDI menjadi 5 kelas yaitu: kelas basah (hijau tua), kelas agak basah (hijau muda), kelas normal (kuning), kelas agak kering (oranye), dan kelas kering (merah)', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
-        ui.Label('7. Penyajian Peta TVDI menggunakan tampilan antarmuka Split Panel Map untuk memudahkan dalam membandingkan sebaran kekeringan pertanian setiap tahun perekamannya.', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
-        ui.Label('8. Uji Usabilitas dilakukan dengan menyebarkan kuisioner melalui Google Form untuk mengetahui penilaian dan respon dari pengguna mengenai pengalamannya menggunakan Earth Engine Apps ini', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('5. Validasi nilai LST dilakukan dengan membandingkan hasil perhitungan nilai LST pada citra Landsat 8 perekaman bulan Oktober dengan data hasil pengukuran suhu permukaan tanah di lapangan menggunakan thermometer inframerah pada bulan Oktober 2022. Sedangkan, Pengolahan indeks vegetasi (NDVI) pada data citra Landsat 8 dilakukan validasi dengan mengamati kondisi pertanian eksisting dan rekonstruksi data dari Dinas Pertanian Kabupaten Mojokerto dengan didukung wawancara ke beberapa petani', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('6. Perhitungan nilai Temperature-Vegetation Dryness Index (TVDI) dilakukan dengan menggabungkan menggabungkan parameter indeks vegetasi (NDVI) dan suhu permukaan tanah (LST). Nilai TVDI menghasilkan nilai minimum: 0 dan maximum: 1', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('7. Visualisasi Peta TVDI mengacu pada Sandholt (2002) yang membagi nilai TVDI menjadi 5 kelas yaitu: kelas basah (hijau tua), kelas agak basah (hijau muda), kelas normal (kuning), kelas agak kering (oranye), dan kelas kering (merah)', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('8. Penyajian Peta TVDI menggunakan metode UI Split Panel untuk memudahkan dalam membandingkan sebaran kekeringan pertanian setiap tahunnya', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('9. Uji Usabilitas dilakukan dengan menyebarkan kuisioner melalui Google Form untuk mengetahui penilaian dan respon dari pengguna mengenai pengalamannya menggunakan Earth Engine Apps ini', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label(''),
         ui.Label('Catatan:', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
         ui.Label('Keseluruhan pengolahan hingga penyajian data dilakukan menggunakan platform Google Earth Engine dengan naskah pemrograman JavaScript terlampir dalam tautan berikut: ', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
@@ -1796,6 +1830,44 @@ var pengolahanData = ui.Panel(
 infoPanel.add(pengolahanData);
 
 
+//Button Keterangan
+//Keterangan Gambaran
+//Button Profil
+var keteranganButton = ui.Button({
+    label: 'Keterangan Tingkat Kekeringan Pertanian',
+    style: {stretch:'horizontal', color: 'black'}
+});
+var keteranganPanel = ui.Panel(null, null, {stretch:'horizontal', shown: false});
+
+keteranganButton.onClick(function(){
+    if(keteranganPanel.style().get('shown')){
+        keteranganButton.setLabel('Keterangan Tingkat Kekeringan Pertanian');
+        keteranganPanel.style().set('shown', false);
+    } 
+    else{
+        keteranganButton.setLabel('Keterangan Tingkat Kekeringan Pertanian');
+        keteranganPanel.style().set('shown', true);
+    }
+})
+panel.add(keteranganButton);
+panel.add(keteranganPanel);
+
+
+var keteranganTVDI = ui.Panel(
+    [
+        ui.Label('Keterangan Tingkat Kekeringan Pertanian', {fontSize:'12px', fontWeight: 'bold', margin: '15px 0 0 15px'}),
+        ui.Label('Pengkelasan nilai TVDI mengacu pada Sandholt (2002) yang membagi nilai TVDI menjadi 5 kelas yaitu:', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
+        ui.Label('● Tingkat Kekeringan Kelas Basah (0 < TVDI ≤ 0.20) ', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
+        ui.Label('● Tingkat Kekeringan Kelas Agak Basah (0.21 < TVDI ≤ 0.40)', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
+        ui.Label('● Tingkat Kekeringan Kelas Normal (0.41 < TVDI ≤ 0.60)', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
+        ui.Label('● Tingkat Kekeringan Kelas Agak Kering (0.61 < TVDI ≤ 0.80)', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
+        ui.Label('● Tingkat Kekeringan Kelas Kering (0.81 < TVDI ≤ 1)', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
+        ui.Label(''),
+        ui.Label('[Klik Disini] Kondisi Lapangan Tingkat Kekeringan', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://raw.githubusercontent.com/nurilhidayati/analisiskekeringanpertanian/main/Peta%20Batas%20Administrasi%20Kab.%20Mojokerto.png'),
+        ui.Label(''),
+    ]
+);
+keteranganPanel.add(keteranganTVDI);
 
 //Grafik Luas Sebaran Kekeringan Pertanian
 var grafikButtonMean = ui.Button({
@@ -1835,10 +1907,10 @@ graphPanelMean.add(grafikTVDI);
 // Define a DataTable using a JavaScript literal.
 var dataTable = {
   cols: [{id: 'Class', label: 'Classification', type: 'string'},
-         {id: 'Nilai', label: 'Nilai TVDI', type: 'number'}],
-  rows: [{c: [{v: '14 September 2013'},  {v: 0.509}]},
+         {id: 'Area', label: 'Area (ha)', type: 'number'}],
+  rows: [{c: [{v: '28 Sepi 2013'},  {v: 0.542}]},
          {c: [{v: '1 Oktober 2013'}, {v: 0.576}]},
-         {c: [{v: '17 September 2014'},     {v: 0.454}]},
+         {c: [{v: '1 September 2014'},     {v: 0.447}]},
          {c: [{v: '3 Oktober 2014'},  {v: 0.520}]},
          {c: [{v: '3 Agustus 2015'},  {v: 0.556}]},
          {c: [{v: '22 Oktober 2015'}, {v: 0.595}]},
@@ -1854,8 +1926,8 @@ var dataTable = {
          {c: [{v: '3 oktober 2020'},  {v: 0.548}]},
          {c: [{v: '19 Agustus 2021'}, {v: 0.590}]},
          {c: [{v: '4 September 2021'},     {v: 0.563}]},
-         {c: [{v: '22 Agustus 2022'},  {v: 0.555}]},
-         {c: [{v: '9 Oktober 2022'}, {v: 0.585}]}]};
+         {c: [{v: '5 Sepi 2022'},  {v: 0.555}]},
+         {c: [{v: '22 Agustus 2022'}, {v: 0.585}]}]};
 // Define a dictionary of customization options.
 var options = {
   title: 'Grafik Nilai Rata-Rata Indeks Kekeringan Pertanian (TVDI) di Kabupaten Mojokerto pada Tahun 2013-2022',
@@ -1904,9 +1976,9 @@ graphPanel.add(grafikLuas);
 var dataTable = {
   cols: [{id: 'Class', label: 'Classification', type: 'string'},
          {id: 'Area', label: 'Area (ha)', type: 'number'}],
-  rows: [{c: [{v: '14 September 2013'},  {v: 13918.5}]},
+  rows: [{c: [{v: '28 Sepi 2013'},  {v: 13918.5}]},
          {c: [{v: '1 Oktober 2013'}, {v: 14937.48}]},
-         {c: [{v: '17 September 2014'},     {v: 7578.09}]},
+         {c: [{v: '1 September 2014'},     {v: 7578.09}]},
          {c: [{v: '3 Oktober 2014'},  {v: 13419.36}]},
          {c: [{v: '3 Agustus 2015'},  {v: 11056.5}]},
          {c: [{v: '22 Oktober 2015'}, {v: 15586.92}]},
@@ -1922,8 +1994,8 @@ var dataTable = {
          {c: [{v: '3 Oktober 2020'},  {v: 12840.75}]},
          {c: [{v: '19 Agustus 2021'}, {v: 14076}]},
          {c: [{v: '4 September 2021'},     {v: 11761.11}]},
-         {c: [{v: '22 Agustus 2022'},  {v: 11330.46}]},
-         {c: [{v: '9 Oktober 2022'}, {v: 12782.79}]}]};
+         {c: [{v: '5 Sepi 2022'},  {v: 11330.46}]},
+         {c: [{v: '22 Agustus 2022'}, {v: 12782.79}]}]};
 // Define a dictionary of customization options.
 var options = {
   title: 'Grafik Perubahan Luasan Sebaran Lahan Kelas Kering di Kabupaten Mojokerto pada Tahun 2013-2022',
@@ -1939,9 +2011,9 @@ graphPanel.add(chart);
 var dataTable = {
   cols: [{id: 'Class', label: 'Classification', type: 'string'},
          {id: 'Area', label: 'Area (ha)', type: 'number'}],
-  rows: [{c: [{v: '14 September 2013'},  {v: 13339.44}]},
+  rows: [{c: [{v: '28 Sepi 2013'},  {v: 13339.44}]},
          {c: [{v: '1 Oktober 2013'}, {v: 8932.59}]},
-         {c: [{v: '17 September 2014'},     {v: 7167.42}]},
+         {c: [{v: '1 September 2014'},     {v: 7167.42}]},
          {c: [{v: '3 Oktober 2014'},  {v: 7785.27}]},
          {c: [{v: '3 Agustus 2015'},  {v: 11294.28}]},
          {c: [{v: '22 Oktober 2015'}, {v: 9162.45}]},
@@ -1957,8 +2029,8 @@ var dataTable = {
          {c: [{v: '3 Oktober 2020'},  {v: 9077.13}]},
          {c: [{v: '19 Agustus 2021'}, {v: 10821.24}]},
          {c: [{v: '4 September 2021'},     {v: 9995.49}]},
-         {c: [{v: '22 Agustus 2022'},  {v: 10486.71}]},
-         {c: [{v: '9 Oktober 2022'}, {v: 15903.72}]}]};
+         {c: [{v: '5 Sepi 2022'},  {v: 10486.71}]},
+         {c: [{v: '22 Agustus 2022'}, {v: 15903.72}]}]};
 // Define a dictionary of customization options.
 var options = {
   title: 'Grafik Perubahan Luasan Sebaran Lahan Kelas Agak Kering di Kabupaten Mojokerto pada Tahun 2013-2022',
@@ -1974,9 +2046,9 @@ graphPanel.add(chart);
 var dataTable = {
   cols: [{id: 'Class', label: 'Classification', type: 'string'},
          {id: 'Area', label: 'Area (ha)', type: 'number'}],
-  rows: [{c: [{v: '14 September 2013'},  {v: 5002.92}]},
+  rows: [{c: [{v: '28 Sepi 2013'},  {v: 5002.92}]},
          {c: [{v: '1 Oktober 2013'}, {v: 7192.26}]},
-         {c: [{v: '17 September 2014'},     {v: 9826.47}]},
+         {c: [{v: '1 September 2014'},     {v: 9826.47}]},
          {c: [{v: '3 Oktober 2014'},  {v:6739.2}]},
          {c: [{v: '3 Agustus 2015'},  {v: 8367.3}]},
          {c: [{v: '22 Oktober 2015'}, {v: 6726.24}]},
@@ -1992,8 +2064,8 @@ var dataTable = {
          {c: [{v: '3 Oktober 2020'},  {v: 7084.62}]},
          {c: [{v: '19 Agustus 2021'}, {v:7713.81}]},
          {c: [{v: '4 September 2021'},     {v:9325.71}]},
-         {c: [{v: '22 Agustus 2022'},  {v:8660.43}]},
-         {c: [{v: '9 Oktober 2022'}, {v:8277.75}]}]};
+         {c: [{v: '5 Sepi 2022'},  {v:8660.43}]},
+         {c: [{v: '22 Agustus 2022'}, {v:8277.75}]}]};
 // Define a dictionary of customization options.
 var options = {
   title: 'Grafik Perubahan Luasan Sebaran Lahan Kelas Normal di Kabupaten Mojokerto pada Tahun 2013-2022',
@@ -2009,9 +2081,9 @@ graphPanel.add(chart);
 var dataTable = {
   cols: [{id: 'Class', label: 'Classification', type: 'string'},
          {id: 'Area', label: 'Area (ha)', type: 'number'}],
-  rows: [{c: [{v: '14 September 2013'},  {v: 2596.95}]},
+  rows: [{c: [{v: '28 Sepi 2013'},  {v: 2596.95}]},
          {c: [{v: '1 Oktober 2013'}, {v: 6053.04}]},
-         {c: [{v: '17 September 2014'},     {v: 8842.32}]},
+         {c: [{v: '1 September 2014'},     {v: 8842.32}]},
          {c: [{v: '3 Oktober 2014'},  {v: 6182.55}]},
          {c: [{v: '3 Agustus 2015'},  {v: 6043.5}]},
          {c: [{v: '22 Oktober 2015'}, {v: 4987.53}]},
@@ -2027,8 +2099,8 @@ var dataTable = {
          {c: [{v: '3 Oktober 2020'},  {v: 6628.41}]},
          {c: [{v: '19 Agustus 2021'}, {v: 5061.06}]},
          {c: [{v: '4 September 2021'},     {v:7281.9}]},
-         {c: [{v: '22 Agustus 2022'},  {v:6658.92}]},
-         {c: [{v: '9 Oktober 2022'}, {v: 2296.35}]}]};
+         {c: [{v: '5 Sepi 2022'},  {v:6658.92}]},
+         {c: [{v: '22 Agustus 2022'}, {v: 2296.35}]}]};
 // Define a dictionary of customization options.
 var options = {
   title: 'Grafik Perubahan Luasan Sebaran Lahan Kelas Agak Basah di Kabupaten Mojokerto pada Tahun 2013-2022',
@@ -2044,9 +2116,9 @@ graphPanel.add(chart);
 var dataTable = {
   cols: [{id: 'Class', label: 'Classification', type: 'string'},
          {id: 'Area', label: 'Area (ha)', type: 'number'}],
-  rows: [{c: [{v: '14 September 2013'},  {v: 8976.87}]},
+  rows: [{c: [{v: '28 Sepi 2013'},  {v: 8976.87}]},
          {c: [{v: '1 Oktober 2013'}, {v: 6714.09}]},
-         {c: [{v: '17 September 2014'},     {v: 10439.82}]},
+         {c: [{v: '1 September 2014'},     {v: 10439.82}]},
          {c: [{v: '3 Oktober 2014'},  {v: 9716.4}]},
          {c: [{v: '3 Agustus 2015'},  {v: 7084.17}]},
          {c: [{v: '22 Oktober 2015'}, {v: 7373.43}]},
@@ -2062,8 +2134,8 @@ var dataTable = {
          {c: [{v: '3 Oktober 2020'},  {v: 8210.97}]},
          {c: [{v: '19 Agustus 2021'}, {v:6166.44}]},
          {c: [{v: '4 September 2021'},     {v: 5486.94}]},
-         {c: [{v: '22 Agustus2022'},  {v: 6709.77}]},
-         {c: [{v: '9 Oktober 2022'}, {v: 4569.12}]}]};
+         {c: [{v: '5 Sepi 2022'},  {v: 6709.77}]},
+         {c: [{v: '22 Agustus 2022'}, {v: 4569.12}]}]};
 // Define a dictionary of customization options.
 var options = {
   title: 'Grafik Perubahan Luasan Sebaran Lahan Kelas Basah di Kabupaten Mojokerto pada Tahun 2013-2022',
@@ -2142,8 +2214,6 @@ var tabelLuas = ui.Panel(
 tabelPanel.add(tabelLuas);
 
 
-
-
 //Membuat Credit
 var NOTE_STYLE = {
     fontFamily: 'sans-serif',
@@ -2156,7 +2226,7 @@ var NOTE_STYLE = {
 var credit = ui.Panel(
     [
         ui.Label('Credits:', {fontSize:'12px', fontWeight: 'bold', margin: '15px 0 0 12px'}),
-        ui.Label('● Earth Engine Apps ini dibuat sebagai oleh Nuril Hidayati syarat Proyek Akhir (PA), serta dibimbing oleh Bapak Dwi Setyo Aji, S.Si., M.Sc..', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('● Aplikasi ini dibuat sebagai oleh Nuril Hidayati syarat Proyek Akhir (PA), serta dibimbing oleh Bapak Dwi Setyo Aji, S.Si., M.Sc..', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label('● Apabila terdapat pertanyaan atau saran mengenai platform ini silakan menghubungi nurilhidayati@mail.ugm.ac.id atau ', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label('linkedin.com/in/nuril-hidayati/', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://www.linkedin.com/in/nuril-hidayati/'),
         ui.Label(''),
