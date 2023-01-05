@@ -42,30 +42,10 @@ PERITANI merupakan dashboard yang manyajikan peta interaktif sebaran kekeringan 
     var ndvi = img.normalizedDifference(['B5', 'B4']).rename('ndvi');
 ```
 11. Penyajian Peta TVDI menggunakan tampilan antarmuka Split Panel Map untuk memudahkan dalam membandingkan sebaran kekeringan pertanian setiap tahun perekamannya.
-```
+```json
 // Pendeskripsian citra yang dimasukkan pada layer split panel
 var images = {
-      
-      'TVDI Oktober 2022': TVDI202210.sldStyle(sld_intervals),
-      'TVDI Agustus 2022': TVDI202208.sldStyle(sld_intervals),
-      'TVDI September 2021': TVDI202109.sldStyle(sld_intervals),
-      'TVDI Agustus 2021': TVDI202108.sldStyle(sld_intervals),
-      'TVDI Oktober 2020': TVDI202010.sldStyle(sld_intervals),
-      'TVDI September 2020': TVDI202009.sldStyle(sld_intervals),
-      'TVDI Oktober 2019': TVDI201910.sldStyle(sld_intervals),
-      'TVDI Agustus 2019': TVDI201908.sldStyle(sld_intervals),
-      'TVDI September 2018': TVDI201809.sldStyle(sld_intervals),
-      'TVDI Agustus 2018': TVDI201808.sldStyle(sld_intervals),
-      'TVDI September 2017': TVDI201709.sldStyle(sld_intervals),
-      'TVDI Agustus 2017': TVDI201708.sldStyle(sld_intervals),
-      'TVDI September 2016': TVDI201609.sldStyle(sld_intervals),
-      'TVDI Agustus 2016': TVDI201608.sldStyle(sld_intervals),
-      'TVDI Oktober 2015': TVDI201510.sldStyle(sld_intervals),
-      'TVDI Agustus 2015': TVDI201508.sldStyle(sld_intervals),
-      'TVDI Okober 2014': TVDI201410.sldStyle(sld_intervals),
-      'TVDI September 2014': TVDI201409.sldStyle(sld_intervals),
-      'TVDI Oktober 2013': TVDI201310.sldStyle(sld_intervals),
-      'TVDI Juli 2013': TVDI201307.sldStyle(sld_intervals),
+      'TVDI': TVDI.sldStyle(sld_intervals),
 };
 // Pembuatan peta split sisi kiri 
 var leftMap = ui.Map(); 
