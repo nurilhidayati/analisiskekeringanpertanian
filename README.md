@@ -141,38 +141,7 @@ var thresholds = ee.Image([0, 0.19, 0.39, 0.59, 0.79, 1]);
 //Menampilkan hasil TVDI
 Map.addLayer(TVDI.sldStyle(sld_intervals), {}, 'TVDI');
 ```
-9. Menghitung Luas Area yang terdampak Kekeringan Pertanian
-```
-var classified = TVDI.lt(thresholds).reduce('sum').toInt();
-
-// Menghitung jumlah pixel di seluruh kelas
-var pixstats = classified.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-
-// Mengextract jumlah pixel menjadi angka
-var allpixels = ee.Number(pixstats1.get('sum')); 
-
-// Membuat daftar kosong untuk menyimpan suatu nilai area
-var arealist = [];
-
-// Membuat fungsi untuk memperoleh tingkat satu kelas kekeringan pertanian
-var areacount = function(cnr, name) {
-  var singleMask =  classified1.updateMask(classified.eq(cnr));
-  var stats = singleMask.reduceRegion({reducer: ee.Reducer.count(),geometry: mojokerto, scale: 30, bestEffort:true,});
-  var pix =  ee.Number(stats.get('sum'));
-  var hect = pix.multiply(900).divide(10000);                
-  var perc = pix.divide(allpixels).multiply(10000).round().divide(100);   
-             arealist.push({Class: name, Pixels: pix, Hectares: hect, Percentage: perc})};
-
-// Urutan tingkat kekeringan pertanian
-var names2 =  [ 'NA','Kering','Agak Kering', 'Normal', 'Agak Basah','Basah'];
-
-// Menjalankan fungsi di setiap kelas
-for (var i = 0; i < 6; i++) {areacount1(i, names2[i]);}
-
-print('Luas Kekeringan Pertanian', arealist);
-
-```
-10. Penyajian Peta TVDI menggunakan tampilan antarmuka Split Panel Map untuk memudahkan dalam membandingkan sebaran kekeringan pertanian setiap tahun perekamannya.
+9. Penyajian Peta TVDI menggunakan tampilan antarmuka Split Panel Map untuk memudahkan dalam membandingkan sebaran kekeringan pertanian setiap tahun perekamannya.
 ```
 // Pendeskripsian citra yang dimasukkan pada layer split panel
 var images = {
@@ -221,7 +190,7 @@ var linker = ui.Map.Linker([leftMap, rightMap]);
 leftMap.centerObject(mojokerto,10.3); 
 rightMap.centerObject(mojokerto,10.3);
 ```
-11. Uji Usabilitas dilakukan dengan menyebarkan kuisioner melalui Google Form untuk mengetahui penilaian dan respon dari pengguna mengenai pengalamannya menggunakan Earth Engine Apps ini
+10. Uji Usabilitas dilakukan dengan menyebarkan kuisioner melalui Google Form untuk mengetahui penilaian dan respon dari pengguna mengenai pengalamannya menggunakan Earth Engine Apps ini
 
 ## Disclaimer
 Hasil pengolahan data sudah dilakukan uji akurasi pada dua data masukan yang digunakan, karena akurasi yang baik dari data masukan diperlukan agar nilai TVDI yang dihasilkan juga dapat akurat. Hasil uji akurasi dilakukan pada dua data masukan yaitu NDVI dan LST menghasilkan nilai akurasi NDVI pada lahan pertanian sebesar 83,33% dan rata-rata ketelitian nilai LST pada lahan pertanian sebesar 91,49%.
