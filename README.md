@@ -39,7 +39,36 @@ PERITANI merupakan dashboard yang manyajikan peta interaktif sebaran kekeringan 
 ```
 9. Visualisasi Peta TVDI mengacu pada Sandholt (2002) yang membagi nilai TVDI menjadi 5 kelas yaitu: kelas basah (hijau tua), kelas agak basah (hijau muda), kelas normal (kuning), kelas agak kering (oranye), dan kelas kering (merah)
 ```
-    var ndvi = img.normalizedDifference(['B5', 'B4']).rename('ndvi');
+//Batas Basah
+var LSTmin1 = ndvi201307.expression(
+    '((-3.4512 * ndvi) + 26.079)', {
+    'ndvi': ndvi.select('ndvi1')});
+
+//Batas Kering
+var LSTmax1 = ndvi201307.expression(
+    '((-2.4359 * ndvi) + 34.807)', {
+    'ndvi': ndvi.select('ndvi1')});
+    
+//Menghitung TVDI
+var TVDI =(LST.subtract(LSTmin).divide(LSTmax.subtract(LSTmin)));
+
+//Simbolisasi nilai TVDI
+var sld_intervals =
+  '<RasterSymbolizer>' +
+    '<ColorMap type="intervals" extended="false" >' +
+      '<ColorMapEntry color="#ffffff" quantity="0" label="No Drought"/>' +
+      '<ColorMapEntry color="#7a8737" quantity="0.2" label="Kelas Basah"/>' +
+      '<ColorMapEntry color="#0ae042" quantity="0.4" label="Kelas Agak Basah" />' +
+      '<ColorMapEntry color="#fff70b" quantity="0.6" label="Kelas Normal" />' +
+      '<ColorMapEntry color="#ffaf38" quantity="0.8" label="Kelas Agak Kering" />' +
+      '<ColorMapEntry color="#ff641b" quantity="1" label="Kelas Kering" />' +
+    '</ColorMap>' +
+  '</RasterSymbolizer>';
+// Memisahkan hasil dalam 8 kelas klasifikasi
+var thresholds = ee.Image([0, 0.19, 0.39, 0.59, 0.79, 1]);
+
+//Menampilkan hasil TVDI
+Map.addLayer(TVDI.sldStyle(sld_intervals), {}, 'TVDI');
 ```
 11. Penyajian Peta TVDI menggunakan tampilan antarmuka Split Panel Map untuk memudahkan dalam membandingkan sebaran kekeringan pertanian setiap tahun perekamannya.
 ```
