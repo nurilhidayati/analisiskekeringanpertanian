@@ -1,10 +1,8 @@
 var mojokerto= ee.FeatureCollection("users/nurilassajdah/pertanian_mojokerto");
 var mojokertokec= ee.FeatureCollection("users/nurilassajdah/kecamatan_mojokerto");
 var sampel= ee.FeatureCollection.randomPoints(mojokerto);
-//print('Titik Sampel pada Lahan Pertanian', titikSampel);
-//Map.addLayer(titikSampel, {color: 'black'}, 'Titik Sampel');
 
-var img201307 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20130728').clip(mojokerto);
+var img201307 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20130914').clip(mojokerto);
 var img201310 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20131016').clip(mojokerto);
 var img201409 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20140917').clip(mojokerto);
 var img201410 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20141003').clip(mojokerto);
@@ -955,7 +953,7 @@ var LST202210 = img202210.expression(
 //-------------------------- TVDI --------------------
 //MIN ALGORITMA
 var LSTmin1 = ndvi201307.expression(
-    '((-3.4512 * ndvi) + 26.079)', {
+    '((2.2658 * ndvi) + 28.677)', {
     'ndvi': ndvi201307.select('ndvi1')});
 
 var LSTmin2 = ndvi201310.expression(
@@ -963,7 +961,7 @@ var LSTmin2 = ndvi201310.expression(
     'ndvi': ndvi201310.select('ndvi2')});
 
 var LSTmin3 = ndvi201409.expression(
-    '((-3.0148 * ndvi) +32.597)', {
+    '((-2.4659 * ndvi) + 32.215)', {
     'ndvi': ndvi201409.select('ndvi3')});
 
 var LSTmin4 = ndvi201410.expression(
@@ -1036,7 +1034,7 @@ var LSTmin20 = ndvi202210.expression(
 
 //MAX ALGORITMA
 var LSTmax1 = ndvi201307.expression(
-    '((-2.4359 * ndvi) + 34.807)', {
+    '((-5.4556 * ndvi) + 42.763)', {
     'ndvi': ndvi201307.select('ndvi1')});
 
 var LSTmax2 = ndvi201310.expression(
@@ -1044,8 +1042,9 @@ var LSTmax2 = ndvi201310.expression(
     'ndvi': ndvi201310.select('ndvi2')});
 
 var LSTmax3 = ndvi201409.expression(
-    '((-7.3833 * ndvi) + 42.667)', {
+    '((-5.3105 * ndvi) + 42.68)', {
     'ndvi': ndvi201409.select('ndvi3')});
+
 
 
 var LSTmax4 = ndvi201410.expression(
@@ -1219,7 +1218,7 @@ var images = {
       'TVDI Okober 2014': TVDI201410.sldStyle(sld_intervals),
       'TVDI September 2014': TVDI201409.sldStyle(sld_intervals),
       'TVDI Oktober 2013': TVDI201310.sldStyle(sld_intervals),
-      'TVDI Juli 2013': TVDI201307.sldStyle(sld_intervals),
+      'TVDI September 2013': TVDI201307.sldStyle(sld_intervals),
 };
 // Pembuatan peta split sisi kiri 
 var leftMap = ui.Map(); 
@@ -1297,7 +1296,7 @@ var judul = ui.Label('Dashboard Pemantauan Sebaran Kekeringan Pertanian Kabupate
     textAlign: 'center'
   }
 );
-var paragraf1 = ui.Label('PERITANI merupakan dashboard yang manyajikan peta interaktif sebaran kekeringan pertanian di Kabupaten Mojokerto pada tahun 2013-2022. Informasi sebaran kekeringan pertanian diperoleh dari data citra Landsat 8 Collection 2 Tier 1 TOA Reflectance dengan interval perekaman dari perwakilan data tahun 2013 hingga 2022 saat musim kemarau. Metode yang digunakan untuk memetakkan sebaran kekeringan adalah Temperature Vegetation Dryness Index (TVDI) yang memanfaatkan dua data masukan yaitu Normalized Difference Vegetation Index (NDVI) dan Land Surface Temperature (LST).', 
+var paragraf1 = ui.Label('Earth Engine Apps yang manyajikan peta interaktif sebaran kekeringan pertanian di Kabupaten Mojokerto pada tahun 2013-2022. Informasi sebaran kekeringan pertanian diperoleh dari data citra Landsat 8 Collection 2 Tier 1 TOA Reflectance dengan interval perekaman dari perwakilan data tahun 2013 hingga 2022 saat musim kemarau. Metode yang digunakan untuk memetakan sebaran kekeringan adalah Temperature Vegetation Dryness Index (TVDI) yang memanfaatkan dua data masukan yaitu Normalized Difference Vegetation Index (NDVI) dan Land Surface Temperature (LST). Keseluruhan pengolahan hingga penyajian data dilakukan menggunakan platform Google Earth Engine menggunakan bahasa pemrograman JavaScript', 
  {  fontFamily: 'sans-serif',
     fontSize:'14px',
     padding:'2px 0 4px 6px',
@@ -1311,7 +1310,7 @@ panel.add(judul).add(paragraf1);
 var disclaimer = ui.Panel(
     [
         ui.Label('Disclaimer!!!', {fontSize:'12px', fontWeight: 'bold', margin: '15px 0 0 15px'}),
-        ui.Label('Hasil pengolahan data sudah dilakukan uji akurasi pada dua data masukan yang digunakan, karena akurasi yang baik dari data masukan diperlukan agar nilai TVDI yang dihasilkan juga dapat akurat. Survei lapangan dilakukan dengan jumlah sampel sebanyak 30 titik sampel yang ditentukan berdasarkan metode stratified random sampling, dimana menghasilkan nilai akurasi NDVI sebesar 83,33% dan rata-rata ketelitian nilai LST sebesar 91.49%.', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
+        ui.Label('Hasil pengolahan data sudah dilakukan uji akurasi pada dua data masukan yang digunakan, karena akurasi yang baik dari data masukan diperlukan agar nilai TVDI yang dihasilkan juga dapat akurat. Hasil uji akurasi dilakukan pada dua data masukan yaitu NDVI dan LST menghasilkan nilai akurasi NDVI pada lahan pertanian sebesar 83,33% dan rata-rata ketelitian nilai LST pada lahan pertanian sebesar 91,49%. ', {fontSize:'12px', margin: '12px 15px 0 15px', textAlign: 'justify'}),
         ui.Label(''),
     ]
 );
@@ -1431,13 +1430,10 @@ var profil = ui.Panel(
         ui.Label('Profil Wilayah Kajian Penelitian', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
         ui.Label('Kabupaten Mojokerto merupakan salah satu kabupaten di Provinsi Jawa Timur yang terdiri atas 18 Kecamatan, 299 Desa dan 5 Kelurahan. Topografi wilayah Kabupaten Mojokerto terdiri dari dataran rendah dan pegunungan yang dilalui aliran sungai Brantas (BPS Kabupaten Mojokerto, 2022). Pada wilayah utara Kabupaten Mojokerto didominasi oleh bentuklahan karst yang dipengaruhi oleh bukit-bukit berbatu kapur sehingga menyebabkan keadaan tanah yang kurang subur. Sedangkan, pada bagian selatan Kabupaten Mojokerto di dominasi oleh bentuklahan vulkanik yang dipengaruhi oleh Gunung Penanggungan serta kompleks pegunungan Arjuna-Welirang sehingga keadaan tanahnya yang subur dan cocok digunakan sebagai lahan pertanian. ', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label(''),
-        ui.Label('Berdasarkan jenis penggunaan lahannya, Kabupaten Mojokerto memiliki  penggunaan lahan berupa pemukiman, pertanian, hutan, rawa/waduk, perkebunan, lahan kritis, padang rumput, dan semak/alang-alang. Area penggunaan lahan dengan luas area terbesar didominasi oleh penggunaan lahan pertanian yaitu sebesar 45.122 hektar (BPS Kabupaten Mojokerto, 2022). Hal tersebut merupakan salah satu urgensi mengapa kajian tentang kekeringan pertanian ini penting dilakukan di Kabupaten Mojokerto.', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
-        ui.Label(''),
         ui.Label('Batas area kajian yang digunakan adalah area lahan pertanian di Kabupaten Mojokerto, karena untuk membatasi kajian terhadap citra sehingga lebih terfokuskan pada lahan pertanian di Kabupaten Mojokerto. Hal ini sejalan dengan tujuan Earth Engine Apps ini untuk memantau dan memetakkan sebaran kekeringan pertanian di Kabupaten Mojokertp.', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label(''),
         ui.Label('[Klik Disini] Peta Batas Administrasi Kabupaten Mojokerto', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://raw.githubusercontent.com/nurilhidayati/analisiskekeringanpertanian/main/Peta%20Batas%20Administrasi%20Kab.%20Mojokerto.png'),
-        ui.Label('[Klik Disini] Peta Lahan Pertanian Kabupaten Mojokerto', {fontSize:'12px',margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://raw.githubusercontent.com/nurilhidayati/analisiskekeringanpertanian/main/Peta%20Lahan%20Pertanian%20Kab.%20Mojokerto.png'),
-        ui.Label('[Klik Disini] Tabel Luas Lahan Pertanian Kabupaten Mojokerto', {fontSize:'12px',margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://raw.githubusercontent.com/nurilhidayati/analisiskekeringanpertanian/main/Luas%20Lahan%20Pertanian%20Kabupaten%20Mojokerto.png'),
+        ui.Label('[Klik Disini] Peta Lahan Pertanian Kabupaten Mojokerto', {fontSize:'12px',margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://raw.githubusercontent.com/nurilhidayati/analisiskekeringanpertanian/main/Peta%20Lahan%20Pertanian%20Kabupaten%20Mojokerto.png'),
         ui.Label(''),
     ]
 );
@@ -1470,7 +1466,7 @@ panel.add(keteranganPanel);
 var keteranganTVDI = ui.Panel(
     [
         ui.Label('Definisi Kekeringan Pertanian', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
-        ui.Label('Kekeringan dikategorikan dalam bencana alam berdasarkan Undang-Undang Nomor 24 Tahun 2007 tentang Penanggulangan Bencana. Berdasarkan undang-undang tersebut kekeringan didefinisikan sebagai ketersediaan air yang jauh di bawah kebutuhan air untuk kebutuhan hidup, pertanian, kegiatan ekonomi dan lingkungan. Menurut Badan Koordinasi Nasional Penanganan Bencana (BAKORNAS PB) tahun 2007, kekeringan pertanian merupakan kekeringan yang berhubungan dengan berkurangnya kandungan air dalam tanah (lengas tanah) sehingga tak mampu lagi memenuhi kebutuhan air bagi tanaman pada suatu priode tertentu. Kekeringan ini biasanya terjadi setelah terjadinya gejala kekeringan meteorologis. Dampak kekeringan di sektor pertanian merupakan dampak kekeringan paling parah karena mengakibatkan penurunan produksi atau kegagalan panen tanaman pangan terutama padi dan palawija di sebagian besar lahan pertanian Indonesia (Badan Penelitian dan Pengembangan Pertanian 2014). Kondisi tersebut memiliki implikasi yang sangat besar terhadap segi kehidupan terutama bagi ketahanan pangan nasional.', {fontSize:'12px', textAlign: 'justify',  margin: '2px 15px 2px 15px'}),
+        ui.Label('Kekeringan dikategorikan dalam bencana alam berdasarkan Undang-Undang Nomor 24 Tahun 2007 tentang Penanggulangan Bencana. Berdasarkan undang-undang tersebut kekeringan didefinisikan sebagai ketersediaan air yang jauh di bawah kebutuhan air untuk kebutuhan hidup, pertanian, kegiatan ekonomi dan lingkungan. Menurut Badan Koordinasi Nasional Penanganan Bencana (BAKORNAS PB) tahun 2007, kekeringan pertanian merupakan kekeringan yang berhubungan dengan berkurangnya kandungan air dalam tanah (lengas tanah) sehingga tak mampu lagi memenuhi kebutuhan air bagi tanaman pada suatu priode tertentu. Kekeringan ini biasanya terjadi setelah terjadinya gejala kekeringan meteorologis. Salah satu dampak bencana kekeringan pertanian yaitu mengakibatkan penurunan produksi atau kegagalan panen tanaman pangan terutama padi dan palawija di sebagian besar lahan pertanian Indonesia (Badan Penelitian dan Pengembangan Pertanian 2014).', {fontSize:'12px', textAlign: 'justify',  margin: '2px 15px 2px 15px'}),
         ui.Label(''),
         ui.Label('Klasifikasi Tingkat Kekeringan Pertanian', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
         ui.Label('Kelas Kelasifikasi Tingkat Kekeringan Metode TVDI mengacu pada Sandholt (2002) yang membagi nilai TVDI menjadi 5 kelas yaitu:', {fontSize:'12px', textAlign: 'justify', margin: '2px 15px 2px 15px'}),
@@ -1510,10 +1506,13 @@ panel.add(infoPanel);
 var pengolahanData = ui.Panel(
     [
         ui.Label('Data yang Digunakan:', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
-        ui.Label('1. Citra Landsat 8 Collection 2 Tier 1 TOA Reflectance Path/Row 118/65 dengan interval perekaman dari perwakilan data tahun 2013 hingga 2022 saat musim kemarau', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
-        ui.Label('2 Data Shapefile Lahan Pertanian di Kabupaten Mojokerto', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
-        ui.Label('3 Data Shapefile Batas Administrasi Kecamatan di Kabupaten Mojokerto', {fontSize:'12px',  margin: '2px 15px 2px 15px'}),
-        ui.Label('4 Informasi Validasi Nilai NDVI dan LST dari Survei Lapangan pada Bulan Oktober 2022 ', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('1. Citra Landsat 8 Collection 2 Tier 1 TOA Reflectance Path/Row 118/65 dengan interval perekaman dari perwakilan data tahun 2013 hingga 2022 saat musim kemarau pada rentang bulan Juli-Oktober. Data Citra Landsat 8 di dapatkan dari Earth Engine Data Catalog.', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_TOA', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_TOA'),
+        ui.Label('2 Data Shapefile Lahan Pertanian di Kabupaten Mojokerto dari Ditjen Prasarana dan Sarana Pertanian.', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('sikomantap.psp.pertanian.go.id/monitoring/peta/list', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'http://sikomantap.psp.pertanian.go.id/monitoring/peta/list'),
+        ui.Label('3 Data Shapefile Batas Administrasi Kecamatan di Kabupaten Mojokerto dari Badan Informasi Geospasial.', {fontSize:'12px',  margin: '2px 15px 2px 15px'}),
+        ui.Label('tanahair.indonesia.go.id/portal-web', {fontSize:'12px', margin: '2px 15px 2px 15px', textAlign: 'justify'},'https://tanahair.indonesia.go.id/portal-web'),
+        ui.Label('4 Informasi Validasi Nilai NDVI dan LST dari Survei Lapangan pada Bulan Oktober 2022. ', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label(''),
         ui.Label('Metode yang Digunakan::', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
         ui.Label('1. Perhitungan nilai Normalized Difference Vegetation Index (NDVI) diperoleh dari saluran merah (Band 4) dan saluran inframerah dekat (Band 5) pada Citra Landsat 8 Collection 2 Tier 1 TOA Reflectance.', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
@@ -1522,7 +1521,7 @@ var pengolahanData = ui.Panel(
         ui.Label('4. Regresi linear antara nilai NDVI dan nilai LST menggunakan scatter plot bertujuan untuk memperoleh persamaan nilai indeks kekeringan TVDI', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label('5. Perhitungan nilai Temperature-Vegetation Dryness Index (TVDI). Nilai TVDI menghasilkan nilai minimum: 0 dan maximum: 1', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label('6. Visualisasi Peta TVDI mengacu pada Sandholt (2002) yang membagi nilai TVDI menjadi 5 kelas yaitu: kelas basah (hijau tua), kelas agak basah (hijau muda), kelas normal (kuning), kelas agak kering (oranye), dan kelas kering (merah)', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
-        ui.Label('7. Penyajian Peta TVDI menggunakan tampilan antarmuka Split Panel untuk memudahkan dalam membandingkan sebaran kekeringan pertanian setiap tahun perekamannya.', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
+        ui.Label('7. Penyajian Peta TVDI menggunakan tampilan antarmuka Split Panel Map untuk memudahkan dalam membandingkan sebaran kekeringan pertanian setiap tahun perekamannya.', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label('8. Uji Usabilitas dilakukan dengan menyebarkan kuisioner melalui Google Form untuk mengetahui penilaian dan respon dari pengguna mengenai pengalamannya menggunakan Earth Engine Apps ini', {fontSize:'12px',  margin: '2px 15px 2px 15px', textAlign: 'justify'}),
         ui.Label(''),
         ui.Label('Catatan:', {fontSize:'12px', fontWeight: 'bold', margin: '2px 15px 2px 15px'}),
@@ -1574,9 +1573,9 @@ graphPanelMean.add(grafikTVDI);
 var dataTable = {
   cols: [{id: 'Class', label: 'Classification', type: 'string'},
          {id: 'Nilai', label: 'Nilai TVDI', type: 'number'}],
-  rows: [{c: [{v: '28 Juli 2013'},  {v: 0.542}]},
+  rows: [{c: [{v: '14 September 2013'},  {v: 0.509}]},
          {c: [{v: '1 Oktober 2013'}, {v: 0.576}]},
-         {c: [{v: '1 September 2014'},     {v: 0.447}]},
+         {c: [{v: '17 September 2014'},     {v: 0.454}]},
          {c: [{v: '3 Oktober 2014'},  {v: 0.520}]},
          {c: [{v: '3 Agustus 2015'},  {v: 0.556}]},
          {c: [{v: '22 Oktober 2015'}, {v: 0.595}]},
@@ -1592,8 +1591,8 @@ var dataTable = {
          {c: [{v: '3 oktober 2020'},  {v: 0.548}]},
          {c: [{v: '19 Agustus 2021'}, {v: 0.590}]},
          {c: [{v: '4 September 2021'},     {v: 0.563}]},
-         {c: [{v: '5 Juli 2022'},  {v: 0.555}]},
-         {c: [{v: '22 Agustus 2022'}, {v: 0.585}]}]};
+         {c: [{v: '22 Agustus 2022'},  {v: 0.555}]},
+         {c: [{v: '9 Oktober 2022'}, {v: 0.585}]}]};
 // Define a dictionary of customization options.
 var options = {
   title: 'Grafik Nilai Rata-Rata Indeks Kekeringan Pertanian (TVDI) di Kabupaten Mojokerto pada Tahun 2013-2022',
@@ -1642,9 +1641,9 @@ graphPanel.add(grafikLuas);
 var dataTable = {
   cols: [{id: 'Class', label: 'Classification', type: 'string'},
          {id: 'Area', label: 'Area (ha)', type: 'number'}],
-  rows: [{c: [{v: '28 Juli 2013'},  {v: 13918.5}]},
+  rows: [{c: [{v: '14 September 2013'},  {v: 13918.5}]},
          {c: [{v: '1 Oktober 2013'}, {v: 14937.48}]},
-         {c: [{v: '1 September 2014'},     {v: 7578.09}]},
+         {c: [{v: '17 September 2014'},     {v: 7578.09}]},
          {c: [{v: '3 Oktober 2014'},  {v: 13419.36}]},
          {c: [{v: '3 Agustus 2015'},  {v: 11056.5}]},
          {c: [{v: '22 Oktober 2015'}, {v: 15586.92}]},
@@ -1660,8 +1659,8 @@ var dataTable = {
          {c: [{v: '3 Oktober 2020'},  {v: 12840.75}]},
          {c: [{v: '19 Agustus 2021'}, {v: 14076}]},
          {c: [{v: '4 September 2021'},     {v: 11761.11}]},
-         {c: [{v: '5 Juli 2022'},  {v: 11330.46}]},
-         {c: [{v: '22 Agustus 2022'}, {v: 12782.79}]}]};
+         {c: [{v: '22 Agustus 2022'},  {v: 11330.46}]},
+         {c: [{v: '9 Oktober 2022'}, {v: 12782.79}]}]};
 // Define a dictionary of customization options.
 var options = {
   title: 'Grafik Perubahan Luasan Sebaran Lahan Kelas Kering di Kabupaten Mojokerto pada Tahun 2013-2022',
@@ -1677,9 +1676,9 @@ graphPanel.add(chart);
 var dataTable = {
   cols: [{id: 'Class', label: 'Classification', type: 'string'},
          {id: 'Area', label: 'Area (ha)', type: 'number'}],
-  rows: [{c: [{v: '28 Juli 2013'},  {v: 13339.44}]},
+  rows: [{c: [{v: '14 September 2013'},  {v: 13339.44}]},
          {c: [{v: '1 Oktober 2013'}, {v: 8932.59}]},
-         {c: [{v: '1 September 2014'},     {v: 7167.42}]},
+         {c: [{v: '17 September 2014'},     {v: 7167.42}]},
          {c: [{v: '3 Oktober 2014'},  {v: 7785.27}]},
          {c: [{v: '3 Agustus 2015'},  {v: 11294.28}]},
          {c: [{v: '22 Oktober 2015'}, {v: 9162.45}]},
@@ -1695,8 +1694,8 @@ var dataTable = {
          {c: [{v: '3 Oktober 2020'},  {v: 9077.13}]},
          {c: [{v: '19 Agustus 2021'}, {v: 10821.24}]},
          {c: [{v: '4 September 2021'},     {v: 9995.49}]},
-         {c: [{v: '5 Juli 2022'},  {v: 10486.71}]},
-         {c: [{v: '22 Agustus 2022'}, {v: 15903.72}]}]};
+         {c: [{v: '22 Agustus 2022'},  {v: 10486.71}]},
+         {c: [{v: '9 Oktober 2022'}, {v: 15903.72}]}]};
 // Define a dictionary of customization options.
 var options = {
   title: 'Grafik Perubahan Luasan Sebaran Lahan Kelas Agak Kering di Kabupaten Mojokerto pada Tahun 2013-2022',
@@ -1712,9 +1711,9 @@ graphPanel.add(chart);
 var dataTable = {
   cols: [{id: 'Class', label: 'Classification', type: 'string'},
          {id: 'Area', label: 'Area (ha)', type: 'number'}],
-  rows: [{c: [{v: '28 Juli 2013'},  {v: 5002.92}]},
+  rows: [{c: [{v: '14 September 2013'},  {v: 5002.92}]},
          {c: [{v: '1 Oktober 2013'}, {v: 7192.26}]},
-         {c: [{v: '1 September 2014'},     {v: 9826.47}]},
+         {c: [{v: '17 September 2014'},     {v: 9826.47}]},
          {c: [{v: '3 Oktober 2014'},  {v:6739.2}]},
          {c: [{v: '3 Agustus 2015'},  {v: 8367.3}]},
          {c: [{v: '22 Oktober 2015'}, {v: 6726.24}]},
@@ -1730,8 +1729,8 @@ var dataTable = {
          {c: [{v: '3 Oktober 2020'},  {v: 7084.62}]},
          {c: [{v: '19 Agustus 2021'}, {v:7713.81}]},
          {c: [{v: '4 September 2021'},     {v:9325.71}]},
-         {c: [{v: '5 Juli 2022'},  {v:8660.43}]},
-         {c: [{v: '22 Agustus 2022'}, {v:8277.75}]}]};
+         {c: [{v: '22 Agustus 2022'},  {v:8660.43}]},
+         {c: [{v: '9 Oktober 2022'}, {v:8277.75}]}]};
 // Define a dictionary of customization options.
 var options = {
   title: 'Grafik Perubahan Luasan Sebaran Lahan Kelas Normal di Kabupaten Mojokerto pada Tahun 2013-2022',
@@ -1747,9 +1746,9 @@ graphPanel.add(chart);
 var dataTable = {
   cols: [{id: 'Class', label: 'Classification', type: 'string'},
          {id: 'Area', label: 'Area (ha)', type: 'number'}],
-  rows: [{c: [{v: '28 Juli 2013'},  {v: 2596.95}]},
+  rows: [{c: [{v: '14 September 2013'},  {v: 2596.95}]},
          {c: [{v: '1 Oktober 2013'}, {v: 6053.04}]},
-         {c: [{v: '1 September 2014'},     {v: 8842.32}]},
+         {c: [{v: '17 September 2014'},     {v: 8842.32}]},
          {c: [{v: '3 Oktober 2014'},  {v: 6182.55}]},
          {c: [{v: '3 Agustus 2015'},  {v: 6043.5}]},
          {c: [{v: '22 Oktober 2015'}, {v: 4987.53}]},
@@ -1765,8 +1764,8 @@ var dataTable = {
          {c: [{v: '3 Oktober 2020'},  {v: 6628.41}]},
          {c: [{v: '19 Agustus 2021'}, {v: 5061.06}]},
          {c: [{v: '4 September 2021'},     {v:7281.9}]},
-         {c: [{v: '5 Juli 2022'},  {v:6658.92}]},
-         {c: [{v: '22 Agustus 2022'}, {v: 2296.35}]}]};
+         {c: [{v: '22 Agustus 2022'},  {v:6658.92}]},
+         {c: [{v: '9 Oktober 2022'}, {v: 2296.35}]}]};
 // Define a dictionary of customization options.
 var options = {
   title: 'Grafik Perubahan Luasan Sebaran Lahan Kelas Agak Basah di Kabupaten Mojokerto pada Tahun 2013-2022',
@@ -1782,9 +1781,9 @@ graphPanel.add(chart);
 var dataTable = {
   cols: [{id: 'Class', label: 'Classification', type: 'string'},
          {id: 'Area', label: 'Area (ha)', type: 'number'}],
-  rows: [{c: [{v: '28 Juli 2013'},  {v: 8976.87}]},
+  rows: [{c: [{v: '14 September 2013'},  {v: 8976.87}]},
          {c: [{v: '1 Oktober 2013'}, {v: 6714.09}]},
-         {c: [{v: '1 September 2014'},     {v: 10439.82}]},
+         {c: [{v: '17 September 2014'},     {v: 10439.82}]},
          {c: [{v: '3 Oktober 2014'},  {v: 9716.4}]},
          {c: [{v: '3 Agustus 2015'},  {v: 7084.17}]},
          {c: [{v: '22 Oktober 2015'}, {v: 7373.43}]},
@@ -1800,8 +1799,8 @@ var dataTable = {
          {c: [{v: '3 Oktober 2020'},  {v: 8210.97}]},
          {c: [{v: '19 Agustus 2021'}, {v:6166.44}]},
          {c: [{v: '4 September 2021'},     {v: 5486.94}]},
-         {c: [{v: '5 Juli 2022'},  {v: 6709.77}]},
-         {c: [{v: '22 Agustus 2022'}, {v: 4569.12}]}]};
+         {c: [{v: '22 Agustus2022'},  {v: 6709.77}]},
+         {c: [{v: '9 Oktober 2022'}, {v: 4569.12}]}]};
 // Define a dictionary of customization options.
 var options = {
   title: 'Grafik Perubahan Luasan Sebaran Lahan Kelas Basah di Kabupaten Mojokerto pada Tahun 2013-2022',
