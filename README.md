@@ -16,10 +16,6 @@ Earth Engine Apps yang manyajikan peta interaktif sebaran kekeringan pertanian d
 ## Metode yang Digunakan:
 1. Menentukan area penelitian. Secara default penelitian ini menggunakan data shapefile lahan pertanian di Kabupaten Mojokerto sebagai batas area penelitian. Ini bisa diganti oleh data shapefile mana pun yang dikehendaki.
 2. Mendeskripsikan Citra Landsat 8 yang dikehendaki.
-```
-//Load data Citra Landsat 8 yang dipilih
-var img = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20130728').clip(mojokerto);
-```
 3. Perhitungan nilai Normalized Difference Vegetation Index (NDVI) diperoleh dari saluran merah (Band 4) dan saluran inframerah dekat (Band 5) pada Citra Landsat 8 Collection 2 Tier 1 TOA Reflectance.
 ```
 //Perhitungan Normalized Difference Vegetation Index (NDVI)  
@@ -74,8 +70,8 @@ var deltam = LSE10.subtract(LSE11).rename('deltaLSE');
 var LST = img.expression(
     '(TB10+1.378*(TB10-TB11))+0.183*(deltam)**2+(-0.268)+(54.3+(-2.238)*0.0013)*(1-m)+(((-129.2)+(16.4*0.0013))*(deltam))-273.15', 
     {
-     'TB10' : img201307.select('B10'),
-     'TB11' : img201307.select('B11'),
+     'TB10' : img.select('B10'),
+     'TB11' : img.select('B11'),
      'm' : m1.select('mLSE'),
      'deltam' : deltam1.select('deltaLSE')
     }
@@ -108,12 +104,12 @@ Export.table.toDrive({
 7. Perhitungan nilai Temperature-Vegetation Dryness Index (TVDI). Nilai TVDI menghasilkan nilai minimum: 0 dan maximum: 1
 ```
 //Mendeskripsikan Batas Basah
-var LSTmin1 = ndvi201307.expression(
+var LSTmin1 = ndvi.expression(
     '((-3.4512 * ndvi) + 26.079)', {
     'ndvi': ndvi.select('ndvi1')});
 
 //Mendeskripsikan Batas Kering
-var LSTmax1 = ndvi201307.expression(
+var LSTmax1 = ndvi.expression(
     '((-2.4359 * ndvi) + 34.807)', {
     'ndvi': ndvi.select('ndvi1')});
     
