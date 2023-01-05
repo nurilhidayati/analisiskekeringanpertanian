@@ -18,8 +18,6 @@ PERITANI merupakan dashboard yang manyajikan peta interaktif sebaran kekeringan 
 2. Perhitungan nilai Land Surface Temperature (LST) menggunakan metode Split Window Algorithm (SWA)
 ```
 //Perhitungan FVC
-
-//Perhitungan LSE
 //Min dan Max NDVI
 {var minNDVI = ee.Number(ndvi.reduceRegion({
 reducer: ee.Reducer.min(),
