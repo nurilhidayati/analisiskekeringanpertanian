@@ -42,19 +42,22 @@ PERITANI merupakan dashboard yang manyajikan peta interaktif sebaran kekeringan 
     var ndvi = img.normalizedDifference(['B5', 'B4']).rename('ndvi');
 ```
 11. Penyajian Peta TVDI menggunakan tampilan antarmuka Split Panel Map untuk memudahkan dalam membandingkan sebaran kekeringan pertanian setiap tahun perekamannya.
-```json
+```
 // Pendeskripsian citra yang dimasukkan pada layer split panel
 var images = {
       'TVDI': TVDI.sldStyle(sld_intervals),
 };
+
 // Pembuatan peta split sisi kiri 
 var leftMap = ui.Map(); 
 leftMap.setControlVisibility(false); 
 var leftSelector = addLayerSelector(leftMap, 2, 'top-left'); 
+
 // Pembuatan peta split sisi kanan 
 var rightMap = ui.Map(); 
 rightMap.setControlVisibility(false); 
 var rightSelector = addLayerSelector(rightMap, 1, 'top-right'); 
+
 // Pengaturan layer peta untuk memilih citra yang ingin ditampilkan
 function addLayerSelector(mapToChange, defaultValue, position)
 { 
@@ -70,9 +73,8 @@ function addLayerSelector(mapToChange, defaultValue, position)
       var controlPanel = ui.Panel({widgets: [label, select], style: {position: position}}); 
       mapToChange.add(controlPanel); 
 } 
-/* 
- * Mengikat semuanya pada split panel 
- */ 
+
+//Mengikat semuanya pada split panel 
 // Pembuatan peta perbandingan dalam splitpanel
 var splitPanel = ui.SplitPanel({ 
   firstPanel: leftMap, 
@@ -80,6 +82,7 @@ var splitPanel = ui.SplitPanel({
   wipe: true, 
   style: {stretch: 'both'} 
 });
+
 // Menetapkan splitpanel yang berada di root UI
 ui.root.widgets().reset([splitPanel]); 
 var linker = ui.Map.Linker([leftMap, rightMap]); 
