@@ -15,6 +15,12 @@ PERITANI merupakan dashboard yang manyajikan peta interaktif sebaran kekeringan 
 ```json
 var ndvi201307 = img201307.normalizedDifference(['B5', 'B4']).rename('ndvi1');
 ```
+
+```json
+{
+    "IngredName": "Niacinamide"
+}
+```
 2. Perhitungan nilai Land Surface Temperature (LST) menggunakan metode Split Window Algorithm (SWA)
 3. Ekstraksi nilai NDVI dan LST dilakukan dengan mengambil sampel random berdasarkan area kajian pada lahan pertanian Kabupaten Mojokerto. Penentuan titik sampel menggunakan metode acak menggunakan fungsi ee.FeatureCollection.randomPoints(). Selanjutnya, nilai hasil ekstrasi NDVI dan LST diekport dalam format CSV.
 4. Regresi linear antara nilai NDVI dan nilai LST menggunakan scatter plot bertujuan untuk memperoleh persamaan nilai indeks kekeringan TVDI
