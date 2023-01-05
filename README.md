@@ -45,18 +45,19 @@ PERITANI merupakan dashboard yang manyajikan peta interaktif sebaran kekeringan 
 ```
 // Pendeskripsian citra yang dimasukkan pada layer split panel
 var images = {
-      'TVDI': TVDI.sldStyle(sld_intervals),
+      'TVDI1': TVDI1.sldStyle(sld_intervals),
+      'TVDI2': TVDI2.sldStyle(sld_intervals),
 };
 
 // Pembuatan peta split sisi kiri 
 var leftMap = ui.Map(); 
 leftMap.setControlVisibility(false); 
-var leftSelector = addLayerSelector(leftMap, 2, 'top-left'); 
+var leftSelector = addLayerSelector(leftMap, 1, 'top-left'); 
 
 // Pembuatan peta split sisi kanan 
 var rightMap = ui.Map(); 
 rightMap.setControlVisibility(false); 
-var rightSelector = addLayerSelector(rightMap, 1, 'top-right'); 
+var rightSelector = addLayerSelector(rightMap, 2, 'top-right'); 
 
 // Pengaturan layer peta untuk memilih citra yang ingin ditampilkan
 function addLayerSelector(mapToChange, defaultValue, position)
