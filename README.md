@@ -18,6 +18,7 @@ Earth Engine Apps yang manyajikan peta interaktif sebaran kekeringan pertanian d
 ```
 //Perhitungan Normalized Difference Vegetation Index (NDVI)  
 var ndvi = img.normalizedDifference(['B5', 'B4']).rename('ndvi');
+Map.addLayer(ndvi, {min:0,max:1,palette:['cc4219', 'efbd72', 'f7ff78', '06af39','136a3a']}, 'ndvi');
 ```
 2. Perhitungan nilai Land Surface Temperature (LST) menggunakan metode Split Window Algorithm (SWA)
 ```
@@ -74,6 +75,8 @@ var LST = img.expression(
      'deltam' : deltam1.select('deltaLSE')
     }
   ).rename('LST');
+  
+Map.addLayer(LST, {min:20,max:45,palette:['4052a9', '26bc70', 'f7ff78', 'f3ae13','e03907']},'LST');
 ```
 3. Ekstraksi nilai NDVI dan LST dilakukan dengan mengambil sampel random berdasarkan area kajian pada lahan pertanian Kabupaten Mojokerto. Penentuan titik sampel menggunakan metode acak menggunakan fungsi ee.FeatureCollection.randomPoints(). Selanjutnya, nilai hasil ekstrasi NDVI dan LST diekport dalam format CSV.
 ```
