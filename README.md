@@ -95,8 +95,8 @@ var LST = img.expression(
     {
      'TB10' : img.select('B10'),
      'TB11' : img.select('B11'),
-     'm' : m1.select('mLSE'),
-     'deltam' : deltam1.select('deltaLSE')
+     'm' : m.select('mLSE'),
+     'deltam' : deltam.select('deltaLSE')
     }
   ).rename('LST');
   
@@ -108,7 +108,7 @@ Map.addLayer(LST, {min:20,max:45,palette:['4052a9', '26bc70', 'f7ff78', 'f3ae13'
 var sampel= ee.FeatureCollection.randomPoints(mojokerto);
 
 //Menggabungkan citra NDVI DAN LST
-var stacked = ndvi.addBands(LST2);
+var stacked = ndvi.addBands(LST);
 
 //Ekstraksi Nilai NDVI dan LST berdasarkan sampel
 var imgSampel = stacked.sampleRegions({
