@@ -14,13 +14,37 @@ Earth Engine Apps yang manyajikan peta interaktif sebaran kekeringan pertanian d
 
 
 ## Metode yang Digunakan:
-1. Perhitungan nilai Normalized Difference Vegetation Index (NDVI) diperoleh dari saluran merah (Band 4) dan saluran inframerah dekat (Band 5) pada Citra Landsat 8 Collection 2 Tier 1 TOA Reflectance.
+1. Load Shapefile Lahan Pertanian dan Batas Kecamatan
+```
+//Mendeskripsikan Lahan Pertanian di Kabupaten Mojokerto
+var mojokerto= ee.FeatureCollection("users/nurilassajdah/pertanian_mojokerto");
+
+//Menampilkan Lahan Pertanian
+Map.addLayer(mojokerto, {palette: '000000'}, 'Batas Kecamatan');
+
+//Mendeskripsikan Batas Kecamatan
+var bataskecamatan= ee.FeatureCollection("users/nurilassajdah/kecamatan_mojokerto");
+
+//Menampilkan Batas Kecamatan
+var empty = ee.Image().byte();
+var outline = empty.paint({
+  featureCollection: bataskecamatan,
+  color: 1,
+  width: 1});
+Map.addLayer(outline, {palette: '000000'}, 'Batas Kecamatan');
+```
+2. Load Citra Landsat 8 yang dikehendaki
+```
+var img = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_118065_20130914').clip(mojokerto);
+Map.addLayer(img, {bands: ['B7', 'B5', 'B3'], max: [0.3, 0.4, 0.3]},  'Landsat 8');
+```
+3. Perhitungan nilai Normalized Difference Vegetation Index (NDVI) diperoleh dari saluran merah (Band 4) dan saluran inframerah dekat (Band 5) pada Citra Landsat 8 Collection 2 Tier 1 TOA Reflectance.
 ```
 //Perhitungan Normalized Difference Vegetation Index (NDVI)  
 var ndvi = img.normalizedDifference(['B5', 'B4']).rename('ndvi');
 Map.addLayer(ndvi, {min:0,max:1,palette:['cc4219', 'efbd72', 'f7ff78', '06af39','136a3a']}, 'ndvi');
 ```
-2. Perhitungan nilai Land Surface Temperature (LST) menggunakan metode Split Window Algorithm (SWA)
+4. Perhitungan nilai Land Surface Temperature (LST) menggunakan metode Split Window Algorithm (SWA)
 ```
 //Menentukan nilai Min dan Max NDVI
 {var minNDVI = ee.Number(ndvi.reduceRegion({
@@ -78,7 +102,7 @@ var LST = img.expression(
   
 Map.addLayer(LST, {min:20,max:45,palette:['4052a9', '26bc70', 'f7ff78', 'f3ae13','e03907']},'LST');
 ```
-3. Ekstraksi nilai NDVI dan LST dilakukan dengan mengambil sampel random berdasarkan area kajian pada lahan pertanian Kabupaten Mojokerto. Penentuan titik sampel menggunakan metode acak menggunakan fungsi ee.FeatureCollection.randomPoints(). Selanjutnya, nilai hasil ekstrasi NDVI dan LST diekport dalam format CSV.
+5. Ekstraksi nilai NDVI dan LST dilakukan dengan mengambil sampel random berdasarkan area kajian pada lahan pertanian Kabupaten Mojokerto. Penentuan titik sampel menggunakan metode acak menggunakan fungsi ee.FeatureCollection.randomPoints(). Selanjutnya, nilai hasil ekstrasi NDVI dan LST diekport dalam format CSV.
 ```
 //Mendeskripsikan sampel sampel
 var sampel= ee.FeatureCollection.randomPoints(mojokerto);
@@ -101,8 +125,8 @@ Export.table.toDrive({
   fileFormat: 'CSV'
 });
 ```
-4. Regresi linear antara nilai NDVI dan nilai LST menggunakan scatter plot bertujuan untuk memperoleh batas basah dan batas kering yang digunakan sebagai persamaan nilai indeks kekeringan TVDI. Regresi linear nilai NDVI dan LST dilakukan menggunakan Microsoft Excel
-5. Perhitungan nilai Temperature-Vegetation Dryness Index (TVDI). Nilai TVDI menghasilkan nilai minimum: 0 dan maximum: 1
+6. Regresi linear antara nilai NDVI dan nilai LST menggunakan scatter plot bertujuan untuk memperoleh batas basah dan batas kering yang digunakan sebagai persamaan nilai indeks kekeringan TVDI. Regresi linear nilai NDVI dan LST dilakukan menggunakan Microsoft Excel
+7. Perhitungan nilai Temperature-Vegetation Dryness Index (TVDI). Nilai TVDI menghasilkan nilai minimum: 0 dan maximum: 1
 ```
 //Mendeskripsikan Batas Basah
 var LSTmin = ndvi.expression(
@@ -117,7 +141,7 @@ var LSTmax = ndvi.expression(
 //Menghitung nilai Temperature Vegetation Dryness Index (TVDI)
 var TVDI =(LST.subtract(LSTmin).divide(LSTmax.subtract(LSTmin)));
 ```
-6. Visualisasi Peta TVDI mengacu pada Sandholt (2002) yang membagi nilai TVDI menjadi 5 kelas yaitu: kelas basah (hijau tua), kelas agak basah (hijau muda), kelas normal (kuning), kelas agak kering (oranye), dan kelas kering (merah)
+8. Visualisasi Peta TVDI mengacu pada Sandholt (2002) yang membagi nilai TVDI menjadi 5 kelas yaitu: kelas basah (hijau tua), kelas agak basah (hijau muda), kelas normal (kuning), kelas agak kering (oranye), dan kelas kering (merah)
 ```
 //Simbolisasi nilai TVDI 
 var sld_intervals =
@@ -138,7 +162,7 @@ var thresholds = ee.Image([0, 0.19, 0.39, 0.59, 0.79, 1]);
 //Menampilkan hasil TVDI
 Map.addLayer(TVDI.sldStyle(sld_intervals), {}, 'TVDI');
 ```
-7. Penyajian Peta TVDI menggunakan tampilan antarmuka Split Panel Map untuk memudahkan dalam membandingkan sebaran kekeringan pertanian setiap tahun perekamannya.
+9. Penyajian Peta TVDI menggunakan tampilan antarmuka Split Panel Map untuk memudahkan dalam membandingkan sebaran kekeringan pertanian setiap tahun perekamannya.
 ```
 // Pendeskripsian citra yang dimasukkan pada layer split panel
 var images = {
@@ -187,7 +211,7 @@ var linker = ui.Map.Linker([leftMap, rightMap]);
 leftMap.centerObject(mojokerto,10.3); 
 rightMap.centerObject(mojokerto,10.3);
 ```
-8. Uji Usabilitas dilakukan dengan menyebarkan kuisioner melalui Google Form untuk mengetahui penilaian dan respon dari pengguna mengenai pengalamannya menggunakan Earth Engine Apps ini
+10. Uji Usabilitas dilakukan dengan menyebarkan kuisioner melalui Google Form untuk mengetahui penilaian dan respon dari pengguna mengenai pengalamannya menggunakan Earth Engine Apps ini
 
 ## Disclaimer
 Hasil pengolahan data sudah dilakukan uji akurasi pada dua data masukan yang digunakan, karena akurasi yang baik dari data masukan diperlukan agar nilai TVDI yang dihasilkan juga dapat akurat. Hasil uji akurasi dilakukan pada dua data masukan yaitu NDVI dan LST menghasilkan nilai akurasi NDVI pada lahan pertanian sebesar 83,33% dan rata-rata ketelitian nilai LST pada lahan pertanian sebesar 91,49%.
