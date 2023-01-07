@@ -162,7 +162,45 @@ var thresholds = ee.Image([0, 0.19, 0.39, 0.59, 0.79, 1]);
 //Menampilkan hasil TVDI
 Map.addLayer(TVDI.sldStyle(sld_intervals), {}, 'TVDI');
 ```
-9. Penyajian Peta TVDI menggunakan tampilan antarmuka Split Panel Map untuk memudahkan dalam membandingkan sebaran kekeringan pertanian setiap tahun perekamannya.
+9. Perhitungan Nilai Minimum, Rata-Rata, dan Standar Deviasi
+```
+//Menghitung Nilai Minimum
+{var min = ee.Number(TVDI.reduceRegion({
+reducer: ee.Reducer.min(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+print(min, 'Nilai Minimum TVDI');
+
+//Menghitung Nilai Maximum
+var max = ee.Number(TVDI.reduceRegion({
+reducer: ee.Reducer.max(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+print(max, 'Nilai Maximum TVDI')
+
+//Menghitung Nilai Rata-Rata
+var mean = ee.Number(TVDI.reduceRegion({
+reducer: ee.Reducer.mean(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+print(mean, 'Nilai Rata-Rata TVDI');
+
+//Menghitung Nilai Standar Deviasi
+var stdDev = ee.Number(TVDI.reduceRegion({
+reducer: ee.Reducer.stdDev(),
+geometry: mojokerto,
+scale: 30,
+maxPixels: 1e9
+}).values().get(0));
+print(stdDev, 'Nilai Standar Deviasi');}
+```
+10. Penyajian Peta TVDI menggunakan tampilan antarmuka Split Panel Map untuk memudahkan dalam membandingkan sebaran kekeringan pertanian setiap tahun perekamannya.
 ```
 // Pendeskripsian citra yang dimasukkan pada layer split panel
 var images = {
@@ -211,7 +249,7 @@ var linker = ui.Map.Linker([leftMap, rightMap]);
 leftMap.centerObject(mojokerto,10.3); 
 rightMap.centerObject(mojokerto,10.3);
 ```
-10. Uji Usabilitas dilakukan dengan menyebarkan kuisioner melalui Google Form untuk mengetahui penilaian dan respon dari pengguna mengenai pengalamannya menggunakan Earth Engine Apps ini
+11. Uji Usabilitas dilakukan dengan menyebarkan kuisioner melalui Google Form untuk mengetahui penilaian dan respon dari pengguna mengenai pengalamannya menggunakan Earth Engine Apps ini
 
 ## Disclaimer
 Hasil pengolahan data sudah dilakukan uji akurasi pada dua data masukan yang digunakan, karena akurasi yang baik dari data masukan diperlukan agar nilai TVDI yang dihasilkan juga dapat akurat. Hasil uji akurasi dilakukan pada dua data masukan yaitu NDVI dan LST menghasilkan nilai akurasi NDVI pada lahan pertanian sebesar 83,33% dan rata-rata ketelitian nilai LST pada lahan pertanian sebesar 91,49%.
