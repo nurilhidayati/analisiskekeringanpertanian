@@ -14,7 +14,7 @@ Earth Engine Apps yang manyajikan peta interaktif sebaran kekeringan pertanian d
 
 
 ## Metode yang Digunakan:
-1. Load Shapefile Lahan Pertanian dan Batas Kecamatan
+1. Menentukan area penelitian. Secara default penelitian ini menggunakan shapefile lahan pertanian sebagai area kajian. Ini bisa diganti oleh shapefile mana pun yang dikehendaki
 ```
 //Mendeskripsikan Lahan Pertanian di Kabupaten Mojokerto
 var mojokerto= ee.FeatureCollection("users/nurilassajdah/pertanian_mojokerto");
