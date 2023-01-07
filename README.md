@@ -103,12 +103,12 @@ Export.table.toDrive({
 ```
 //Mendeskripsikan Batas Basah
 var LSTmin = ndvi.expression(
-    '((-3.4512 * ndvi) + 26.079)', {   //Didapatkan dari hasil regresi NDVI dan LST
+    '((-9.4889 * ndvi) + 36.639)', {
     'ndvi': ndvi.select('ndvi')});
 
 //Mendeskripsikan Batas Kering
 var LSTmax = ndvi.expression(
-    '((-2.4359 * ndvi) + 34.807)', {   //Didapatkan dari hasil regresi NDVI dan LST
+    '((-13.889 * ndvi) + 45.227)', {
     'ndvi': ndvi.select('ndvi')});
     
 //Menghitung nilai Temperature Vegetation Dryness Index (TVDI)
