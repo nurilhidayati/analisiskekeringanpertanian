@@ -7,10 +7,10 @@ Earth Engine Apps yang manyajikan peta interaktif sebaran kekeringan pertanian d
 </p>
 
 ## Data yang Digunakan:
-1.Citra Landsat 8 Collection 2 Tier 1 TOA Reflectance Path/Row 118/65 dengan interval perekaman dari perwakilan data tahun 2013 hingga 2022 saat musim kemarau pada rentang bulan Juli-Oktober.
-2 Data Shapefile Lahan Pertanian di Kabupaten Mojokerto
-3 Data Shapefile Batas Administrasi Kecamatan di Kabupaten Mojokerto
-4 Informasi Validasi Nilai NDVI dan LST dari Survei Lapangan pada Bulan Oktober 2022
+1. Citra Landsat 8 Collection 2 Tier 1 TOA Reflectance Path/Row 118/65 dengan interval perekaman dari perwakilan data tahun 2013 hingga 2022 saat musim kemarau pada rentang bulan Juli-Oktober.
+2. Data Shapefile Lahan Pertanian di Kabupaten Mojokerto
+3. Data Shapefile Batas Administrasi Kecamatan di Kabupaten Mojokerto
+4. Informasi Validasi Nilai NDVI dan LST dari Survei Lapangan pada Bulan Oktober 2022
 
 
 ## Metode yang Digunakan:
